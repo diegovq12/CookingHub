@@ -14,8 +14,7 @@ const List<Color> _colorThemes =[
   Colors.yellow,
   Colors.orange,
   Colors.pink,
-  Colors.deepOrange,
-  Color.fromARGB(255, 0, 255, 4),
+  Colors.deepOrange
 ];
 
 

@@ -3,6 +3,7 @@ import 'package:cooking_hub/presentation/providers/chat_provider.dart';
 import 'package:cooking_hub/presentation/screens/chat_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter/material.dart';
 
 void main() {
   runApp(const MainApp());
@@ -13,6 +14,7 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => ChatProvider())
@@ -24,5 +26,12 @@ class MainApp extends StatelessWidget {
         home: const ChatScreen()
         ),
     );
+    return MaterialApp(
+      title: 'Yes NO App',
+      debugShowCheckedModeBanner: false,
+      theme:AppTheme(selectedColor: 7).theme(),
+      // home: const ChatScreen()
+      );
+
   }
 }
