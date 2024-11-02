@@ -17,6 +17,7 @@ class MyMessageBubble extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
         Container(
+          constraints: BoxConstraints(maxWidth: 250),
           decoration: BoxDecoration(
             color:colors.primary,
             borderRadius: const BorderRadius.only(

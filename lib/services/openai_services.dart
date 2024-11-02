@@ -1,13 +1,12 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
+
 class OpenAIService {
-  String apiKey =
-      ""; // Reemplaza con tu API key válida
+  String apiKey = ""; 
 
   Future<String> sendTextCompletionRequest(String message) async {
-    const String baseUrl =
-        "https://api.openai.com/v1/chat/completions"; // Endpoint para GPT
+    const String baseUrl = "https://api.openai.com/v1/chat/completions"; // Endpoint para GPT
 
     Map<String, String> headers = {
       'Content-Type': 'application/json',
@@ -15,7 +14,7 @@ class OpenAIService {
     };
 
     final body = jsonEncode({
-      "model": "gpt-3.5-turbo", //modelo que utilizamos para la conversación
+      "model": "gpt-3.5-turbo", // modelo que utilizamos para la conversación
       "messages": [
         {"role": "system", "content": "Eres un chef con alta experiencia en la cocina y gran habilidad para compartir tu conocimiento."},
         {
@@ -35,15 +34,14 @@ class OpenAIService {
       );
 
       if (response.statusCode == 200) {
-        final data = jsonDecode(response.body);
+        // Utilizar utf8.decode para evitar problemas con caracteres especiales
+        final data = jsonDecode(utf8.decode(response.bodyBytes));
         String content = data['choices'][0]['message']['content'].trim();
         return content; 
       } else {
-        // print('Error ${response.statusCode}: ${response.body}');
         return 'Error al obtener respuesta: ${response.statusCode}';
       }
     } catch (e) {
-      // print('Excepción: $e');
       return 'Error de conexión.';
     }
   }
