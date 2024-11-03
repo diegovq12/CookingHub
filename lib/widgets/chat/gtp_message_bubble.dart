@@ -14,7 +14,7 @@ class GtpMessageBubble extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(
-            constraints: BoxConstraints(maxWidth: 250),
+            constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.8),
             decoration: BoxDecoration(
                 color: colors.secondary,
                 borderRadius: const BorderRadius.only(

@@ -17,7 +17,7 @@ class MyMessageBubble extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
         Container(
-          constraints: BoxConstraints(maxWidth: 250),
+            constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.7),
           decoration: BoxDecoration(
             color:colors.primary,
             borderRadius: const BorderRadius.only(

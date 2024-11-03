@@ -1,12 +1,14 @@
 import 'dart:convert';
+import 'package:cooking_hub/services/database_services.dart';
 import 'package:http/http.dart' as http;
 
-
 class OpenAIService {
-  String apiKey = ""; 
+  String apiKey =
+      "";
 
   Future<String> sendTextCompletionRequest(String message) async {
-    const String baseUrl = "https://api.openai.com/v1/chat/completions"; // Endpoint para GPT
+    const String baseUrl =
+        "https://api.openai.com/v1/chat/completions"; // Endpoint para GPT
 
     Map<String, String> headers = {
       'Content-Type': 'application/json',
@@ -16,11 +18,12 @@ class OpenAIService {
     final body = jsonEncode({
       "model": "gpt-3.5-turbo", // modelo que utilizamos para la conversación
       "messages": [
-        {"role": "system", "content": "Eres un chef con alta experiencia en la cocina y gran habilidad para compartir tu conocimiento."},
         {
-          "role": "user",
-          "content": message
-        } 
+          "role": "system",
+          "content":
+              "Responder con nombre, region,ingredientes, pasos. En formato JSON"
+        },
+        {"role": "user", "content": message}
       ],
       "max_tokens": 450,
       "temperature": 0.7,
@@ -34,15 +37,61 @@ class OpenAIService {
       );
 
       if (response.statusCode == 200) {
-        // Utilizar utf8.decode para evitar problemas con caracteres especiales
         final data = jsonDecode(utf8.decode(response.bodyBytes));
         String content = data['choices'][0]['message']['content'].trim();
-        return content; 
+        String contentJson = content;
+        //TODO: Enviar el json con la receta a la base de datos.
+        final jsonData = jsonDecode(contentJson);
+
+        Map<String, dynamic> recipe = {
+          'name': jsonData['nombre'],
+          'region': jsonData['region'],
+          'ingredients': jsonData['ingredientes'],
+          'steps': jsonData['pasos'],
+        };
+
+        // Inicializar el servicio de base de datos y conectar
+        final dbService = DatabaseServices();
+        await dbService.connect();
+
+        // Insertar la receta en la base de datos
+        await dbService.insertRecipe(recipe);
+
+        // Cerrar la conexión
+        await dbService.close();
+        // print(content);
+        return content;
       } else {
         return 'Error al obtener respuesta: ${response.statusCode}';
       }
     } catch (e) {
       return 'Error de conexión.';
     }
+  }
+
+  String naturalLanguageResponse(String jsonResponse) {
+    final recipeData = json.decode(jsonResponse);
+
+    final recipeName = recipeData['nombre'] ?? 'Receta sin nombre';
+    String region = recipeData['region'] ?? 'Región desconocida';
+    List<String> ingredients =
+        List<String>.from(recipeData['ingredientes'] ?? []);
+    List<String> steps = List<String>.from(recipeData['pasos'] ?? []);
+
+    String response = "¡Claro! Aqui tienes la receta de $recipeName\n";
+    response += "Region de la receta: $region.\n";
+    response += "Ingredientes:\n";
+    for (var ingredient in ingredients) {
+      response += "- $ingredient\n";
+    }
+    response += "\nPasos:\n";
+
+    for (var i = 0; i < steps.length; i++) {
+      response += "${i + 1}. ${steps[i]}\n";
+    }
+
+    response +=
+        "\n¡Espero que disfrutes esta deliciosa receta de $recipeName! Si tienes alguna otra pregunta o si quieres aprender a preparar otro plato, ¡no dudes en decirme!";
+    return response;
   }
 }

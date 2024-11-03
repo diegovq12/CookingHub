@@ -4,11 +4,15 @@ import 'package:flutter/material.dart';
 
 const maxLength = 50;
 
+// RecipeModel? recipeText;
+
 class ChatProvider extends ChangeNotifier{
 
   final chatScrollController = ScrollController();
 
   List<Message> messageList = [
+    Message(text: '¡Hola! Soy CookBot, tu asistente en la cocina. ¿Listo para sorprender a tu paladar? ¡Dime qué se te antoja y juntos cocinemos algo increíble!', fromWho: FromWho.gpt)
+
   ];
 
   Future<void> sendMessage(String text) async{
@@ -17,9 +21,6 @@ class ChatProvider extends ChangeNotifier{
     }
 
     if(text.length > maxLength){
-   
-      messageList.add(Message(text: text, fromWho: FromWho.me));
-       notifyListeners();
       messageList.add(Message(text: 'Please enter a message with less than $maxLength characters', fromWho: FromWho.gpt));
         notifyListeners();
         moveScrollToBottom(); 
@@ -32,11 +33,15 @@ class ChatProvider extends ChangeNotifier{
     notifyListeners();
     moveScrollToBottom();
     await Future.delayed(const Duration(milliseconds: 300));
-    final responseText = await OpenAIService().sendTextCompletionRequest(newMessage.text);
+    var responseText = await OpenAIService().sendTextCompletionRequest(newMessage.text);
 
-    final gptMessage = Message(text: responseText, fromWho: FromWho.gpt);
-    messageList.add(gptMessage);
+  try {
+    responseText = OpenAIService().naturalLanguageResponse(responseText);
+    messageList.add(Message(text: responseText, fromWho: FromWho.gpt));
 
+  } catch (e) {
+    messageList.add(Message(text: 'No pude procesar la receta. Por favor, intenta de nuevo.', fromWho: FromWho.gpt));
+  }
     notifyListeners();
     moveScrollToBottom();    
   }
