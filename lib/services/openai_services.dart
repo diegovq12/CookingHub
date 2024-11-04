@@ -4,7 +4,7 @@ import 'package:http/http.dart' as http;
 
 class OpenAIService {
   String apiKey =
-      "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";
+      "";
 
   Future<String> sendTextCompletionRequest(String message) async {
     const String baseUrl =
