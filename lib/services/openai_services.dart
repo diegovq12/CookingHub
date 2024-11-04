@@ -1,10 +1,10 @@
 import 'dart:convert';
 import 'package:cooking_hub/services/database_services.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 
 class OpenAIService {
-  String apiKey =
-      "";
+  String apiKey = dotenv.env['OPENAI_API_KEY'] ?? 'Clave OpenAI no encontrada';
 
   Future<String> sendTextCompletionRequest(String message) async {
     const String baseUrl =
