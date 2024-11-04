@@ -30,10 +30,27 @@
 // }
 
 import 'package:mongo_dart/mongo_dart.dart';
-
+import 'package:cooking_hub/domain/entities/user_model.dart';
+import 'services/user_service.dart';
 import 'domain/Connection/MongoDB.dart';
 import 'domain/Connection/Temp.dart';
-void main() async{
-  final nuevoTemp = LaCosa(id: ObjectId(), jwt: 'Hola', user_id: 'DesdeFlutter');
-  await Mongodb.ConnecWhitMongo(nuevoTemp);
+
+void main() async {
+  final List<String> listIng = ([
+    'Apio',
+    'Chicolate',
+    'Pechuga de pollo',
+    'Manzana',
+    'Almendras',
+    'Frijoles'
+  ]);
+  final List<List<String>> lalista = ([]);
+  final prueba = User(
+      userName: 'Guest',
+      userEmail: 'Guest@gmail.com',
+      password: 'guest',
+      profileImg: 'link',
+      favoriteIngredients: listIng,
+      listOfIngredients: lalista);
+  await UserService.addUser(prueba);
 }
