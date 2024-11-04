@@ -11,7 +11,7 @@ class HotBar extends StatelessWidget {
         // constraints: BoxConstraints.expand(width: MediaQuery.of(context).size.width),
         decoration: const BoxDecoration(
             color: Color.fromRGBO(255, 170, 50, 1),
-            borderRadius: const BorderRadius.only(
+            borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(16), topRight: Radius.circular(16))),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,

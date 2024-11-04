@@ -21,7 +21,7 @@ class MainApp extends StatelessWidget {
       child: MaterialApp(
         title: 'Cooking Hub',
         debugShowCheckedModeBanner: false,
-        theme:AppTheme(selectedColor: 2).theme(),
+        theme:AppTheme(selectedColor: 0).theme(),
         home: const ChatScreen()
         ),
     );

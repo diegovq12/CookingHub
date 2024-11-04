@@ -17,7 +17,7 @@ class MessageFieldBox extends StatelessWidget {
         borderRadius: BorderRadius.circular(40));
 
     final inputDecoration = InputDecoration(
-        hintText: 'Ask to CookBot',
+        hintText: 'Habla con CookBot',
         enabledBorder: outlineInputBorder,
         focusedBorder: outlineInputBorder,
         filled: true,

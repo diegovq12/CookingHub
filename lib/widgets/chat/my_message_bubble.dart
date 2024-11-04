@@ -18,9 +18,9 @@ class MyMessageBubble extends StatelessWidget {
       children: [
         Container(
             constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.7),
-          decoration: BoxDecoration(
-            color:colors.primary,
-            borderRadius: const BorderRadius.only(
+          decoration: const BoxDecoration(
+            color:Colors.white,
+            borderRadius: BorderRadius.only(
               topLeft: Radius.circular(20),
               topRight: Radius.circular(5),
               bottomLeft: Radius.circular(20),
@@ -28,7 +28,7 @@ class MyMessageBubble extends StatelessWidget {
             )
           ),
           child: Padding(padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-          child: Text(message.text, style: const TextStyle(color: Colors.white),)
+          child: Text(message.text, style: const TextStyle(color: Colors.black),)
           ),
         ),
 
