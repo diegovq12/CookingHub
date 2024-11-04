@@ -1,4 +1,5 @@
 import 'package:cooking_hub/domain/entities/message.dart';
+import 'package:cooking_hub/services/google_vision_services.dart';
 import 'package:cooking_hub/services/openai_services.dart';
 import 'package:flutter/material.dart';
 
@@ -44,6 +45,47 @@ class ChatProvider extends ChangeNotifier{
   }
     notifyListeners();
     moveScrollToBottom();    
+  }
+
+  Future<void> sendIngredientsByMessage() async {
+    try {
+
+      final detectedIngredients = await GoogleVisionServices().detectIngredients();
+
+      if (detectedIngredients == 'Error al capturar imagen') {
+        messageList.add(
+          Message(text: 'Error al capturar o procesar la imagen.', fromWho: FromWho.me),
+        );
+        notifyListeners();
+        moveScrollToBottom();
+        return;
+      }
+
+      final newMessage = Message(
+        text: 'Receta con los siguientes ingredientes: $detectedIngredients',
+        fromWho: FromWho.me,
+      );
+
+      messageList.add(newMessage);
+      notifyListeners();
+      moveScrollToBottom();
+    
+
+
+      var responseText = await OpenAIService().sendTextCompletionRequest(newMessage.text);
+      responseText = OpenAIService().naturalLanguageResponse(responseText);
+      
+      messageList.add(Message(text: responseText, fromWho: FromWho.gpt));
+      notifyListeners();
+      moveScrollToBottom();
+    } catch (e) {
+
+      messageList.add(
+        Message(text: 'No pude procesar la receta o la imagen. Por favor, intenta de nuevo.', fromWho: FromWho.gpt),
+      );
+      notifyListeners();
+      moveScrollToBottom();
+    }
   }
 
 

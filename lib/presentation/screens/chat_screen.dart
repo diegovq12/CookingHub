@@ -4,7 +4,6 @@ import 'package:cooking_hub/widgets/chat/gtp_message_bubble.dart';
 import 'package:cooking_hub/widgets/chat/my_message_bubble.dart';
 import 'package:cooking_hub/widgets/shared/background_image.dart';
 import 'package:cooking_hub/widgets/shared/hot_bar.dart';
-import 'package:cooking_hub/widgets/shared/message_field_box.dart';
 import 'package:cooking_hub/widgets/shared/message_field_button.dart';
 import 'package:cooking_hub/widgets/shared/title_container.dart';
 import 'package:flutter/material.dart';
@@ -77,22 +76,10 @@ class _ChatView extends StatelessWidget {
                 ),
 
                 // Botones de adjuntar y cámara y espacio para que el usuario escriba
-                Container(
-                  margin: const EdgeInsets.only(bottom: 10, right: 10),
-                  child: Row(
-                    textDirection: TextDirection.rtl,
-                    children: [
-                      const MessageFieldButton(
-                          icon: Icons.photo_size_select_actual_outlined),
-                      const MessageFieldButton(icon: Icons.camera_alt_outlined),
-                      Expanded(
-                        child: MessageFieldBox(
-                            onValue: (value) =>
-                                chatProvider.sendMessage(value)),
-                      ),
-                    ],
-                  ),
-                ),
+                MessageFieldContainer(
+                  onValue: ((value )
+                    => chatProvider.sendMessage(value))
+                  )
               ],
             ),
           ),

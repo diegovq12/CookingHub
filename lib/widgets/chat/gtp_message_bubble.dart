@@ -8,7 +8,7 @@ class GtpMessageBubble extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final colors = Theme.of(context).colorScheme;
+    // final colors = Theme.of(context).colorScheme;
 
     const borderRadius = BorderRadius.only(
                     topLeft: Radius.circular(5),
