@@ -21,7 +21,7 @@ class OpenAIService {
         {
           "role": "system",
           "content":
-              "Responder con nombre, region,ingredientes, pasos. En formato JSON"
+              "Si el mensaje esta relacionado con cocina responder con nombre, region,ingredientes, pasos. En formato JSON,"
         },
         {"role": "user", "content": message}
       ],
@@ -56,7 +56,7 @@ class OpenAIService {
         // Insertar la receta en la base de datos
         await dbService.insertRecipe(recipe);
 
-        // Cerrar la conexión
+        // Cerrar la conexion
         await dbService.close();
         // print(content);
         return content;

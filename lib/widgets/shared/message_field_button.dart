@@ -32,7 +32,7 @@ class MessageFieldButton extends StatelessWidget {
 class MessageFieldContainer extends StatelessWidget {
   final Function(String) onValue;
 
-  MessageFieldContainer({
+  const MessageFieldContainer({
     super.key,
     required this.onValue,
   });

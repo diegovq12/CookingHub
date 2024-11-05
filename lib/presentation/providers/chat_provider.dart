@@ -3,7 +3,7 @@ import 'package:cooking_hub/services/google_vision_services.dart';
 import 'package:cooking_hub/services/openai_services.dart';
 import 'package:flutter/material.dart';
 
-const maxLength = 50;
+const maxLength = 100;
 
 // RecipeModel? recipeText;
 

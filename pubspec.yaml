@@ -10,10 +10,13 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_dotenv: ^5.2.1
+  googleapis_auth: ^1.6.0
   http: ^1.2.2
   image_picker: ^1.1.2
   json: ^0.20.2
   mongo_dart: ^0.10.3
+  path_provider: ^2.1.5
+  permission_handler: ^11.3.1
   provider: ^6.1.2
 
 dev_dependencies:
@@ -27,3 +30,4 @@ flutter:
     - assets/HotBar/Gorrito.png
     - assets/Background.png
     - .env
+    - credencialescloud.json
