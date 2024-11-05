@@ -55,6 +55,7 @@ flutter:
     - assets/icons/edit2.png
     - assets/icons/canasta.png
     - assets/icons/star.png
+    - assets/icons/delete.png
   fonts:
     - family : Poppins
       fonts :
