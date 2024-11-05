@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-void main() async{
+void main() async {
   await dotenv.load(fileName: ".env");
   runApp(const MainApp());
 }
@@ -15,18 +15,13 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (context) => ChatProvider())
-      ],
+      providers: [ChangeNotifierProvider(create: (context) => ChatProvider())],
       child: MaterialApp(
-        title: 'Cooking Hub',
-        debugShowCheckedModeBanner: false,
-        theme:AppTheme(selectedColor: 0).theme(),
-        home: const ChatScreen()
-        ),
+          title: 'Cooking Hub',
+          debugShowCheckedModeBanner: false,
+          theme: AppTheme(selectedColor: 0).theme(),
+          home: const ChatScreen()),
     );
-
   }
 }
