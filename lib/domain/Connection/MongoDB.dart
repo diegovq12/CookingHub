@@ -1,11 +1,11 @@
 import 'package:cooking_hub/domain/Connection/CONST-DB.dart';
 import 'package:mongo_dart/mongo_dart.dart';
-import 'package:cooking_hub/domain/entities/user_model.dart';
-import 'Temp.dart';
+
+
 
 class Mongodb {
   //VARIABLE QUE REPRESENTA LA COLECCION A LA QUE SE QUIERE CONECTAR
-  static late DbCollection LaColeccion;
+  static late DbCollection ActualCollection;
   static Db? db;
 
   //SE CONECTA A LA BASE DE DATOS
@@ -20,10 +20,27 @@ class Mongodb {
   }
 
   //SE INSERA EL REGISTRO A LA COLECCION
-  static Future<void> insert(newUser) async {
-    LaColeccion = db!.collection(COLLECTIONINGREDIENTS);//SE INGRESA LA COLECCION DESEADA
-    await LaColeccion.insertOne(newUser);
+  static Future<void> insertUser(newUser) async {
+    ActualCollection = db!.collection(USERCOLLECTION);//SE INGRESA LA COLECCION DESEADA
+    await ActualCollection.insertOne(newUser);
   }
+
+  static DbCollection get userCollection {
+    ActualCollection = db!.collection(USERCOLLECTION);
+    if( ActualCollection == null){
+      throw Exception('Database is not conected');
+    }
+    return ActualCollection;
+  }
+
+
+
+
+
+
+
+
+
 
   //CIERRA LA CONEXION CON LA BASE DE DATOS
   static Future<void> closeConnection() async {

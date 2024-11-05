@@ -2,5 +2,5 @@
 // A LAS COLECCIONES A LAS QUE SE QUIERE INGRESAR
 //SI QUERE INGRESAR A UNA NUEVA COLECCION CREELA EN ESTE ARCHIVO
 
-const CONNECTIONDB = ""; //Link de conexion a a base de datos
-const COLLECTIONINGREDIENTS = "Users"; //Colleccion a la que se quiere acceder
+const CONNECTIONDB = "mongodb+srv://CookingHub:XGVbU56Z6siQDGI8@antoniocluster.7byrg.mongodb.net/CookingHub?retryWrites=true&w=majority&appName=AntonioCluster"; //Link de conexion a a base de datos
+const USERCOLLECTION = "Users"; //Colleccion a la que se quiere acceder

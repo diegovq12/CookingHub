@@ -29,28 +29,17 @@
 //   }
 // }
 
-import 'package:mongo_dart/mongo_dart.dart';
-import 'package:cooking_hub/domain/entities/user_model.dart';
 import 'services/user_service.dart';
-import 'domain/Connection/MongoDB.dart';
-import 'domain/Connection/Temp.dart';
+
 
 void main() async {
-  final List<String> listIng = ([
-    'Apio',
-    'Chicolate',
-    'Pechuga de pollo',
-    'Manzana',
-    'Almendras',
-    'Frijoles'
-  ]);
-  final List<List<String>> lalista = ([]);
-  final prueba = User(
-      userName: 'Guest',
-      userEmail: 'Guest@gmail.com',
-      password: 'guest',
-      profileImg: 'link',
-      favoriteIngredients: listIng,
-      listOfIngredients: lalista);
-  await UserService.addUser(prueba);
+  var result = await UserService.getUsers('672842c9368c80edf2000000');
+  if(result != null){
+    print("Registro encontrado:");
+    print('Name: ${result.userName}');
+    print('Email: ${result.userEmail}');
+    print('Ingredientes: ${result.favoriteIngredients}');
+    print('Listas de ingredientes: ${result.listOfIngredients}');
+
+  }
 }

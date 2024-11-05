@@ -1,3 +1,5 @@
+
+
 class User{
   final String userName;
   final String userEmail;
@@ -16,12 +18,12 @@ class User{
       password: json['password'] as String? ?? 'Desconocido',
       profileImg: json['profileImg'] as String? ?? 'Desconocido',
       favoriteIngredients: 
-        List<String>.from(json['favoriteIngredients']) ?? [],
-      listOfIngredients:
-        List<List<String>>.from(json['listOfIngredients']) ?? [],
+        List<String>.from(json['favoriteIngredients']).toList() ?? [],
+      listOfIngredients: (json['listOfIngredients'] as List?)?.map((e) => List<String>.from(e as List)).toList()?? [[]]
       );
-
   }
+
+  
   Map <String, dynamic> toJson(){
     return{
       'userName':userName,
