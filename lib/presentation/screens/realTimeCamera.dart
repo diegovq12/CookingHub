@@ -171,7 +171,7 @@ class _CamaraTiempoReal extends State<CamaraTiempoReal> {
   InkWell editButton(BuildContext context, double screenHeight, double screenWidth, int amount) {
     return InkWell(
                                         onTap: (){
-                                          editIngredientsSection(context, screenHeight, screenWidth);
+                                          // editIngredientsSection(context, screenHeight, screenWidth);
                                         },
                                         child: Container(
                                           decoration:const BoxDecoration(
@@ -182,8 +182,8 @@ class _CamaraTiempoReal extends State<CamaraTiempoReal> {
                                           child: Row(
                                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                                             children: [
-                                              Text("$amount",style: normalStyle(),),
-                                              Image.asset("assets/icons/edit2.png",width: 20,)
+                                              // Text("$amount",style: normalStyle(),),
+                                              Image.asset("assets/icons/delete.png",width: 20,)
                                             ],
                                           ),
                                         ),

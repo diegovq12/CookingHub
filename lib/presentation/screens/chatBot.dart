@@ -104,6 +104,11 @@ class _chatBot extends State<chatBot>{
               // Titulo
               titleCookBot(screenHeight, screenWidth),
 
+              // ------- Esta sera la funcion para la ventana emergente de confirmacion ----- //
+              // saveListWindow(screenWidth, screenHeight),
+
+              // listNameConfirm(screenWidth, screenHeight),
+
               //-- HotBar
               HotBar()
               
@@ -112,6 +117,136 @@ class _chatBot extends State<chatBot>{
         ),
       )
     );
+  }
+
+  Stack listNameConfirm(double screenWidth, double screenHeight) {
+    return Stack(
+            children: [
+              ModalBarrier(
+                color: Colors.black.withOpacity(0.5),
+                dismissible: true,
+              ),
+              Center(
+                child: Container(
+                  decoration: chatFondoDecoration(),
+                  margin: EdgeInsets.all(10),
+                  width: screenWidth*0.8,
+                  height: screenHeight*0.3,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text("Nombre : ",style: windowStyle(),textAlign: TextAlign.center,),
+                      SizedBox(height: screenHeight*0.02,),
+                      
+                      Container(
+                        height: screenHeight*0.05,
+                        margin: EdgeInsets.only(
+                          left: screenWidth*0.02,
+                          right: screenWidth*0.02,
+                        ),
+                        child: Expanded(
+                          child: 
+                            TextField(
+                              controller: _controller,
+                              decoration: inputBox(),
+                              // -- Cuando presione enter
+                              onSubmitted: promp,
+                            ),
+                        ),
+                      ),
+                      SizedBox(height: screenHeight*0.02,),
+
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          InkWell(
+                            onTap: (){},
+                            child: Container(
+                              decoration: buttonDecoration(),
+                              padding: EdgeInsets.all(screenHeight*0.02),
+                              child: Text("Confirmar", style: normalStyle(),),
+                            ),
+                          ),
+                          InkWell(
+                            onTap: (){},
+                            child: Container(
+                              decoration: buttonDecoration(),
+                              padding: EdgeInsets.all(screenHeight*0.02),
+                              child: Text("Cancelar", style: normalStyle(),),
+                            ),
+                          )
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              )
+            ],
+          );
+  }
+
+  Stack saveListWindow(double screenWidth, double screenHeight) {
+    return Stack(
+              children: [
+                ModalBarrier(
+                  color: Colors.black.withOpacity(0.5),
+                  dismissible: true,
+                ),
+                Center(
+                  child: Container(
+                    decoration: chatFondoDecoration(),
+                    margin: EdgeInsets.all(10),
+                    width: screenWidth*0.8,
+                    height: screenHeight*0.3,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text("Quieres guardar esta lista de ingredientes?",style: windowStyle(),textAlign: TextAlign.center,),
+                        SizedBox(height: screenHeight*0.05,),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            InkWell(
+                              onTap: (){},
+                              child: Container(
+                                decoration: buttonDecoration(),
+                                padding: EdgeInsets.all(screenHeight*0.02),
+                                child: Text("Si", style: normalStyle(),),
+                              ),
+                            ),
+                            InkWell(
+                              onTap: (){},
+                              child: Container(
+                                decoration: buttonDecoration(),
+                                padding: EdgeInsets.all(screenHeight*0.02),
+                                child: Text("No", style: normalStyle(),),
+                              ),
+                            )
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                )
+              ],
+            );
+  }
+
+  TextStyle normalStyle() => const TextStyle(color: Colors.white,fontFamily: "Poppins",fontSize: 20);
+
+  BoxDecoration buttonDecoration() {
+    return BoxDecoration(
+            color: Color(0xFFFF8330),
+            borderRadius: BorderRadius.all(Radius.circular(16)),
+            boxShadow: [
+              BoxShadow(
+                color: Color.fromARGB(120, 0, 0, 0),
+                spreadRadius: 0,
+                blurRadius: 5,
+                offset: Offset(0, 1)
+              )
+            ]
+          );
   }
 
   Align titleCookBot(double screenHeight, double screenWidth) {
@@ -145,6 +280,10 @@ class _chatBot extends State<chatBot>{
               ),
             );
   }
+
+  TextStyle titleStyle() => const TextStyle(color: Colors.white, fontFamily: "Poppins",fontSize: 36, fontWeight: FontWeight.bold);
+  
+  TextStyle windowStyle() => const TextStyle(color: Colors.white, fontFamily: "Poppins",fontSize: 30,);
 
   Align chatButtons(BuildContext context) {
     return Align(
