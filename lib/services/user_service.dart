@@ -19,8 +19,18 @@ class UserService {
     if(userResult != null){
       return User.fromJson(userResult);
     }
-
     return null;
-  
+  }
+
+  static Future<void> modifyIngredientsFavorites(String id, List<String> newList) async{
+    await Mongodb.ConnecWhitMongo();
+    await Mongodb.userCollection.updateOne(where.id(ObjectId.parse(id)),modify.set('favoriteIngredients', newList));
+    await Mongodb.closeConnection();
+  }
+
+  static Future<void> modifyListOfIngredients(String id, List<String> newList, int indexList) async{
+    await Mongodb.ConnecWhitMongo();
+    await Mongodb.userCollection.updateOne(where.id(ObjectId.parse(id)), modify.set('listOfIngredients.0', newList));
+    await Mongodb.closeConnection();
   }
 }

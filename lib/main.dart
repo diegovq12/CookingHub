@@ -30,16 +30,22 @@
 // }
 
 import 'services/user_service.dart';
+import 'services/recipe_service.dart';
+import 'domain/entities/recipe_model.dart';
 
 
 void main() async {
-  var result = await UserService.getUsers('672842c9368c80edf2000000');
+  String id = '672842c9368c80edf2000000';
+  var result = await UserService.getUsers(id);
   if(result != null){
     print("Registro encontrado:");
     print('Name: ${result.userName}');
     print('Email: ${result.userEmail}');
     print('Ingredientes: ${result.favoriteIngredients}');
     print('Listas de ingredientes: ${result.listOfIngredients}');
-
   }
+
+    result!.listOfIngredients[0].add('Cilantro');
+    UserService.modifyListOfIngredients(id, result.listOfIngredients[0],0);
+  
 }
