@@ -1,5 +1,6 @@
 import 'dart:convert';
-import 'package:cooking_hub/services/database_services.dart';
+import 'package:cooking_hub/domain/entities/recipe_model.dart';
+import 'recipes_service.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 
@@ -53,18 +54,11 @@ Future<String> sendTextCompletionRequest(String message) async {
             jsonData.containsKey('ingredientes') &&
             jsonData.containsKey('pasos')) {
           
-          Map<String, dynamic> recipe = {
-            'name': jsonData['nombre'],
-            'region': jsonData['region'],
-            'ingredients': jsonData['ingredientes'],
-            'steps': jsonData['pasos'],
-          };
+           Recipe recipe = Recipe(name: jsonData['nombre'], region: jsonData['region'], ingredients: jsonData['ingredientes'], steps: jsonData['pasos']); 
+
 
           // Insertar en la base de datos
-          final dbService = DatabaseServices();
-          await dbService.connect();
-          await dbService.insertRecipe(recipe);
-          await dbService.close();
+          await RecipesService.addRecipe(recipe);
           // print('Content: $content');
           return content;
         } else {
