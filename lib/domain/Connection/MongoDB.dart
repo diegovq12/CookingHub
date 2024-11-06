@@ -8,8 +8,7 @@ class Mongodb {
 
   //SE CONECTA A LA BASE DE DATOS
   static Future<void> ConnecWhitMongo() async {
-    db = await Db.create(
-        CONNECTIONDB); //AQUI SE AGREGA LA VARIABLE CREADA EN  CONST_DB
+    db = await Db.create(CONNECTIONDB); //AQUI SE AGREGA LA VARIABLE CREADA EN  CONST_DB
     try {
       await db!.open();
       print("Conexion exitosa");

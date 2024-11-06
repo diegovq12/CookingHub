@@ -30,8 +30,7 @@
 // }
 
 import 'services/user_service.dart';
-import 'services/recipe_service.dart';
-import 'domain/entities/recipe_model.dart';
+
 
 
 void main() async {
@@ -45,7 +44,7 @@ void main() async {
     print('Listas de ingredientes: ${result.listOfIngredients}');
   }
 
-    result!.listOfIngredients[0].add('Cilantro');
-    UserService.modifyListOfIngredients(id, result.listOfIngredients[0],0);
-  
+   String newIngredient = 'Lechuga';
+   await UserService.addNewIngredientsFavorites(id, newIngredient);
+
 }
