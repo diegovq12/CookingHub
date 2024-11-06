@@ -26,8 +26,35 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
-  assets:
-    - assets/HotBar/Gorrito.png
-    - assets/Background.png
+  assets:  
     - .env
     - credencialescloud.json
+
+    - assets/HotBar/Gorrito.png
+    - assets/HotBar/Games.png
+    - assets/HotBar/Lista.png
+    - assets/HotBar/Perfil.png
+    - assets/HotBar/Home.png
+    
+    - assets/Background.png
+    - assets/HotCakes.png
+    - assets/Arepas.png
+
+    - assets/chatIcons/camera.png
+    - assets/chatIcons/adjuntar.png
+    
+    - assets/icons/chat.png
+    - assets/icons/camera.png
+    - assets/icons/eat.png
+    - assets/icons/edit.png
+    - assets/icons/edit2.png
+    - assets/icons/canasta.png
+    - assets/icons/star.png
+    - assets/icons/delete.png
+  fonts:
+    - family: Poppins
+      fonts:
+        - asset: assets/fonts/Poppins/Poppins-Regular.ttf
+        - asset: assets/fonts/Poppins/Poppins-Medium.ttf
+        - asset: assets/fonts/Poppins/Poppins-Bold.ttf
+

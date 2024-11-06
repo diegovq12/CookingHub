@@ -1,6 +1,7 @@
 import 'package:cooking_hub/presentation/providers/chat_provider.dart';
 import 'package:cooking_hub/widgets/shared/message_field_box.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
 class MessageFieldButton extends StatelessWidget {
@@ -48,13 +49,14 @@ class MessageFieldContainer extends StatelessWidget {
         children: [
           MessageFieldButton(
             icon: Icons.photo_size_select_actual_outlined,
-            onTap: () {
-              //TODO: agregar la logica para seleccionar imagen de la galeria
-            },
+            onTap: () 
+              // // TODO: agregar la logica para seleccionar imagen de la galeria
+              => chatProvider.sendIngredientsByPhoto(ImageSource.gallery)
+            
           ),
           MessageFieldButton(
             icon: Icons.camera_alt_outlined,
-            onTap: () => chatProvider.sendIngredientsByMessage(),
+            onTap: () => chatProvider.sendIngredientsByPhoto(ImageSource.camera),
           ),
           Expanded(
             child: MessageFieldBox(

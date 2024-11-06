@@ -9,7 +9,7 @@ class GoogleVisionServices {
   String apikey = dotenv.env['GOOGLE_CLOUD_VISION_API_KEY'] ??
       'Api de cloud vision no encontrada';
 
-  Future<String> detectIngredients() async {
+  Future<String> detectIngredients(ImageSource fuente) async {
     // // Verifica y solicita el permiso de camara
     // var cameraStatus = await Permission.camera.status;
     // if (!cameraStatus.isGranted) {
@@ -21,7 +21,7 @@ class GoogleVisionServices {
 
     // Carga la imagen desde la camara
     final picker = ImagePicker();
-    final image = await picker.pickImage(source: ImageSource.camera);
+    final image = await picker.pickImage(source: fuente);
 
     if (image == null) return 'Error al capturar imagen';
 
