@@ -25,7 +25,7 @@ class GoogleVisionServices {
 
     if (image == null) return 'Error al capturar imagen';
 
-    //es necesario convertir la imagen a formato base 64
+    // Convierte la imagen a formato base64
     final bytes = await File(image.path).readAsBytes();
     final base64Image = base64Encode(bytes);
 
@@ -50,30 +50,104 @@ class GoogleVisionServices {
             {
               'image': {'content': base64Image},
               'features': [
-                {'type': 'LABEL_DETECTION', 'maxResults': 10}
+                {
+                  'type': 'LABEL_DETECTION',
+                  'maxResults': 20
+                } // Aumentar resultados
               ]
             }
           ]
         }),
       );
 
-       if (response.statusCode == 200) {
-      final result = jsonDecode(response.body);
-      final labels = result['responses'][0]['labelAnnotations'] as List;
-  
-      // Filtra etiquetas basadas en un puntaje de confianza
-      final filteredLabels = labels.where((label) => label['score'] > 0.7).map((label) => label['description']).toList();
-      print('Labels $filteredLabels');
-      return filteredLabels.isNotEmpty
-          ? filteredLabels.join(', ')
-          : 'No se detectaron ingredientes específicos';
+      if (response.statusCode == 200) {
+        final result = jsonDecode(response.body);
+        final labels = result['responses'][0]['labelAnnotations'] as List;
+
+        // Aplicación de múltiples filtros
+        final filteredLabels = labels
+            .where(
+                (label) => label['score'] > 0.85) // Filtro de puntaje más alto
+            .map((label) => label['description'])
+            .where((description) => _isIngredient(
+                description)) // Filtro por categorías de alimentos
+            .where((description) =>
+                description.split(" ").length ==
+                1) // Filtro de una sola palabra
+            .toList();
+
+        print('Labels $filteredLabels');
+        return filteredLabels.isNotEmpty
+            ? filteredLabels.join(', ')
+            : 'No se detectaron ingredientes específicos';
       } else {
         return 'Error: ${response.statusCode} - ${response.reasonPhrase}';
       }
     } catch (e) {
       return 'Error al procesar la imagen: $e';
     } finally {
-      authClient.close(); 
+      authClient.close();
     }
+  }
+
+  // Verifica si la descripción contiene palabras clave relacionadas con alimentos
+  bool _isIngredient(String description) {
+    // Lista de categorías o palabras clave que se asocian con ingredientes
+    final keywords = [
+// Alimentos generales
+      'fruit', 'vegetable', 'meat', 'dairy', 'grain', 'spice', 'herb',
+      'seafood',
+      'pasta', 'sauce', 'nut', 'bean', 'oil', 'fat', 'protein', 'sugar',
+      'ingredient', 'food', 'drink', 'beverage', 'condiment', 'legume',
+      'cereal',
+      'snack', 'baking', 'dressing', 'syrup', 'honey', 'butter', 'jam', 'flour',
+      'vinegar', 'salt', 'carbohydrate', 'protein', 'fiber', 'starch',
+
+      // Proteinas
+      'chicken', 'beef', 'pork', 'turkey', 'lamb', 'bacon', 'ham', 'salami',
+      'sausage', 'pepperoni', 'tuna', 'salmon', 'shrimp', 'lobster', 'crab',
+      'mussel',
+
+      // Lacteos y derivados
+      'milk', 'cream', 'yogurt', 'cheese', 'butter', 'cream cheese',
+      'sour cream',
+      'whipped cream', 'ice cream', 'condensed milk', 'evaporated milk',
+      'parmesan',
+
+      // Verduras
+      'lettuce', 'spinach', 'kale', 'cabbage', 'carrot', 'celery', 'broccoli',
+      'cauliflower', 'pepper', 'tomato', 'onion', 'garlic', 'potato', 'radish',
+      'beet', 'zucchini', 'cucumber', 'pea', 'eggplant', 'squash', 'mushroom',
+
+      // Frutas
+      'apple', 'banana', 'orange', 'lemon', 'lime', 'grape', 'pineapple',
+      'strawberry', 'blueberry', 'raspberry', 'peach', 'mango', 'kiwi',
+      'cherry',
+      'pear', 'plum', 'watermelon', 'melon', 'coconut', 'avocado',
+      'pomegranate',
+
+      // Granos y cereales
+      'rice', 'quinoa', 'oat', 'corn', 'wheat', 'barley', 'bulgur', 'couscous',
+      'spaghetti', 'macaroni', 'noodle', 'bread', 'tortilla', 'bagel',
+
+      // Especias y condimentos
+      'salt', 'pepper', 'cinnamon', 'nutmeg', 'ginger', 'paprika', 'turmeric',
+      'cumin', 'oregano', 'basil', 'thyme', 'rosemary', 'saffron', 'chili',
+      'clove', 'cardamom', 'vanilla', 'bay leaf', 'parsley', 'cilantro',
+
+      // Otros ingredientes comunes
+      'sugar', 'honey', 'maple syrup', 'molasses', 'chocolate', 'cocoa',
+      'coffee',
+      'tea', 'mustard', 'mayonnaise', 'ketchup', 'vinegar', 'yeast',
+      'baking soda',
+      'baking powder', 'gelatin', 'agar', 'cornstarch', 'soy sauce',
+      'fish sauce',
+      'olive oil', 'vegetable oil', 'canola oil', 'peanut butter',
+      'almond butter',
+    ];
+
+    // Verifica si la descripción contiene alguna de las palabras clave
+    return keywords
+        .any((keyword) => description.toLowerCase().contains(keyword));
   }
 }
