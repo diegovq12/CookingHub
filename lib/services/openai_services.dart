@@ -14,16 +14,18 @@ Future<String> sendTextCompletionRequest(String message) async {
     'Authorization': 'Bearer $apiKey',
   };
 
+  // message += 'receta de: ';
+
   final body = jsonEncode({
     "model": "gpt-3.5-turbo",
     "messages": [
       {
         "role": "system",
-        "content": "Este asistente solo proporciona ayuda con temas de cocina. Responde exclusivamente a preguntas relacionadas con recetas de cocina. Si el mensaje contiene temas inapropiados o no culinarios, responde con: 'Este asistente solo proporciona ayuda con temas de cocina.' Si la solicitud es culinaria, responde con los campos: nombre, region, ingredientes, y pasos en formato JSON.'"
+        "content": "responde con los campos: nombre, region, ingredientes, y pasos en formato JSON. Si no tiene que ver con comida no devuelvas formato JSON"
       },
       {"role": "user", "content": message}
     ],
-    "max_tokens": 450,
+    "max_tokens": 550,
     "temperature": 0.7,
   });
 

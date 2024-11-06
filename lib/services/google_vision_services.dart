@@ -19,6 +19,8 @@ class GoogleVisionServices {
     //   }
     // }
 
+    //  ? Carga la imagen desde la camara
+
     // Carga la imagen desde la camara
     final picker = ImagePicker();
     final image = await picker.pickImage(source: fuente);
@@ -67,7 +69,7 @@ class GoogleVisionServices {
         // Aplicación de múltiples filtros
         final filteredLabels = labels
             .where(
-                (label) => label['score'] > 0.85) // Filtro de puntaje más alto
+                (label) => label['score'] > 0.6) // Filtro de puntaje más alto
             .map((label) => label['description'])
             .where((description) => _isIngredient(
                 description)) // Filtro por categorías de alimentos
@@ -94,14 +96,6 @@ class GoogleVisionServices {
   bool _isIngredient(String description) {
     // Lista de categorías o palabras clave que se asocian con ingredientes
     final keywords = [
-// Alimentos generales
-      'fruit', 'vegetable', 'meat', 'dairy', 'grain', 'spice', 'herb',
-      'seafood',
-      'pasta', 'sauce', 'nut', 'bean', 'oil', 'fat', 'protein', 'sugar',
-      'ingredient', 'food', 'drink', 'beverage', 'condiment', 'legume',
-      'cereal',
-      'snack', 'baking', 'dressing', 'syrup', 'honey', 'butter', 'jam', 'flour',
-      'vinegar', 'salt', 'carbohydrate', 'protein', 'fiber', 'starch',
 
       // Proteinas
       'chicken', 'beef', 'pork', 'turkey', 'lamb', 'bacon', 'ham', 'salami',
@@ -144,6 +138,16 @@ class GoogleVisionServices {
       'fish sauce',
       'olive oil', 'vegetable oil', 'canola oil', 'peanut butter',
       'almond butter',
+
+      // Alimentos generales
+      // 'fruit', 'vegetable', 'meat', 'dairy', 'grain', 'spice', 'herb',
+      // 'seafood',
+      // 'pasta', 'sauce', 'nut', 'bean', 'oil', 'fat', 'protein', 'sugar',
+      // 'ingredient', 'food', 'drink', 'beverage', 'condiment', 'legume',
+      // 'cereal',
+      // 'snack', 'baking', 'dressing', 'syrup', 'honey', 'butter', 'jam', 'flour',
+      // 'vinegar', 'salt', 'carbohydrate', 'protein', 'fiber', 'starch',
+      // 'vitamin'
     ];
 
     // Verifica si la descripción contiene alguna de las palabras clave

@@ -6,9 +6,6 @@ import 'package:cooking_hub/services/openai_services.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
-const maxLength = 100;
-
-// RecipeModel? recipeText;
 
 class ChatProvider extends ChangeNotifier {
   final chatScrollController = ScrollController();
@@ -81,6 +78,7 @@ Future<void> sendIngredientsByPhoto(ImageSource fuente) async {
     moveScrollToBottom();
 
     var responseText = await OpenAIService().sendTextCompletionRequest(newMessage.text);
+    print('prompt para foto: $responseText');
     responseText = OpenAIService().naturalLanguageResponse(responseText);
     messageList.add(Message(text: responseText, fromWho: FromWho.gpt));
 
