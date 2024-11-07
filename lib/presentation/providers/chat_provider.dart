@@ -16,56 +16,67 @@ class ChatProvider extends ChangeNotifier {
         fromWho: FromWho.gpt)
   ];
 
-  Future<void> sendMessage(String text) async {
-    if (text.isEmpty) {
-      return;
-    }
+  List<String> recipeList = [
+  // Lista inicial vacía
+  ];
 
-    final newMessage = Message(text: text, fromWho: FromWho.me);
-    messageList.add(newMessage);
-    notifyListeners();
-    moveScrollToBottom();
-    await Future.delayed(const Duration(milliseconds: 300));
+Future<void> sendMessage(String text) async {
+  if (text.isEmpty) {
+    return;
+  }
 
-    var responseText =
-        await OpenAIService().sendTextCompletionRequest(newMessage.text);
+  final newMessage = Message(text: text, fromWho: FromWho.me);
+  messageList.add(newMessage);
+  notifyListeners();
+  moveScrollToBottom();
+  await Future.delayed(const Duration(milliseconds: 300));
 
-    print('Diebug respuesta gpt: $responseText');
-    try {
-      // Verificar que responseText esté en JSON
-      if (isJson(responseText)) {
-        final recipeData = jsonDecode(responseText);
+  var responseText =
+      await OpenAIService().sendTextCompletionRequest(newMessage.text);
 
-        if (recipeData.containsKey('nombre') &&
-            recipeData.containsKey('region') &&
-            recipeData.containsKey('ingredientes') &&
-            recipeData.containsKey('pasos')) {
-          responseText = OpenAIService().naturalLanguageResponse(responseText);
-          messageList.add(Message(text: responseText, fromWho: FromWho.gpt));
+  print('Diebug respuesta gpt: $responseText');
+  try {
+    // Verificar que responseText esté en JSON
+    if (isJson(responseText)) {
+      final recipeData = jsonDecode(responseText);
+
+      if (recipeData.containsKey('nombre') &&
+          recipeData.containsKey('region') &&
+          recipeData.containsKey('ingredientes') &&
+          recipeData.containsKey('pasos')) {
+        responseText = OpenAIService().naturalLanguageResponse(responseText);
+        messageList.add(Message(text: responseText, fromWho: FromWho.gpt));
+
+        // Extraer los ingredientes del JSON y agregarlos a recipeList
+        if (recipeData['ingredientes'] is List) {
+          recipeList = List<String>.from(recipeData['ingredientes']);
+          print("Adabug ingredientes: $recipeList");
         } else {
-          messageList.add(Message(
-            text: 'Este asistente solo proporciona ayuda con temas de cocina.',
-            fromWho: FromWho.gpt,
-          ));
+          print("Error: 'ingredientes' no es una lista.");
         }
       } else {
         messageList.add(Message(
           text: 'Este asistente solo proporciona ayuda con temas de cocina.',
           fromWho: FromWho.gpt,
         ));
-        print(
-            'Diebug respuesta gpt: $responseText La respuesta no está en formato JSON');
       }
-    } catch (e) {
+    } else {
       messageList.add(Message(
-        text: 'Error en el prompt: $e.',
+        text: 'Este asistente solo proporciona ayuda con temas de cocina.',
         fromWho: FromWho.gpt,
       ));
+      print('Diebug respuesta gpt: $responseText La respuesta no está en formato JSON');
     }
-
-    notifyListeners();
-    moveScrollToBottom();
+  } catch (e) {
+    messageList.add(Message(
+      text: 'Error en el prompt: $e.',
+      fromWho: FromWho.gpt,
+    ));
   }
+
+  notifyListeners();
+  moveScrollToBottom();
+}
 
   Future<void> sendIngredientsByPhoto(ImageSource fuente) async {
     try {

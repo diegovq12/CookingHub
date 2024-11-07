@@ -1,3 +1,4 @@
+import 'package:cooking_hub/presentation/screens/ingredientes.dart';
 import 'package:cooking_hub/presentation/screens/lista_compras.dart';
 import 'package:cooking_hub/presentation/screens/recetas.dart';
 import 'package:flutter/material.dart';
@@ -25,7 +26,9 @@ class HotBar extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             IconButton(onPressed: (){}, icon: Image.asset("assets/HotBar/Home.png",width: 30,)),
-            IconButton(onPressed: (){}, icon: Image.asset("assets/HotBar/Games.png",width: 30,)),
+            IconButton(onPressed: (){
+              Navigator.push(context, MaterialPageRoute(builder: (context)=> const ingredientes()));
+            }, icon: Image.asset("assets/HotBar/Games.png",width: 30,)),
             Positioned(
               child: IconButton(onPressed: (){
                 Navigator.push(context, MaterialPageRoute(builder: (context)=> const Recetas()));
@@ -35,7 +38,7 @@ class HotBar extends StatelessWidget {
               ), 
               icon: Image.asset("assets/HotBar/Gorrito.png",width: 50,)) ,
               ),
-            IconButton(onPressed: (){Navigator.push(context, MaterialPageRoute(builder: (context) => const ListaScreen()));}, 
+            IconButton(onPressed: (){Navigator.push(context, MaterialPageRoute(builder: (context) => const ingredientes()));}, 
             icon: Image.asset("assets/HotBar/Lista.png",width: 30,),),
             IconButton(onPressed: (){}, icon: Image.asset("assets/HotBar/Perfil.png",width: 30,)),
           ],

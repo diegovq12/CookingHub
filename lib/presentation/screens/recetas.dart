@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cooking_hub/presentation/screens/favoritos.dart';
+
 // import 'package:cooking_hub/presentation/screens/lista_compras.dart';
 import 'package:cooking_hub/presentation/screens/chat_screen.dart';
 // import 'package:cooking_hub/presentation/screens/realTimeCamera.dart';
@@ -214,7 +215,7 @@ class _Recetas extends State<Recetas>{
         widthFactor: 0.9,
         child: InkWell(
           onTap: (){
-            Navigator.push(context, MaterialPageRoute(builder: (context)=> const ChatScreen()));
+            Navigator.push(context, MaterialPageRoute(builder: (context)=> ChatScreen()));
           },
 
           child: Container(
