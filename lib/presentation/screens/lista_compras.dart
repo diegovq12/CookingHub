@@ -54,7 +54,7 @@ class _ListaScreen extends State<ListaScreen>{
                 alignment: Alignment.bottomCenter,
                 child: Positioned(
                   child: IconButton(onPressed: (){
-                    Navigator.push(context, MaterialPageRoute(builder: (context)=> const Recetas()));
+                    Navigator.push(context, MaterialPageRoute(builder: (context)=> const recetas()));
                   },
                   padding: const EdgeInsets.only(
                     bottom: 2

@@ -22,9 +22,8 @@ dependencies:
   
   camera: ^0.11.0+2
   cupertino_icons: ^1.0.8
-  image_picker: ^1.1.2
 
-  mongo_dart: ^0.10.3
+
 
 dev_dependencies:
   flutter_lints: ^5.0.0
