@@ -38,11 +38,15 @@ class _Favoritos extends State<Favoritos>{
   }
 
   // -------- Lista de Listas -------- //
+  List<String> lista1 = ["Nomrbe","1","2"];
+  List<String> lista2 = ["NOMBRE2","5","3"];
   List<List<String>> listOfList = [];
-  
+
   bool listBand = false;
 
   void showList (){
+    listOfList.add(lista1);
+    listOfList.add(lista2);
     setState(() {
       listBand = !listBand;
     });
@@ -83,17 +87,17 @@ class _Favoritos extends State<Favoritos>{
     var user = await UserService.getUsers("672842c9368c80edf2000000");
     if(user?.listOfIngredients != null){
       listOfList = user!.listOfIngredients;
+      
     }
   }
 
+  int selected = 1;
 
   @override
   Widget build(BuildContext context) {
 
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
-
-    recibir();
 
     return SafeArea(
       child: Scaffold(
@@ -131,9 +135,66 @@ class _Favoritos extends State<Favoritos>{
     );
   }
 
+  // --------- Lista de listas --------- //
+
+  Stack listOfLists(double screenHeight) {
+    return Stack(
+              children: [
+                ModalBarrier(
+                  color: Colors.black54,
+                  dismissible: true,
+                  // Cuando presione afuera del cuadro
+                  onDismiss: showList,
+                ),
+                Center(
+                  child: Container(
+                    decoration: containerDecoration(),
+                    margin: EdgeInsets.all(30),
+                    child: Column(
+                      children: [
+                        SizedBox(height:screenHeight*0.02),
+                        Text("Listas guardadas",style: titleStyle(),),
+                        SizedBox(height:screenHeight*0.02),
+                        Expanded(
+                          child: ListView.builder(
+                            itemCount: listOfList.length,
+                            itemBuilder: (context,current){
+                              return ListTile(
+                                title: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    InkWell(
+                                      onTap: (){
+                                        showList();
+                                        // listSelected = name;
+                                        showIngrd();
+                                        selected = current;
+                                      },
+                                      child: Text("- ${listOfList[current][0]}", style: listsStyle(),)
+                                      ),
+                                    Container(
+                                      decoration: deleteDecoration(),
+                                      child: IconButton(
+                                        onPressed: (){}, icon: Image.asset("assets/icons/delete.png",width: 20,))
+                                    )
+                                  ],
+                                ),
+                              );
+                            }
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            );
+  }
+
   // -------- Lista de ingredientes --------- //
 
   Stack listOfIngredients(double screenHeight, double screenWidth) {
+    
     return Stack(
               children: [
                 ModalBarrier(
@@ -153,10 +214,9 @@ class _Favoritos extends State<Favoritos>{
                         SizedBox(height:screenHeight*0.02),
                         Expanded(
                           child: ListView.builder(
-                            itemCount: listIngredients.length+1,
+                            itemCount: listOfList[selected].length+1,
                             itemBuilder: (context,current){
-                              // Si es el ultimo
-                              if(current == listIngredients.length){
+                              if(current == listOfList[selected].length){
                                 return Padding(
                                   padding: EdgeInsets.only(left:screenWidth*0.02),
                                   child: InkWell(
@@ -169,13 +229,11 @@ class _Favoritos extends State<Favoritos>{
                               }
                               else
                               {
-                                // String name = listIngredients[current].keys.first;
-                                // int amount = listIngredients[current][name]!;
                                   return ListTile(
                                   title: Row(
                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
-                                      Text("- ${listIngredients[current]}", style: listsStyle(),),
+                                      Text("- ${listOfList[selected][current]}", style: listsStyle(),),
 
                                       InkWell(
                                         onTap: (){
@@ -190,7 +248,7 @@ class _Favoritos extends State<Favoritos>{
                                           child: Row(
                                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                             children: [
-                                              Text("${listIngredients[current][0]}",style: normalStyle(),),
+                                              // Text("${listOfList[current][0]}",style: normalStyle(),),
                                               Image.asset("assets/icons/edit2.png",width: 20,)
                                             ],
                                           )
@@ -210,6 +268,7 @@ class _Favoritos extends State<Favoritos>{
               ],
             );
   }
+
 
   // ------ Metodos para edicion ---------- //
 
@@ -351,63 +410,6 @@ class _Favoritos extends State<Favoritos>{
                       topRight: Radius.circular(16),
                     ),
                 );
-  }
-
-  // --------- Lista de listas --------- //
-
-  Stack listOfLists(double screenHeight) {
-    return Stack(
-              children: [
-                ModalBarrier(
-                  color: Colors.black54,
-                  dismissible: true,
-                  // Cuando presione afuera del cuadro
-                  onDismiss: showList,
-                ),
-                Center(
-                  child: Container(
-                    decoration: containerDecoration(),
-                    margin: EdgeInsets.all(30),
-                    child: Column(
-                      children: [
-                        SizedBox(height:screenHeight*0.02),
-                        Text("Listas guardadas",style: titleStyle(),),
-                        SizedBox(height:screenHeight*0.02),
-                        Expanded(
-                          child: ListView.builder(
-                            itemCount: listOfList.length,
-                            itemBuilder: (context,current){
-                              // String name = list[current].keys.first;
-                              // String date = lists[current][name]!;
-                              return ListTile(
-                                title: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    InkWell(
-                                      onTap: (){
-                                        showList();
-                                        // listSelected = name;
-                                        showIngrd();
-                                      },
-                                      child: Text("- ${listOfList[current]}", style: listsStyle(),)
-                                      ),
-                                    Container(
-                                      decoration: deleteDecoration(),
-                                      child: IconButton(
-                                        onPressed: (){}, icon: Image.asset("assets/icons/delete.png",width: 20,))
-                                    )
-                                  ],
-                                ),
-                              );
-                            }
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            );
   }
 
   // ------ Estilos
