@@ -4,6 +4,7 @@ import 'package:cooking_hub/domain/entities/message.dart';
 import 'package:cooking_hub/services/google_vision_services.dart';
 import 'package:cooking_hub/services/openai_services.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:image_picker/image_picker.dart';
 
 class ChatProvider extends ChangeNotifier {
@@ -18,6 +19,9 @@ class ChatProvider extends ChangeNotifier {
 
   List<String> recipeList = [
   // Lista inicial vacía
+  ];
+  List<String> recipeNamesList=[
+
   ];
 
 Future<void> sendMessage(String text) async {
@@ -50,6 +54,11 @@ Future<void> sendMessage(String text) async {
         // Extraer los ingredientes del JSON y agregarlos a recipeList
         if (recipeData['ingredientes'] is List) {
           recipeList = List<String>.from(recipeData['ingredientes']);
+            if (recipeData['nombre'] is String) {
+            recipeNamesList.add(recipeData['nombre']);
+            } else {
+            print("Error: 'nombre' no es una cadena.");
+            }
           print("Adabug ingredientes: $recipeList");
         } else {
           print("Error: 'ingredientes' no es una lista.");
@@ -140,12 +149,15 @@ Future<void> sendIngredientsByPhoto(ImageSource fuente) async {
   }
 
   Future<void> moveScrollToBottom() async {
-    await Future.delayed(const Duration(milliseconds: 300));
-
-    chatScrollController.animateTo(
-        chatScrollController.position.maxScrollExtent,
-        duration: const Duration(milliseconds: 300),
-        curve: Curves.easeOut);
+    SchedulerBinding.instance.addPostFrameCallback((_) {
+      if (chatScrollController.hasClients) {
+        chatScrollController.animateTo(
+          chatScrollController.position.maxScrollExtent,
+          duration: const Duration(milliseconds: 300),
+          curve: Curves.easeOut,
+        );
+      }
+    });
   }
 
 // Verifica si el contenido es JSON

@@ -12,7 +12,7 @@ class RecipesService {
 
     // Buscar una receta con el mismo nombre en minúsculas
     final existingRecipe = await Mongodb.recipeCollection.findOne({
-      'name': {'\$regex': '^${newRecipeNameLower}\$', '\$options': 'i'}
+      'name': {'\$regex': '^$newRecipeNameLower\$', '\$options': 'i'}
     });
 
     if (existingRecipe == null) {

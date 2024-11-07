@@ -7,16 +7,20 @@ class Mongodb {
   static Db? db;
 
   //SE CONECTA A LA BASE DE DATOS
-  static Future<void> ConnecWhitMongo() async {
-    db = await Db.create(
-        CONNECTIONDB); //AQUI SE AGREGA LA VARIABLE CREADA EN  CONST_DB
+static Future<void> ConnecWhitMongo() async {
+  db ??= await Db.create(CONNECTIONDB);
+  if (db!.state != State.open) {
     try {
       await db!.open();
-      print("Conexion exitosa");
+      print("Conexión exitosa");
     } catch (e) {
       print("Error al conectar: $e");
+      rethrow; // Volver a lanzar la excepción para que se gestione correctamente.
     }
+  } else {
+    print("La base de datos ya está abierta");
   }
+}
 
   
 

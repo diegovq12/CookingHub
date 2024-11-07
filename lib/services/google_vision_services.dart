@@ -14,7 +14,7 @@ Future<String> detectIngredients(ImageSource fuente) async {
   List<XFile> images;
 
   if (fuente == ImageSource.gallery) {
-    images = await picker.pickMultiImage() ?? [];
+    images = await picker.pickMultiImage();
   } else {
     images = [];
     while (true) {
