@@ -2,6 +2,7 @@ import 'package:cooking_hub/presentation/screens/ingredientes.dart';
 import 'package:flutter/material.dart';
 import 'package:cooking_hub/presentation/screens/lista_compras.dart';
 import 'package:cooking_hub/presentation/screens/recetas.dart';
+import 'package:cooking_hub/services/user_service.dart';
 
 class Favoritos extends StatefulWidget{
   const Favoritos({super.key});
@@ -14,7 +15,7 @@ class _Favoritos extends State<Favoritos>{
 
   // -------- Lista -------- //
 
-  List<Map<String, int>> ingredients = [
+  List<Map<String, int>> favIng = [
     {"Apple":1 },
     {"Orange":2},
     {"Sandia":5},
@@ -32,18 +33,12 @@ class _Favoritos extends State<Favoritos>{
 
   void addToList (String name, int amount){
     setState(() {
-      ingredients.add({name:amount});
+      favIng.add({name:amount});
     });
   }
 
   // -------- Lista de Listas -------- //
-
-  List<Map<String, String>> lists = [
-    {"Lista 1":"07/10/2024"},
-    {"Lista 2":"07/10/2024"},
-    {"Lista 3":"07/10/2024"},
-    {"Lista 4":"07/10/2024"},
-  ];
+  List<List<String>> listOfList = [];
   
   bool listBand = false;
 
@@ -55,11 +50,8 @@ class _Favoritos extends State<Favoritos>{
 
   // -------- contenida de la lista -------- //
   
-  List<Map<String, int>> listIngredients = [
-    {"Milk":1},
-    {"Orange":1},
-    {"Apple":1},
-  ];
+
+  List<String> listIngredients = [];
   
   bool listIngBand = false;
   String listSelected = "";
@@ -86,8 +78,18 @@ class _Favoritos extends State<Favoritos>{
   }
 
 
+
+  void recibir() async{
+    var user = await UserService.getUsers("672842c9368c80edf2000000");
+    if(user?.listOfIngredients != null){
+      listOfList = user!.listOfIngredients;
+    }
+  }
+
+
   @override
   Widget build(BuildContext context) {
+
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
 
@@ -165,13 +167,13 @@ class _Favoritos extends State<Favoritos>{
                               }
                               else
                               {
-                                String name = listIngredients[current].keys.first;
-                                int amount = listIngredients[current][name]!;
+                                // String name = listIngredients[current].keys.first;
+                                // int amount = listIngredients[current][name]!;
                                   return ListTile(
                                   title: Row(
                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
-                                      Text("- $name", style: listsStyle(),),
+                                      Text("- ${listIngredients[current]}", style: listsStyle(),),
 
                                       InkWell(
                                         onTap: (){
@@ -186,7 +188,7 @@ class _Favoritos extends State<Favoritos>{
                                           child: Row(
                                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                             children: [
-                                              Text("$amount",style: normalStyle(),),
+                                              Text("${listIngredients[current][0]}",style: normalStyle(),),
                                               Image.asset("assets/icons/edit2.png",width: 20,)
                                             ],
                                           )
@@ -371,10 +373,10 @@ class _Favoritos extends State<Favoritos>{
                         SizedBox(height:screenHeight*0.02),
                         Expanded(
                           child: ListView.builder(
-                            itemCount: lists.length,
+                            itemCount: listOfList.length,
                             itemBuilder: (context,current){
-                              String name = lists[current].keys.first;
-                              String date = lists[current][name]!;
+                              // String name = list[current].keys.first;
+                              // String date = lists[current][name]!;
                               return ListTile(
                                 title: Row(
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -382,10 +384,10 @@ class _Favoritos extends State<Favoritos>{
                                     InkWell(
                                       onTap: (){
                                         showList();
-                                        listSelected = name;
+                                        // listSelected = name;
                                         showIngrd();
                                       },
-                                      child: Text("- $name - $date", style: listsStyle(),)
+                                      child: Text("- ${listOfList[current]}", style: listsStyle(),)
                                       ),
                                     Container(
                                       decoration: deleteDecoration(),
@@ -447,10 +449,10 @@ class _Favoritos extends State<Favoritos>{
                 Expanded(
                   child: ListView.builder(
                     controller: ScrollController(),
-                    itemCount: ingredients.length,
+                    itemCount: favIng.length,
                     itemBuilder: (context ,index){
-                      String name = ingredients[index].keys.first;
-                      int amount = ingredients[index][name]!;
+                      String name = favIng[index].keys.first;
+                      int amount = favIng[index][name]!;
                       
                       return ListTile(
                         title: Row(

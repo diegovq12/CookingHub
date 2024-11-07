@@ -25,7 +25,9 @@ class HotBar extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            IconButton(onPressed: (){}, icon: Image.asset("assets/HotBar/Home.png",width: 30,)),
+            IconButton(onPressed: (){
+              
+            }, icon: Image.asset("assets/HotBar/Home.png",width: 30,)),
             IconButton(onPressed: (){
               Navigator.push(context, MaterialPageRoute(builder: (context)=> const ingredientes()));
             }, icon: Image.asset("assets/HotBar/Games.png",width: 30,)),
