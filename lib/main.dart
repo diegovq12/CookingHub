@@ -52,6 +52,7 @@ void main() async {
    //await RecipeService.addRecipe(newRecipe);
    //await UserService.addNewIngredientsFavorites(id, newIngredient);
 
-   await UserService.deleteIngredientInList(id, 1,'Bolillo');
+   await UserService.addNewListOfIngredients(id, ['Hamburguesas','1/2 kilo de Carne molida', 'Queso amarillo', 'Lechuga','Tomate','Pepinillos','Tocino','Mayonesa','Ketshup','Mostasa']);
+
 
 }
