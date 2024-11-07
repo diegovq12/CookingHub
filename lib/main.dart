@@ -1,5 +1,7 @@
 import 'package:cooking_hub/config/theme/app_theme.dart';
 import 'package:cooking_hub/presentation/providers/chat_provider.dart';
+import 'package:cooking_hub/presentation/screens/chat_screen.dart';
+import 'package:cooking_hub/presentation/screens/ingredientes.dart';
 // import 'package:cooking_hub/presentation/screens/chat_screen.dart';
 // import 'package:cooking_hub/presentation/screens/chat_screen.dart';
 import 'package:cooking_hub/presentation/screens/recetas.dart';

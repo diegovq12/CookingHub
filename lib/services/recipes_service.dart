@@ -28,7 +28,7 @@ class RecipesService {
   }
 
   static Future<List<Recipe>> getRecipes() async {
-    await Mongodb.connecWhitMongo();
+    await Mongodb.ConnecWhitMongo();
     final recipesData = await Mongodb.recipeCollection.find().toList();
     await Mongodb.closeConnection();
 
