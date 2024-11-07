@@ -274,7 +274,7 @@ class _chatBot extends State<chatBot>{
 
                 child: const Row(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: [Text("CookBot",style: TextStyle(color: Colors.white,fontSize: 64,
+                  children: [Text("CookingBot",style: TextStyle(color: Colors.white,fontSize: 64,
                   fontFamily: 'Poppins',fontWeight: FontWeight.bold),),],
                 ),
               ),

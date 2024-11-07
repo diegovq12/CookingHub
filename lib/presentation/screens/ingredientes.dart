@@ -12,41 +12,22 @@ class ingredientes extends StatefulWidget{
 class _ingredientes extends State<ingredientes>{
   
   // -------- Lista -------- //
+  List<String> ing = ["1 Apple","3 Orange"];
 
-  List<Map<String, int>> ingredients = [
-    {"Apple":1 },
-    {"Orange":2},
-    {"Sandia":5},
-    {"Platano":5},
-    {"Agua":4},
-    {"Arroz":8},
-    {"Peras":1},
-    {"tortillas":10},
-    {"Sal":7},
-    {"amount":4},
-    {"Toños":3},
-    {"Software":7},
-    {"Estrenomascloideo":9},
-  ];
-
-  void addToList (String name, int amount){
-    setState(() {
-      ingredients.add({name:amount});
-    });
-  }
-
+  
   // -------- Texto de edicion -------- //
   // Control de entrada de texto
-  final TextEditingController _controller = TextEditingController();
+  final TextEditingController newName = TextEditingController();
+  final TextEditingController newAmount = TextEditingController();
   
   // Ingrediente al que quiere editar
   String newIngredient = '';
 
   // Almacena el chambio que envia, mas no bien actualiza el mapa solo guarda el texto
-  void saveChange(String texto){
+  void saveChange(String texto,int index){
     setState(() {
-      newIngredient = texto;
-      _controller.clear();
+      // ingredients[index] = texto.;
+      newName.clear();
     });
   }
 
@@ -166,22 +147,23 @@ class _ingredientes extends State<ingredientes>{
       child: Expanded(
         child: ListView.builder(
           controller: scrollController,
-          itemCount: ingredients.length,
+          itemCount: ing.length,
           itemBuilder: (context, index) {
-            String name = ingredients[index].keys.first;
-            int amount = ingredients[index][name]!;
+            // String name = ingredients[index].keys.first;
+            // int amount = ingredients[index][name]!;
+
             return ListTile(
               title: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    "• $amount $name",
+                    "• ${ing[index]}",
                     style: normalStyle(),
                   ),
                   // ------ Boton de editar
                   IconButton(
                     onPressed: () {
-                      editSection(context, screenHeight, screenWidth);
+                      editSection(context, screenHeight, screenWidth,index);
                     },
                     icon: Image.asset(
                       "assets/icons/edit.png",
@@ -197,7 +179,11 @@ class _ingredientes extends State<ingredientes>{
     );
   }
 
-  Future<dynamic> editSection(BuildContext context, double screenHeight, double screenWidth) {
+  Future<dynamic> editSection(BuildContext context, double screenHeight, double screenWidth,int index) {
+    newName.text = ing[index];
+    
+    newAmount.text = ing[index];
+
     return showModalBottomSheet(
       context: context, 
       builder: (BuildContext context){
@@ -214,76 +200,90 @@ class _ingredientes extends State<ingredientes>{
               children: [
                 editarIngredienteTitle(screenHeight, screenWidth),
                 
-                inputText(screenHeight, screenWidth),
+                // inputText(screenHeight, screenWidth,index),
+                Row(
+                  children: [
+                    Container(
+                      width: screenWidth*0.2,
+                      child: Expanded(
+                        child: TextField(
+                          controller: newAmount,
+                          decoration: inputBox(),
+                        ),
+                      ),
+                    ),
+                    
+                    Expanded(
+                      child: TextField(
+                        controller: newName,
+                        decoration: inputBox(),
+                      ),
+                    ),
+                  ],
+                ),
                 
-                continueAndCancelButtons(screenHeight),
+                // continueAndCancelButtons(screenHeight),
+                Padding(
+                  padding: EdgeInsets.only(
+                    bottom: screenHeight*0.03
+                  ),
+                  child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    InkWell(
+                      onTap: () {
+                        setState(() {
+                          
+                        });
+                      },
+                      child: Container(
+                        padding:const EdgeInsets.all(10),
+                        decoration: titleDecorationWithShadow(),
+                        child: Text("Cancelar",style: buttonStyle(),),
+                      ),
+                    ),
+                    InkWell(
+                      onTap: () {
+                        setState(() {
+                          String newKey = newName.text.toString();
+                          String newAmo = newAmount.text.toString();
+
+                          String newIng = "$newAmo $newKey";
+
+                          ing[index] = newIng;
+
+
+                          // ingredients[index][name] = int.parse(newAmount.text);
+                        });
+                      },
+                      child: Container(
+                        padding:const EdgeInsets.all(10),
+                        decoration: titleDecorationWithShadow(),
+                        child: Text("Continuar",style: buttonStyle(),),
+                      ),
+                    )
+                  ],
+                  ),
+                ),
+
+                InkWell(
+                  onTap: () {
+
+                  },
+                  child: Container(
+                    padding:const EdgeInsets.all(10),
+                    decoration: titleDecorationWithShadow(),
+                    child: Text("Borrar",style: buttonStyle(),),
+                  ),
+                ),
                 
-                resotreButton(),
+                // resotreButton(),
                 
               ],
             ),
           ),
         );
       });
-  }
-
-  InkWell resotreButton() {
-    return InkWell(
-      onTap: () {
-      },
-      child: Container(
-        padding:const EdgeInsets.all(10),
-        decoration: titleDecorationWithShadow(),
-        child: Text("Restablecer",style: buttonStyle(),),
-      ),
-    );
-  }
-
-  Padding continueAndCancelButtons(double screenHeight) {
-    return Padding(
-      padding: EdgeInsets.only(
-        bottom: screenHeight*0.03
-      ),
-      child: Row(
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
-      children: [
-        InkWell(
-          onTap: () {
-          },
-          child: Container(
-            padding:const EdgeInsets.all(10),
-            decoration: titleDecorationWithShadow(),
-            child: Text("Cancelar",style: buttonStyle(),),
-          ),
-        ),
-        InkWell(
-          onTap: () {
-          },
-          child: Container(
-            padding:const EdgeInsets.all(10),
-            decoration: titleDecorationWithShadow(),
-            child: Text("Continuar",style: buttonStyle(),),
-          ),
-        )
-      ],
-      ),
-      );
-  }
-
-  Padding inputText(double screenHeight, double screenWidth) {
-    return Padding(
-      padding: EdgeInsets.only(
-        top: screenHeight*0.03,
-        left: screenWidth*0.03,
-        right: screenWidth*0.03,
-        bottom: screenHeight*0.05
-      ),
-      child: TextField(
-        controller: _controller,
-        decoration: inputBox(),
-        onSubmitted: saveChange,
-      ),
-    );
   }
 
   Padding editarIngredienteTitle(double screenHeight, double screenWidth) {

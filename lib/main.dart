@@ -1,14 +1,15 @@
 import 'package:cooking_hub/config/theme/app_theme.dart';
 import 'package:cooking_hub/presentation/providers/chat_provider.dart';
-import 'package:cooking_hub/presentation/screens/chatBot.dart';
-import 'package:cooking_hub/presentation/screens/chat_screen.dart';
+// import 'package:cooking_hub/presentation/screens/chatBot.dart';
+// import 'package:cooking_hub/presentation/screens/chat_screen.dart';
 // import 'package:cooking_hub/presentation/screens/ingredientes.dart';
 // import 'package:cooking_hub/presentation/screens/chat_screen.dart';
 // import 'package:cooking_hub/presentation/screens/recetas.dart';
-import 'package:cooking_hub/presentation/screens/favoritos.dart';
+// import 'package:cooking_hub/presentation/screens/favoritos.dart';
 import 'package:cooking_hub/presentation/screens/ingredientes.dart';
-import 'package:cooking_hub/presentation/screens/recetas.dart';
-import 'package:cooking_hub/presentation/screens/recetasDetectadas.dart';
+// import 'package:cooking_hub/presentation/screens/recetas.dart';
+// import 'package:cooking_hub/presentation/screens/recetasDetectadas.dart';
+import 'package:cooking_hub/presentation/screens/logic.dart';
 // import 'package:cooking_hub/presentation/screens/recetasDetectadas.dart';
 // import 'package:cooking_hub/presentation/screens/chatBot.dart';
 import 'package:flutter/material.dart';
@@ -36,7 +37,7 @@ class MainApp extends StatelessWidget {
         title: 'Cooking Hub',
         debugShowCheckedModeBanner: false,
         theme:AppTheme(selectedColor: 2).theme(),
-        home: chatBot()
+        home: ingredientes()
         ),
     );
 
