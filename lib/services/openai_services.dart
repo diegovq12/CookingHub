@@ -46,8 +46,8 @@ Future<String> sendTextCompletionRequest(String message) async {
       logger.d('Diebug contenido: $content');
       final jsonData = jsonDecode(content);
 
-      if (jsonData.containsKey('nombre') &&
-          jsonData.containsKey('region') &&
+      if (jsonData.containsKey('nombre') ||
+          jsonData.containsKey('region') ||
           jsonData.containsKey('ingredientes') &&
           jsonData.containsKey('pasos')) {
         

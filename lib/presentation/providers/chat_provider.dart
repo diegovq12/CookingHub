@@ -67,7 +67,7 @@ class ChatProvider extends ChangeNotifier {
     moveScrollToBottom();
   }
 
-  Future<void> sendIngredientsByPhoto(ImageSource fuente) async {
+Future<void> sendIngredientsByPhoto(ImageSource fuente) async {
     try {
       final detectedIngredients =
           await GoogleVisionServices().detectIngredients(fuente);
@@ -78,14 +78,14 @@ class ChatProvider extends ChangeNotifier {
       }
 
       final newMessage = Message(
-        text: 'cocina con $detectedIngredients',
+        text: 'Imagen enviada, esperando receta...',
         fromWho: FromWho.me,
       );
       messageList.add(newMessage);
       notifyListeners();
       moveScrollToBottom();
 
-      var responseText =await OpenAIService().sendTextCompletionRequest(newMessage.text);
+      var responseText = await OpenAIService().sendTextCompletionRequest('cocina con $detectedIngredients');
       print('prompt para foto: $responseText');
 
       // Verificación si la respuesta es JSON válido
@@ -108,7 +108,7 @@ class ChatProvider extends ChangeNotifier {
         print('Error al parsear la respuesta de OpenAI: $e');
         messageList.add(Message(
           text:
-              'No pude procesar la respuesta de OpenAI correctamente. Por favor, intenta de nuevo.',
+              'No pude entender la imagen proporcionada. Por favor, asegúrate de que la imagen sea clara y contenga ingredientes reconocibles.',
           fromWho: FromWho.gpt,
         ));
       }
