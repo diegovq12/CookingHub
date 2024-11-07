@@ -48,4 +48,13 @@ class UserService {
     await Mongodb.userCollection.updateOne(where.id(ObjectId.parse(id)), modify.pull('listOfIngredients',removeList));
     await Mongodb.closeConnection();
   }
+
+
+  static Future<void> modifyIngredientInList(String id, int indexPrimaryList, int indexSecondaryList, String newIngredient) async{
+    String listCon = 'listOfIngredients.' + indexPrimaryList.toString() + '.' + indexSecondaryList.toString();
+    await Mongodb.ConnecWhitMongo();
+    await Mongodb.userCollection.updateOne(where.id(ObjectId.parse(id)), modify.pull(listCon, newIngredient));
+    await Mongodb.closeConnection();
+
+  }
 }
