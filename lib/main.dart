@@ -29,6 +29,9 @@
 //   }
 // }
 
+import 'package:cooking_hub/domain/entities/recipe_model.dart';
+import 'package:cooking_hub/services/recipe_service.dart';
+
 import 'services/user_service.dart';
 
 
@@ -44,7 +47,9 @@ void main() async {
     print('Listas de ingredientes: ${result.listOfIngredients}');
   }
 
-   String newIngredient = 'Lechuga';
-   await UserService.addNewIngredientsFavorites(id, newIngredient);
+   //String newIngredient = 'Lechuga';
+   Recipe newRecipe = Recipe(name: 'Caldo de res', region: 'Mexico', ingredients: ['Ingredientes'], steps: ['Pasos']);
+   await RecipeService.addRecipe(newRecipe);
+   //await UserService.addNewIngredientsFavorites(id, newIngredient);
 
 }

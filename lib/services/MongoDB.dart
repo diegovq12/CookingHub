@@ -8,7 +8,8 @@ class Mongodb {
 
   //SE CONECTA A LA BASE DE DATOS
   static Future<void> ConnecWhitMongo() async {
-    db = await Db.create(CONNECTIONDB); //AQUI SE AGREGA LA VARIABLE CREADA EN  CONST_DB
+    db = await Db.create(
+        CONNECTIONDB); //AQUI SE AGREGA LA VARIABLE CREADA EN  CONST_DB
     try {
       await db!.open();
       print("Conexion exitosa");
@@ -24,12 +25,17 @@ class Mongodb {
 
   static Future<void> insertRecipe(newRecipe) async {
     ActualCollection = db!.collection(RECIPECOLLECTION);
+    var existRecipe =
+        await ActualCollection.findOne({'name': newRecipe['name']});
+    if (existRecipe != null) {
+      return;
+    }
     await ActualCollection.insertOne(newRecipe);
   }
 
   static DbCollection get recipeCollection {
     ActualCollection = db!.collection(RECIPECOLLECTION);
-    if (ActualCollection == Null) {
+    if (ActualCollection == null) {
       throw Exception('Database is not connected');
     }
     return ActualCollection;
