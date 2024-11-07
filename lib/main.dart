@@ -48,8 +48,10 @@ void main() async {
   }
 
    //String newIngredient = 'Lechuga';
-   Recipe newRecipe = Recipe(name: 'Caldo de res', region: 'Mexico', ingredients: ['Ingredientes'], steps: ['Pasos']);
-   await RecipeService.addRecipe(newRecipe);
+   //Recipe newRecipe = Recipe(name: 'Caldo de res', region: 'Mexico', ingredients: ['Ingredientes'], steps: ['Pasos']);
+   //await RecipeService.addRecipe(newRecipe);
    //await UserService.addNewIngredientsFavorites(id, newIngredient);
+
+   await UserService.deleteIngredientInList(id, 1,'Bolillo');
 
 }
