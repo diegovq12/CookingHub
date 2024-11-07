@@ -1,9 +1,11 @@
 import 'package:cooking_hub/domain/entities/message.dart';
 import 'package:cooking_hub/presentation/providers/chat_provider.dart';
 import 'package:cooking_hub/presentation/screens/ingredientes.dart';
+import 'package:cooking_hub/presentation/screens/lista_compras.dart';
+import 'package:cooking_hub/presentation/screens/recetas.dart';
 import 'package:cooking_hub/widgets/chat/gtp_message_bubble.dart';
 import 'package:cooking_hub/widgets/chat/my_message_bubble.dart';
-import 'package:cooking_hub/widgets/shared/background_image.dart';
+// import 'package:cooking_hub/widgets/shared/background_image.dart';
 import 'package:cooking_hub/widgets/shared/hot_bar.dart';
 import 'package:cooking_hub/widgets/shared/message_field_button.dart';
 import 'package:cooking_hub/widgets/shared/title_container.dart';
@@ -41,17 +43,8 @@ class _ChatViewState extends State<_ChatView> {
 
   List<String>listaGuardada = [""];
 
-
-  @override
-  Widget build(BuildContext context) {
-    double screenWidth = MediaQuery.of(context).size.width;
-    double screenHeight = MediaQuery.of(context).size.height;
-
-    final chatProvider = context.watch<ChatProvider>();
-
-    return WillPopScope(
-      onWillPop: () async {
-        bool shouldExit = await showDialog(
+  Future<bool> showExitConfirmationDialog(BuildContext context) async {
+    bool shouldExit = await showDialog(
           context: context,
           barrierDismissible: true,
           builder: (context) {
@@ -121,7 +114,17 @@ class _ChatViewState extends State<_ChatView> {
 
         // Si el usuario elige "Sí", salir
         return shouldExit ?? false;
-      },
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
+
+    final chatProvider = context.watch<ChatProvider>();
+
+    return WillPopScope(
+      onWillPop: () async =>showExitConfirmationDialog(context),
 
       child: SafeArea(
         child: Stack(
@@ -179,7 +182,7 @@ class _ChatViewState extends State<_ChatView> {
               ),
             ),
 
-            const HotBar(),
+            HotBarChat(),
 
             // Mostrar el campo de texto solo cuando showSave es true
             if (showSave)
@@ -292,7 +295,95 @@ class _ChatViewState extends State<_ChatView> {
       ),
     );
   }
+
+  Widget HotBarChat (){
+    return Align(
+      alignment: Alignment.bottomCenter,
+      child: Container(
+        
+        decoration: const BoxDecoration(
+        color: Color.fromRGBO(255, 170, 50, 1),
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(16),
+          topRight: Radius.circular(16)
+          )
+        ),
+        
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            IconButton(onPressed: (){}, icon: Image.asset("assets/HotBar/Home.png",width: 30,)),
+            IconButton(onPressed: ()async{
+              await showExitConfirmationDialog(context);
+              Navigator.push(context, MaterialPageRoute(builder: (context)=> const ingredientes()));
+            }, icon: Image.asset("assets/HotBar/Games.png",width: 30,)),
+            Positioned(
+              child: IconButton(onPressed: ()async{
+                await showExitConfirmationDialog(context);
+                Navigator.push(context, MaterialPageRoute(builder: (context)=> const Recetas()));
+              },
+              padding: const EdgeInsets.only(
+                bottom: 2
+              ), 
+              icon: Image.asset("assets/HotBar/Gorrito.png",width: 50,)) ,
+              ),
+            IconButton(onPressed: ()async{
+              await showExitConfirmationDialog(context);
+              Navigator.push(context, MaterialPageRoute(builder: (context) => const ListaScreen()));}, 
+            icon: Image.asset("assets/HotBar/Lista.png",width: 30,),),
+            IconButton(onPressed: (){}, icon: Image.asset("assets/HotBar/Perfil.png",width: 30,)),
+          ],
+        ),
+      ),
+    );
+  }
+
 }
+// class HotBarChat extends StatelessWidget {
+//   const HotBarChat({
+//     super.key,
+//   });
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Align(
+//       alignment: Alignment.bottomCenter,
+//       child: Container(
+        
+//         decoration: const BoxDecoration(
+//         color: Color.fromRGBO(255, 170, 50, 1),
+//         borderRadius: BorderRadius.only(
+//           topLeft: Radius.circular(16),
+//           topRight: Radius.circular(16)
+//           )
+//         ),
+        
+//         child: Row(
+//           mainAxisAlignment: MainAxisAlignment.spaceAround,
+//           children: [
+//             IconButton(onPressed: (){}, icon: Image.asset("assets/HotBar/Home.png",width: 30,)),
+//             IconButton(onPressed: (){
+//               showExitConfirmationDialog(context);
+//               Navigator.push(context, MaterialPageRoute(builder: (context)=> const ingredientes()));
+//             }, icon: Image.asset("assets/HotBar/Games.png",width: 30,)),
+//             Positioned(
+//               child: IconButton(onPressed: (){
+//                 Navigator.push(context, MaterialPageRoute(builder: (context)=> const Recetas()));
+//               },
+//               padding: const EdgeInsets.only(
+//                 bottom: 2
+//               ), 
+//               icon: Image.asset("assets/HotBar/Gorrito.png",width: 50,)) ,
+//               ),
+//             IconButton(onPressed: (){Navigator.push(context, MaterialPageRoute(builder: (context) => const ListaScreen()));}, 
+//             icon: Image.asset("assets/HotBar/Lista.png",width: 30,),),
+//             IconButton(onPressed: (){}, icon: Image.asset("assets/HotBar/Perfil.png",width: 30,)),
+//           ],
+//         ),
+//       ),
+//     );
+//   }
+// }
 
 BoxDecoration backgroundChatDecoration() {
   return const BoxDecoration(
