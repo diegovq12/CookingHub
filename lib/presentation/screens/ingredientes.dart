@@ -48,7 +48,7 @@ class _ingredientes extends State<ingredientes>{
     ing = chatProvider.recipeList as List<String>;
 
     // Agregar 1 a los ingredientes que no tengan cantidad
-    for(int i =0; i<ing.length;i++){
+    for(int i =1; i<ing.length;i++){
       if (!RegExp(r'^[0-9]').hasMatch(ing[i][0])) {
         ing[i] = "1 " + ing[i];
       }

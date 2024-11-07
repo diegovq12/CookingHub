@@ -5,7 +5,7 @@ import 'package:cooking_hub/services/MongoDB.dart';
 class RecipesService {
   
   static Future<void> addRecipe(Recipe recipe) async {
-    await Mongodb.connecWhitMongo();
+    await Mongodb.ConnecWhitMongo();
     
     // Convertir el nombre de la nueva receta a minúsculas
     final newRecipeNameLower = recipe.name.toLowerCase();

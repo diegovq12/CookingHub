@@ -18,18 +18,9 @@ class _Favoritos extends State<Favoritos>{
 
   List<Map<String, int>> favIng = [
     {"Apple":1 },
-    {"Orange":2},
-    {"Sandia":5},
-    {"Platano":5},
-    {"Agua":4},
-    {"Arroz":8},
-    {"Peras":1},
-    {"tortillas":10},
-    {"Sal":7},
-    {"amount":4},
-    {"Toños":3},
-    {"Software":7},
-    {"Estrenomascloideo":9},
+    {"Prueba":100 },
+    {"Ola":5 },
+    
   ];
 
   void addToList (String name, int amount){
@@ -140,7 +131,7 @@ class _Favoritos extends State<Favoritos>{
                     child: Column(
                       children: [
                         SizedBox(height:screenHeight*0.02),
-                        Text("Listas guardadas",style: titleStyle(),),
+                        Text("Listas guardadas",style: titleStyle(),textAlign: TextAlign.center,),
                         SizedBox(height:screenHeight*0.02),
                         Expanded(
                           child: ListView.builder(
@@ -150,15 +141,17 @@ class _Favoritos extends State<Favoritos>{
                                 title: Row(
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
-                                    InkWell(
-                                      onTap: (){
-                                        showList();
-                                        // listSelected = name;
-                                        showIngrd();
-                                        selected = current;
-                                      },
-                                      child: Text("- ${listOfList[current][0]}", style: listsStyle(),)
-                                      ),
+                                    Expanded(
+                                      child: InkWell(
+                                        onTap: (){
+                                          showList();
+                                          // listSelected = name;
+                                          showIngrd();
+                                          selected = current;
+                                        },
+                                        child: Text("- ${listOfList[current][0]}", style: listsStyle(),)
+                                        ),
+                                    ),
                                     Container(
                                       decoration: deleteDecoration(),
                                       child: IconButton(
@@ -267,10 +260,14 @@ class _Favoritos extends State<Favoritos>{
       builder: (BuildContext context){
         return FractionallySizedBox(
           alignment: Alignment.bottomCenter,
+          child: Padding(
+            padding: EdgeInsets.only(
+              bottom: MediaQuery.of(context).viewInsets.bottom, // Ajuste del espacio con el teclado
+            ),
           child: Container(
             alignment: Alignment.bottomLeft,
 
-            height: screenHeight*0.3,
+            height: screenHeight*0.4,
             
             decoration: backgroundDecoration(),
             
@@ -361,7 +358,7 @@ class _Favoritos extends State<Favoritos>{
               ],
             ),
           ),
-        );
+        ));
       });
   }
 
