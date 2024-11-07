@@ -93,6 +93,8 @@ class _Favoritos extends State<Favoritos>{
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
 
+    recibir();
+
     return SafeArea(
       child: Scaffold(
         body: Stack(
