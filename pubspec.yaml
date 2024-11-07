@@ -20,6 +20,9 @@ dependencies:
   permission_handler: ^11.3.1
   provider: ^6.1.2
 
+  camera: ^0.11.0+2
+  cupertino_icons: ^1.0.8
+
 dev_dependencies:
   flutter_lints: ^5.0.0
   flutter_test:

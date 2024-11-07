@@ -18,6 +18,8 @@ class Mongodb {
     }
   }
 
+  
+
   //CIERRA LA CONEXION CON LA BASE DE DATOS
   static Future<void> closeConnection() async {
     db!.close();

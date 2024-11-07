@@ -1,5 +1,6 @@
 import 'package:cooking_hub/domain/entities/message.dart';
 import 'package:cooking_hub/presentation/providers/chat_provider.dart';
+import 'package:cooking_hub/presentation/screens/ingredientes.dart';
 import 'package:cooking_hub/widgets/chat/gtp_message_bubble.dart';
 import 'package:cooking_hub/widgets/chat/my_message_bubble.dart';
 import 'package:cooking_hub/widgets/shared/background_image.dart';
@@ -63,13 +64,14 @@ class _ChatViewState extends State<_ChatView> {
                 Center(
                   child: Container(
                     padding: EdgeInsets.all(16),
+                    margin: EdgeInsets.all(20),
                     decoration: containerDecoration(),
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Text(
-                          "¿Quieres guardar la lista de \ningredientes generada?",
-                          textAlign: TextAlign.center,
+                          "Quieres guardar la lista de ingredientes?",
+                          textAlign: TextAlign.center, style: windowTextStyle(),
                         ),
                         const SizedBox(height: 20),
                         Row(
@@ -84,9 +86,9 @@ class _ChatViewState extends State<_ChatView> {
                                 },
                                 child: Container(
                                   padding: const EdgeInsets.symmetric(
-                                      vertical: 10, horizontal: 20),
+                                      vertical: 20, horizontal: 30),
                                   decoration: buttonDecoration(),
-                                  child: Text("No"),
+                                  child: Text("No",style: normalStyle(),),
                                 ),
                               ),
                             ),
@@ -100,9 +102,9 @@ class _ChatViewState extends State<_ChatView> {
                                 },
                                 child: Container(
                                   padding: const EdgeInsets.symmetric(
-                                      vertical: 10, horizontal: 20),
+                                      vertical: 20, horizontal: 30),
                                   decoration: buttonDecoration(),
-                                  child: Text("Sí"),
+                                  child: Text("Sí",style: normalStyle(),),
                                 ),
                               ),
                             ),
@@ -160,7 +162,11 @@ class _ChatViewState extends State<_ChatView> {
                         final message = chatProvider.messageList[index];
                         return (message.fromWho == FromWho.me)
                             ? MyMessageBubble(message: message)
-                            : GtpMessageBubble(message: message);
+                            : InkWell(
+                              onTap: () {
+                                Navigator.push(context, MaterialPageRoute(builder: (context)=> ingredientes()));
+                              },
+                              child: GtpMessageBubble(message: message));
                       },
                     ),
                   ),
@@ -249,6 +255,8 @@ class _ChatViewState extends State<_ChatView> {
   TextStyle buttonStyle() => const TextStyle(color: Colors.white,fontFamily: "Poppins",fontSize: 20,fontWeight: FontWeight.bold);
 
   TextStyle titleStyle() => const TextStyle(color: Colors.white, fontFamily: "Poppins",fontSize: 36, fontWeight: FontWeight.bold);
+  
+  TextStyle windowTextStyle() => const TextStyle(color: Colors.white, fontFamily: "Poppins",fontSize: 36);
 
   BoxDecoration buttonDecoration() {
     return BoxDecoration(

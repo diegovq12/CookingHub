@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:cooking_hub/presentation/screens/lista_compras.dart';
 import 'package:cooking_hub/presentation/screens/recetas.dart';
 import 'package:cooking_hub/services/user_service.dart';
+import 'package:cooking_hub/services/MongoDB.dart';
 
 class Favoritos extends StatefulWidget{
   const Favoritos({super.key});
@@ -38,15 +39,11 @@ class _Favoritos extends State<Favoritos>{
   }
 
   // -------- Lista de Listas -------- //
-  List<String> lista1 = ["Nomrbe","1","2"];
-  List<String> lista2 = ["NOMBRE2","5","3"];
   List<List<String>> listOfList = [];
 
   bool listBand = false;
 
   void showList (){
-    listOfList.add(lista1);
-    listOfList.add(lista2);
     setState(() {
       listBand = !listBand;
     });
@@ -68,34 +65,23 @@ class _Favoritos extends State<Favoritos>{
   
   // -------- Texto de edicion -------- //
   // Control de entrada de texto
-  final TextEditingController _controller = TextEditingController();
-  
-  // Ingrediente al que quiere editar
-  String newIngredient = '';
-
-  // Almacena el chambio que envia, mas no bien actualiza el mapa solo guarda el texto
-  void saveChange(String texto){
-    setState(() {
-      newIngredient = texto;
-      _controller.clear();
-    });
-  }
-
-
+  final TextEditingController _controllerName = TextEditingController();
+  final TextEditingController _controllerAmount = TextEditingController();
 
   void recibir() async{
     var user = await UserService.getUsers("672842c9368c80edf2000000");
-    if(user?.listOfIngredients != null){
-      listOfList = user!.listOfIngredients;
+    
+    listOfList = user!.listOfIngredients;
+
+    setState(() {
       
-    }
+    });
   }
 
   int selected = 1;
 
   @override
   Widget build(BuildContext context) {
-
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
 
@@ -115,6 +101,7 @@ class _Favoritos extends State<Favoritos>{
               child: Container(
                 decoration: buttonDecoration(),
                 child: IconButton(onPressed: (){
+                  recibir();
                   showList();
                 }, icon: Image.asset("assets/HotBar/Lista.png",width: screenWidth*0.05,))),
             ),
@@ -175,7 +162,13 @@ class _Favoritos extends State<Favoritos>{
                                     Container(
                                       decoration: deleteDecoration(),
                                       child: IconButton(
-                                        onPressed: (){}, icon: Image.asset("assets/icons/delete.png",width: 20,))
+                                        onPressed: (){
+                                          setState((){
+                                            print("AdanBug $current");
+                                            UserService.deleteOneListOfIngredients("672842c9368c80edf2000000", listOfList[current]);
+                                            listOfList.removeAt(current);
+                                          });
+                                        }, icon: Image.asset("assets/icons/delete.png",width: 20,))
                                     )
                                   ],
                                 ),
@@ -209,55 +202,48 @@ class _Favoritos extends State<Favoritos>{
                     margin: EdgeInsets.all(30),
                     child: Column(
                       children: [
-                        SizedBox(height:screenHeight*0.02),
-                        Text(listSelected ,style: titleStyle(),),
-                        SizedBox(height:screenHeight*0.02),
                         Expanded(
                           child: ListView.builder(
-                            itemCount: listOfList[selected].length+1,
+                            itemCount: listOfList[selected].length,
                             itemBuilder: (context,current){
-                              if(current == listOfList[selected].length){
-                                return Padding(
-                                  padding: EdgeInsets.only(left:screenWidth*0.02),
-                                  child: InkWell(
-                                    onTap: (){
-                                      
-                                    },
-                                    child: Text("+Agregar",style: normalStyle(),)
-                                    ),
-                                );
+                              if(current == 0){
+                                return ListTile(
+                                title: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Expanded(child: Text("${listOfList[selected][current]}", style: titleStyle(),textAlign: TextAlign.center,)),
+                                  ]
+                                ));
                               }
-                              else
-                              {
-                                  return ListTile(
-                                  title: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text("- ${listOfList[selected][current]}", style: listsStyle(),),
+                                return ListTile(
+                                title: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Expanded(child: Text("- ${listOfList[selected][current]}", style: normalStyle(),)),
 
-                                      InkWell(
-                                        onTap: (){
-                                          editSection(context, screenHeight, screenWidth);
-                                        },
-                                        child: Container(
-                                          decoration: deleteDecoration(),
-                                          padding: EdgeInsets.only(
-                                            left: 15,
-                                            right: 15,
-                                          ),
-                                          child: Row(
-                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              // Text("${listOfList[current][0]}",style: normalStyle(),),
-                                              Image.asset("assets/icons/edit2.png",width: 20,)
-                                            ],
-                                          )
+                                    InkWell(
+                                      onTap: (){
+                                        editSection(context, screenHeight, screenWidth,current);
+                                      },
+                                      child: Container(
+                                        decoration: deleteDecoration(),
+                                        padding: EdgeInsets.only(
+                                          left: 15,
+                                          right: 15,
                                         ),
+                                        child: Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text("${listOfList[selected][current][0]}",style: normalStyle(),),
+                                            Image.asset("assets/icons/edit2.png",width: 20,)
+                                          ],
+                                        )
                                       ),
-                                    ],
-                                  ),
-                                );
-                              }
+                                    ),
+                                    
+                                  ],
+                                ),
+                              );
                             }
                           ),
                         ),
@@ -269,19 +255,22 @@ class _Favoritos extends State<Favoritos>{
             );
   }
 
-
   // ------ Metodos para edicion ---------- //
 
-  Future<dynamic> editSection(BuildContext context, double screenHeight, double screenWidth) {
+  Future<dynamic> editSection(BuildContext context, double screenHeight, double screenWidth,int current) {
+    _controllerName.text = listOfList[selected][current].substring(2);
+    _controllerAmount.text = listOfList[selected][current][0];
+    
     return showModalBottomSheet(
       context: context, 
+      isScrollControlled: true,
       builder: (BuildContext context){
         return FractionallySizedBox(
           alignment: Alignment.bottomCenter,
           child: Container(
             alignment: Alignment.bottomLeft,
 
-            height: screenHeight*0.4,
+            height: screenHeight*0.3,
             
             decoration: backgroundDecoration(),
             
@@ -289,11 +278,85 @@ class _Favoritos extends State<Favoritos>{
               children: [
                 editarIngredienteTitle(screenHeight, screenWidth),
                 
-                inputText(screenHeight, screenWidth),
+                Padding(
+                  padding: EdgeInsets.only(
+                    top: screenHeight*0.03,
+                    left: screenWidth*0.09,
+                    right: screenWidth*0.03,
+                    bottom: screenHeight*0.05
+                  ),
+                  child: Row(
+                    children: [
+                      Container(
+                        width: screenWidth*0.2,
+                        margin: EdgeInsets.only(
+                          right: screenWidth*0.03
+                        ),
+                        child: Expanded(
+                          child: TextField(
+                            controller: _controllerAmount,
+                            decoration: inputBoxAmount(),
+                          ),
+                        ),
+                      ),
+                      Container(
+                        width: screenWidth*0.6,
+                        
+                        child: Expanded(
+                          child: TextField(
+                            controller: _controllerName,
+                            decoration: inputBoxName(),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
                 
-                continueAndCancelButtons(screenHeight),
-                
-                resotreButton(),
+                // continueAndCancelButtons(screenHeight),
+                Padding(
+                  padding: EdgeInsets.only(
+                    bottom: screenHeight*0.03
+                  ),
+                  child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    InkWell(
+                      onTap: () {
+                        Navigator.of(context).pop(true);
+                        _controllerAmount.clear();
+                        _controllerName.clear();
+                      },
+                      child: Container(
+                        padding:const EdgeInsets.all(10),
+                        decoration: titleDecorationWithShadow(),
+                        child: Text("Cancelar",style: buttonStyle(),),
+                      ),
+                    ),
+                    InkWell(
+                      onTap: () {
+                        setState(() {
+                        String name = _controllerAmount.text.toString();
+                        String amount = _controllerName.text.toString();
+
+                        String ful = name+" "+amount;
+
+                        listOfList[selected][current] = ful;
+
+                        UserService.modifyIngredientInList("672842c9368c80edf2000000",selected,current,ful);
+                          
+                        });
+                        Navigator.of(context).pop(true);
+                      },
+                      child: Container(
+                        padding:const EdgeInsets.all(10),
+                        decoration: titleDecorationWithShadow(),
+                        child: Text("Continuar",style: buttonStyle(),),
+                      ),
+                    )
+                  ],
+                  ),
+                ),
                 
               ],
             ),
@@ -302,13 +365,32 @@ class _Favoritos extends State<Favoritos>{
       });
   }
 
-  InputDecoration inputBox() {
+  InputDecoration inputBoxName() {
     return const InputDecoration(
                         filled: true,
                         fillColor: Colors.white,
+                        hintText: "Ingrediente",
+                        hintStyle: TextStyle(
+                          color: Colors.grey
+                        ),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.all(Radius.circular(16)),
-                          borderSide: BorderSide.none      
+                          borderSide: BorderSide.none   
+                        )
+                      );
+  }
+  
+  InputDecoration inputBoxAmount() {
+    return const InputDecoration(
+                        filled: true,
+                        fillColor: Colors.white,
+                        hintText: "Cantidad",
+                        hintStyle: TextStyle(
+                          color: Colors.grey
+                        ),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(16)),
+                          borderSide: BorderSide.none   
                         )
                       );
   }
@@ -326,65 +408,6 @@ class _Favoritos extends State<Favoritos>{
               )
             ]
           );
-  }
-
-  InkWell resotreButton() {
-    return InkWell(
-      onTap: () {
-      },
-      child: Container(
-        padding:const EdgeInsets.all(10),
-        decoration: titleDecorationWithShadow(),
-        child: Text("Restablecer",style: buttonStyle(),),
-      ),
-    );
-  }
-
-  Padding continueAndCancelButtons(double screenHeight) {
-    return Padding(
-      padding: EdgeInsets.only(
-        bottom: screenHeight*0.03
-      ),
-      child: Row(
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
-      children: [
-        InkWell(
-          onTap: () {
-          },
-          child: Container(
-            padding:const EdgeInsets.all(10),
-            decoration: titleDecorationWithShadow(),
-            child: Text("Cancelar",style: buttonStyle(),),
-          ),
-        ),
-        InkWell(
-          onTap: () {
-          },
-          child: Container(
-            padding:const EdgeInsets.all(10),
-            decoration: titleDecorationWithShadow(),
-            child: Text("Continuar",style: buttonStyle(),),
-          ),
-        )
-      ],
-      ),
-      );
-  }
-
-  Padding inputText(double screenHeight, double screenWidth) {
-    return Padding(
-      padding: EdgeInsets.only(
-        top: screenHeight*0.03,
-        left: screenWidth*0.03,
-        right: screenWidth*0.03,
-        bottom: screenHeight*0.05
-      ),
-      child: TextField(
-        controller: _controller,
-        decoration: inputBox(),
-        onSubmitted: saveChange,
-      ),
-    );
   }
 
   Padding editarIngredienteTitle(double screenHeight, double screenWidth) {

@@ -37,7 +37,7 @@ class TitleContainer extends StatelessWidget {
           title,
           style: const TextStyle(
             color: Colors.white,
-            fontSize: 32,
+            fontSize: 50,
             fontFamily: 'Poppins',
             fontWeight: FontWeight.bold,
           ),

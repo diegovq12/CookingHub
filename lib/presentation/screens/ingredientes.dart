@@ -16,7 +16,7 @@ class ingredientes extends StatefulWidget{
 class _ingredientes extends State<ingredientes>{
 
   // -------- Lista -------- //
-  List<String> ing = [""];
+  List<String> ing = [];
 
   
   // -------- Texto de edicion -------- //
@@ -178,9 +178,12 @@ class _ingredientes extends State<ingredientes>{
               title: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    "• ${ing[index]}",
-                    style: normalStyle(),
+                  Expanded(
+                    child: Text(
+                      "• ${ing[index]}",
+                      style: normalStyle(),
+                      softWrap: true,
+                    ),
                   ),
                   // ------ Boton de editar
                   IconButton(
@@ -207,109 +210,109 @@ class _ingredientes extends State<ingredientes>{
     amountControl.text = ing[index][0];
 
     return showModalBottomSheet(
-      context: context, 
-      builder: (BuildContext context){
+      context: context,
+      isScrollControlled: true, // Permite que el teclado suba el BottomSheet
+      builder: (BuildContext context) {
         return FractionallySizedBox(
           alignment: Alignment.bottomCenter,
-          child: Container(
-            alignment: Alignment.bottomLeft,
-
-            height: screenHeight*0.4,
-            
-            decoration: backgroundDecoration(),
-            
-            child: Column(
-              children: [
-                editarIngredienteTitle(screenHeight, screenWidth),
-
-                Row(
-                  children: [
-                    Container(
-                      width: screenWidth*0.2,
-                      child: Expanded(
+          child: Padding(
+            padding: EdgeInsets.only(
+              bottom: MediaQuery.of(context).viewInsets.bottom, // Ajuste del espacio con el teclado
+            ),
+            child: Container(
+              alignment: Alignment.bottomLeft,
+              height: screenHeight * 0.35,
+              decoration: backgroundDecoration(),
+              child: Column(
+                mainAxisSize: MainAxisSize.min, // Permite que el contenido se ajuste al teclado
+                children: [
+                  editarIngredienteTitle(screenHeight, screenWidth),
+                  Row(
+                    children: [
+                      SizedBox(height: screenHeight * 0.1),
+                      Container(
+                        width: screenWidth * 0.2,
+                        margin: EdgeInsets.only(
+                          left: screenWidth * 0.08,
+                          right: screenWidth * 0.02,
+                        ),
                         child: TextField(
                           controller: amountControl,
                           decoration: inputBoxAmount(),
                         ),
                       ),
-                    ),
-                    
-                    Expanded(
-                      child: TextField(
-                        controller: nameControl,
-                        decoration: inputBoxName(),
+                      Container(
+                        width: screenWidth * 0.6,
+                        child: TextField(
+                          controller: nameControl,
+                          decoration: inputBoxName(),
+                        ),
                       ),
+                    ],
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(bottom: screenHeight * 0.03),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        InkWell(
+                          onTap: () {
+                            setState(() {
+                              limpiar();
+                              Navigator.pop(context);
+                            });
+                          },
+                          child: Container(
+                            padding: const EdgeInsets.all(10),
+                            decoration: titleDecorationWithShadow(),
+                            child: Text("Cancelar", style: buttonStyle()),
+                          ),
+                        ),
+                        InkWell(
+                          onTap: () {
+                            setState(() {
+                              String newKey = nameControl.text.toString();
+                              String newAmo = amountControl.text.toString();
+                              String newIng = "$newAmo $newKey";
+                              ing[index] = newIng;
+                              limpiar();
+                              Navigator.pop(context);
+                            });
+                          },
+                          child: Container(
+                            padding: const EdgeInsets.all(10),
+                            decoration: titleDecorationWithShadow(),
+                            child: Text("Continuar", style: buttonStyle()),
+                          ),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
-                
-                Padding(
-                  padding: EdgeInsets.only(
-                    bottom: screenHeight*0.03
                   ),
-                  child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    InkWell(
-                      onTap: () {
-                        setState(() {
-                          limpiar();
-                          Navigator.pop(context);
-                        });
-                      },
-                      child: Container(
-                        padding:const EdgeInsets.all(10),
-                        decoration: titleDecorationWithShadow(),
-                        child: Text("Cancelar",style: buttonStyle(),),
-                      ),
+                  InkWell(
+                    onTap: () {
+                      limpiar();
+                      ing.removeAt(index);
+                      Navigator.pop(context);
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.all(10),
+                      margin: EdgeInsets.only(bottom: screenHeight*0.02),
+                      decoration: titleDecorationWithShadow(),
+                      child: Text("Borrar", style: buttonStyle()),
                     ),
-                    InkWell(
-                      onTap: () {
-                        setState(() {
-                          String newKey = nameControl.text.toString();
-                          String newAmo = amountControl.text.toString();
-                          
-                          String newIng = "$newAmo $newKey";
-
-                          ing[index] = newIng;
-                          limpiar();
-                          Navigator.pop(context);
-                        });
-                      },
-                      child: Container(
-                        padding:const EdgeInsets.all(10),
-                        decoration: titleDecorationWithShadow(),
-                        child: Text("Continuar",style: buttonStyle(),),
-                      ),
-                    )
-                  ],
                   ),
-                ),
-
-                InkWell(
-                  onTap: () {
-                    limpiar();
-                    ing.removeAt(index);
-                    Navigator.pop(context);
-                  },
-                  child: Container(
-                    padding:const EdgeInsets.all(10),
-                    decoration: titleDecorationWithShadow(),
-                    child: Text("Borrar",style: buttonStyle(),),
-                  ),
-                ),
-                
-              ],
+                ],
+              ),
             ),
           ),
         );
-      });
+      },
+    );
   }
 
   Padding editarIngredienteTitle(double screenHeight, double screenWidth) {
     return Padding(
       padding: EdgeInsets.only(
-          top: screenHeight*0.02,
           left: screenWidth*0.1,
           right: screenWidth*0.1,
         ),
