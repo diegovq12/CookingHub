@@ -4,13 +4,13 @@ import 'package:cooking_hub/services/MongoDB.dart';
 class RecipesService {
   
   static Future<void> addRecipe(Recipe recipe) async {
-    await Mongodb.connecWhitMongo();
+    await Mongodb.ConnecWhitMongo();
     await Mongodb.recipeCollection.insertOne(recipe.toJson());
     await Mongodb.closeConnection();
   }
 
   static Future<List<Recipe>> getRecipes() async {
-    await Mongodb.connecWhitMongo();
+    await Mongodb.ConnecWhitMongo();
     final recipesData = await Mongodb.recipeCollection.find().toList();
     await Mongodb.closeConnection();
 

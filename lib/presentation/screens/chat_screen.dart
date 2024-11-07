@@ -6,6 +6,7 @@ import 'package:cooking_hub/widgets/shared/background_image.dart';
 import 'package:cooking_hub/widgets/shared/hot_bar.dart';
 import 'package:cooking_hub/widgets/shared/message_field_button.dart';
 import 'package:cooking_hub/widgets/shared/title_container.dart';
+import 'package:cooking_hub/services/user_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -37,13 +38,8 @@ class _ChatViewState extends State<_ChatView> {
     });
   }
 
-  String listaGuardada = '';
+  List<String>listaGuardada = [""];
 
-  void saveList (String name){
-    setState(() {
-      listaGuardada = name;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -218,9 +214,13 @@ class _ChatViewState extends State<_ChatView> {
                                 ),
                               ),
                               InkWell(
-                                onTap: (){
+                                onTap: () async{
                                   Navigator.of(context).pop(true);
-                                  saveList(nameControl.text.toString());
+                                  
+                                  listaGuardada = chatProvider.recipeList;
+                                  listaGuardada.insert(0,nameControl.text.toString());
+                                  
+                                  await UserService.addNewListOfIngredients("672842c9368c80edf2000000",listaGuardada);
                                 },
                                 child: Container(
                                   decoration: buttonDecoration(),

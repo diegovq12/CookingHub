@@ -3,12 +3,13 @@ import 'package:mongo_dart/mongo_dart.dart';
 
 class Mongodb {
   //VARIABLE QUE REPRESENTA LA COLECCION A LA QUE SE QUIERE CONECTAR
-  static late DbCollection actualCollection;
+  static late DbCollection ActualCollection;
   static Db? db;
 
   //SE CONECTA A LA BASE DE DATOS
-  static Future<void> connecWhitMongo() async {
-    db = await Db.create(CONNECTIONDB); //AQUI SE AGREGA LA VARIABLE CREADA EN  CONST_DB
+  static Future<void> ConnecWhitMongo() async {
+    db = await Db.create(
+        CONNECTIONDB); //AQUI SE AGREGA LA VARIABLE CREADA EN  CONST_DB
     try {
       await db!.open();
       print("Conexion exitosa");
@@ -23,30 +24,35 @@ class Mongodb {
   }
 
   static Future<void> insertRecipe(newRecipe) async {
-    actualCollection = db!.collection(RECIPECOLLECTION);
-    await actualCollection.insertOne(newRecipe);
+    ActualCollection = db!.collection(RECIPECOLLECTION);
+    var existRecipe =
+        await ActualCollection.findOne({'name': newRecipe['name']});
+    if (existRecipe != null) {
+      return;
+    }
+    await ActualCollection.insertOne(newRecipe);
   }
 
   static DbCollection get recipeCollection {
-    actualCollection = db!.collection(RECIPECOLLECTION);
-    if (actualCollection == Null) {
+    ActualCollection = db!.collection(RECIPECOLLECTION);
+    if (ActualCollection == null) {
       throw Exception('Database is not connected');
     }
-    return actualCollection;
+    return ActualCollection;
   }
 
   //SE INSERA EL REGISTRO A LA COLECCION
   static Future<void> insertUser(newUser) async {
-    actualCollection =
+    ActualCollection =
         db!.collection(USERCOLLECTION); //SE INGRESA LA COLECCION DESEADA
-    await actualCollection.insertOne(newUser);
+    await ActualCollection.insertOne(newUser);
   }
 
   static DbCollection get userCollection {
-    actualCollection = db!.collection(USERCOLLECTION);
-    if (actualCollection == Null) {
+    ActualCollection = db!.collection(USERCOLLECTION);
+    if (ActualCollection == Null) {
       throw Exception('Database is not connected');
     }
-    return actualCollection;
+    return ActualCollection;
   }
 }
