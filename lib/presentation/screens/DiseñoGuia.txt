@@ -1,0 +1,22 @@
+// ----------- FONDO ----------- //
+Bordes redondos de arriba y abajo o solo de arriba
+Color (Revisar Figma)
+
+// ----------- TITULOS ----------- //
+Fuente Poppins
+Tamaño 36 - 42
+Weight 400 - 600 (Bold)
+color blanco
+
+// ----------- NORMAL ----------- //
+Fuente Poppins
+Tamaño 20 - 26
+Regular o semiBold
+Color blanco
+
+// ----------- BOTONES ----------- //
+Bordes redondos
+Puede ser con sombra o no
+Iconos indicados en figma
+Color el de figma
+

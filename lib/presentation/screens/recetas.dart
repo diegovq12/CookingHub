@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:cooking_hub/presentation/screens/favoritos.dart';
-// import 'package:cooking_hub/presentation/screens/lista_compras.dart';
-import 'package:cooking_hub/presentation/screens/chat_screen.dart';
-// import 'package:cooking_hub/presentation/screens/realTimeCamera.dart';
+import 'package:cooking_hub/presentation/screens/listaCompras.dart';
+import 'package:cooking_hub/presentation/screens/chatBot.dart';
+import 'package:cooking_hub/presentation/screens/realTimeCamera.dart';
 
-class Recetas extends StatefulWidget{
-  const Recetas({super.key});
+class recetas extends StatefulWidget{
+  const recetas({super.key});
 
   @override
-  State<StatefulWidget> createState() => _Recetas();
+  State<StatefulWidget> createState() => _recetas();
 }
 
-class _Recetas extends State<Recetas>{
+class _recetas extends State<recetas>{
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
@@ -21,7 +21,7 @@ class _Recetas extends State<Recetas>{
       body: Stack(
         children: [
           // Fondo
-          BackgroundImage(),
+          backgroundImage(),
           
           // Titulo de Recetas
           titleRecetas(screenHeight, screenWidth),
@@ -91,7 +91,7 @@ class _Recetas extends State<Recetas>{
 
 
           // Hot Bar
-          const HotBar()
+          HotBar()
         ],
       ),
     ));
@@ -139,7 +139,7 @@ class _Recetas extends State<Recetas>{
 
         child: InkWell(
           onTap: (){
-            Navigator.push(context, MaterialPageRoute(builder: (context)=> Favoritos()));
+            Navigator.push(context, MaterialPageRoute(builder: (context)=> favoritos()));
           },
           child: Container(
                 height: screenHeight*0.2,
@@ -214,7 +214,7 @@ class _Recetas extends State<Recetas>{
         widthFactor: 0.9,
         child: InkWell(
           onTap: (){
-            Navigator.push(context, MaterialPageRoute(builder: (context)=> const ChatScreen()));
+            Navigator.push(context, MaterialPageRoute(builder: (context)=> const chatBot()));
           },
 
           child: Container(
@@ -245,7 +245,7 @@ class _Recetas extends State<Recetas>{
         widthFactor: 0.9,
         child: InkWell(
           onTap: (){
-            // Navigator.push(context, MaterialPageRoute(builder: (context)=> CamaraTiempoReal()));
+            Navigator.push(context, MaterialPageRoute(builder: (context)=> CamaraTiempoReal()));
           },
           child: Container(
             decoration: buttonDecoration(),
@@ -264,8 +264,8 @@ class _Recetas extends State<Recetas>{
   }
 }
 
-class BackgroundImage extends StatelessWidget {
-  const BackgroundImage({
+class backgroundImage extends StatelessWidget {
+  const backgroundImage({
     super.key,
   });
 
@@ -275,6 +275,49 @@ class BackgroundImage extends StatelessWidget {
       decoration: const BoxDecoration(
         image: DecorationImage(image: AssetImage("assets/Background.png"),
         fit: BoxFit.cover)
+      ),
+    );
+  }
+}
+
+class HotBar extends StatelessWidget {
+  const HotBar({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Align(
+      alignment: Alignment.bottomCenter,
+      child: Container(
+        
+        decoration: const BoxDecoration(
+        color: Color.fromRGBO(255, 170, 50, 1),
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(16),
+          topRight: Radius.circular(16)
+          )
+        ),
+        
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            IconButton(onPressed: (){}, icon: Image.asset("assets/HotBar/Home.png",width: 30,)),
+            IconButton(onPressed: (){}, icon: Image.asset("assets/HotBar/Games.png",width: 30,)),
+            Positioned(
+              child: IconButton(onPressed: (){
+                Navigator.push(context, MaterialPageRoute(builder: (context)=> const recetas()));
+              },
+              padding: const EdgeInsets.only(
+                bottom: 2
+              ), 
+              icon: Image.asset("assets/HotBar/Gorrito.png",width: 50,)) ,
+              ),
+            IconButton(onPressed: (){Navigator.push(context, MaterialPageRoute(builder: (context) => const listaScreen()));}, 
+            icon: Image.asset("assets/HotBar/Lista.png",width: 30,),),
+            IconButton(onPressed: (){}, icon: Image.asset("assets/HotBar/Perfil.png",width: 30,)),
+          ],
+        ),
       ),
     );
   }

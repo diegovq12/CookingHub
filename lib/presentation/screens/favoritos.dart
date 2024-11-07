@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:cooking_hub/presentation/screens/lista_compras.dart';
+import 'package:cooking_hub/presentation/screens/listaCompras.dart';
 import 'package:cooking_hub/presentation/screens/recetas.dart';
 
-class Favoritos extends StatefulWidget{
-  const Favoritos({super.key});
-
+class favoritos extends StatefulWidget{
   @override
-  State<StatefulWidget> createState() => _Favoritos();
+  State<StatefulWidget> createState() => _favoritos();
 }
 
-class _Favoritos extends State<Favoritos>{
+class _favoritos extends State<favoritos>{
 
   // -------- Lista -------- //
 
@@ -94,7 +92,7 @@ class _Favoritos extends State<Favoritos>{
       child: Scaffold(
         body: Stack(
           children: [
-            BackgroundImage(),
+            backgroundImage(),
 
             ingredientsList(screenHeight),
 
@@ -110,7 +108,7 @@ class _Favoritos extends State<Favoritos>{
                 }, icon: Image.asset("assets/HotBar/Lista.png",width: screenWidth*0.05,))),
             ),
 
-            const HotBar(),
+            HotBar(),
 
             if(listBand)...[
               listOfLists(screenHeight)
@@ -534,14 +532,14 @@ class HotBar extends StatelessWidget {
             IconButton(onPressed: (){}, icon: Image.asset("assets/HotBar/Games.png",width: 30,)),
             Positioned(
               child: IconButton(onPressed: (){
-                Navigator.push(context, MaterialPageRoute(builder: (context)=> const Recetas()));
+                Navigator.push(context, MaterialPageRoute(builder: (context)=> const recetas()));
               },
               padding: const EdgeInsets.only(
                 bottom: 2
               ), 
               icon: Image.asset("assets/HotBar/Gorrito.png",width: 50,)) ,
               ),
-            IconButton(onPressed: (){Navigator.push(context, MaterialPageRoute(builder: (context) => const ListaScreen()));}, 
+            IconButton(onPressed: (){Navigator.push(context, MaterialPageRoute(builder: (context) => const listaScreen()));}, 
             icon: Image.asset("assets/HotBar/Lista.png",width: 30,),),
             IconButton(onPressed: (){}, icon: Image.asset("assets/HotBar/Perfil.png",width: 30,)),
           ],
