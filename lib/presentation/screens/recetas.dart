@@ -1,4 +1,3 @@
-import 'package:cooking_hub/widgets/shared/hot_bar.dart' as shared;
 import 'package:flutter/material.dart';
 import 'package:cooking_hub/presentation/screens/favoritos.dart';
 // import 'package:cooking_hub/presentation/screens/lista_compras.dart';

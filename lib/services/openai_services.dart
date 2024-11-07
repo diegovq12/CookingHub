@@ -3,6 +3,7 @@ import 'package:cooking_hub/domain/entities/recipe_model.dart';
 import 'recipes_service.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
+import 'package:logger/logger.dart';
 
 class OpenAIService {
   String apiKey = dotenv.env['OPENAI_API_KEY'] ?? 'Clave OpenAI no encontrada';
@@ -15,7 +16,8 @@ Future<String> sendTextCompletionRequest(String message) async {
     'Authorization': 'Bearer $apiKey',
   };
 
-  // message += 'receta de: ';
+  var logger = Logger();
+  logger.d('Diebug Mensaje: $message');
 
   final body = jsonEncode({
     "model": "gpt-3.5-turbo",
@@ -41,30 +43,27 @@ Future<String> sendTextCompletionRequest(String message) async {
       final data = jsonDecode(utf8.decode(response.bodyBytes));
       String content = data['choices'][0]['message']['content'].trim();
 
-      // Verifica contenido no culinario
-      if (content.contains("Este asistente solo proporciona ayuda con temas de cocina")) {
-        return content;
-      }
+      logger.d('Diebug contenido: $content');
+      final jsonData = jsonDecode(content);
 
-      try {
-        final jsonData = jsonDecode(content);
-
-        if (jsonData.containsKey('nombre') &&
-            jsonData.containsKey('region') &&
-            jsonData.containsKey('ingredientes') &&
-            jsonData.containsKey('pasos')) {
-          
-           Recipe recipe = Recipe(name: jsonData['nombre'], region: jsonData['region'], ingredients: jsonData['ingredientes'], steps: jsonData['pasos']); 
-
+      if (jsonData.containsKey('nombre') &&
+          jsonData.containsKey('region') &&
+          jsonData.containsKey('ingredientes') &&
+          jsonData.containsKey('pasos')) {
+        
+          Recipe recipe = Recipe(
+          name: jsonData['nombre'],
+          region: jsonData['region'],
+          ingredients: List<String>.from(jsonData['ingredientes']),
+          steps: List<String>.from(jsonData['pasos']),
+          );
 
           // Insertar en la base de datos
           await RecipesService.addRecipe(recipe);
-          // print('Content: $content');
+
+          logger.d('Diebug contenido despues de base de datos: $content');
           return content;
-        } else {
-          return "Este asistente está diseñado solo para ayudarte con temas culinarios.";
-        }
-      } catch (e) {
+      } else {
         return "Este asistente está diseñado solo para ayudarte con temas culinarios.";
       }
     } else {

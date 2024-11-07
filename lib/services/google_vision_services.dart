@@ -69,7 +69,7 @@ class GoogleVisionServices {
         // Aplicación de múltiples filtros
         final filteredLabels = labels
             .where(
-                (label) => label['score'] > 0.6) // Filtro de puntaje más alto
+                (label) => label['score'] > 0.7) // Filtro de puntaje más alto
             .map((label) => label['description'])
             .where((description) => _isIngredient(
                 description)) // Filtro por categorías de alimentos
