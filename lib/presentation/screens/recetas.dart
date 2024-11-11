@@ -45,9 +45,9 @@ class _Recetas extends State<Recetas>{
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          cameraButton(context),
+                          cameraButton(context,screenWidth),
                     
-                          chatButton(context),
+                          chatButton(context,screenWidth),
                           
                         ],
                       ),
@@ -209,7 +209,7 @@ class _Recetas extends State<Recetas>{
 
   TextStyle normalStyle() => const TextStyle(color: Colors.white,fontFamily: "Poppins",fontSize: 20);
 
-  Expanded chatButton(BuildContext context) {
+  Expanded chatButton(BuildContext context,double screenWidth) {
     return Expanded(
       child: FractionallySizedBox(
         widthFactor: 0.9,
@@ -224,7 +224,7 @@ class _Recetas extends State<Recetas>{
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Image.asset("assets/icons/chat.png",width: 80,),
+                Image.asset("assets/icons/chat.png",width: screenWidth*0.1,),
                 Text("Chat",style: normalStyle(),)
               ]
             ),
@@ -234,7 +234,7 @@ class _Recetas extends State<Recetas>{
     );
   }
 
-  Expanded cameraButton(BuildContext context) {
+  Expanded cameraButton(BuildContext context,double screenWidth) {
     return Expanded(
       child: FractionallySizedBox(
         widthFactor: 0.9,
@@ -250,7 +250,7 @@ class _Recetas extends State<Recetas>{
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                Image.asset("assets/icons/camera.png",width: 80,),
+                Image.asset("assets/icons/camera.png",width: screenWidth*0.1,),
                 Text("Camara",style: normalStyle(),)
               ],
             ),
