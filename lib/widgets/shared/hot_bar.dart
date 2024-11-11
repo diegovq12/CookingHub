@@ -25,12 +25,17 @@ class HotBar extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
+            // -------- HOME -------- //
             IconButton(onPressed: (){
               
             }, icon: Image.asset("assets/HotBar/Home.png",width: 30,)),
+            
+            // -------- Games -------- //
             IconButton(onPressed: (){
               Navigator.push(context, MaterialPageRoute(builder: (context)=> const ingredientes()));
             }, icon: Image.asset("assets/HotBar/Games.png",width: 30,)),
+            
+            // -------- Recetas -------- //
             Positioned(
               child: IconButton(onPressed: (){
                 Navigator.push(context, MaterialPageRoute(builder: (context)=> const Recetas()));
@@ -40,8 +45,11 @@ class HotBar extends StatelessWidget {
               ), 
               icon: Image.asset("assets/HotBar/Gorrito.png",width: 50,)) ,
               ),
+            // -------- Lista de compras -------- //
             IconButton(onPressed: (){Navigator.push(context, MaterialPageRoute(builder: (context) => const ingredientes()));}, 
             icon: Image.asset("assets/HotBar/Lista.png",width: 30,),),
+
+            // -------- Perfil -------- //
             IconButton(onPressed: (){}, icon: Image.asset("assets/HotBar/Perfil.png",width: 30,)),
           ],
         ),

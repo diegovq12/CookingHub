@@ -1,9 +1,9 @@
+import 'package:cooking_hub/widgets/shared/hot_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:cooking_hub/presentation/screens/favoritos.dart';
-
-// import 'package:cooking_hub/presentation/screens/lista_compras.dart';
+import 'package:cooking_hub/widgets/shared/background_image.dart';
 import 'package:cooking_hub/presentation/screens/chat_screen.dart';
-// import 'package:cooking_hub/presentation/screens/realTimeCamera.dart';
+
 
 class Recetas extends StatefulWidget{
   const Recetas({super.key});
@@ -52,34 +52,34 @@ class _Recetas extends State<Recetas>{
                         ],
                       ),
                     ),
-                    SizedBox(
-                      height: screenHeight*0.19,
-                      child: Align(
-                        alignment: Alignment.bottomCenter,
+                    // SizedBox(
+                    //   height: screenHeight*0.19,
+                    //   child: Align(
+                    //     alignment: Alignment.bottomCenter,
                         
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            Container(
-                              decoration: const BoxDecoration(
-                                color: Colors.orange,
-                                borderRadius: BorderRadius.all(Radius.circular(16))
-                              ),
-                              padding: const EdgeInsets.all(10),
-                              child: Text("Camara",style: normalStyle(),)
-                            ),
-                            Container(
-                              decoration: const BoxDecoration(
-                                color: Colors.orange,
-                                borderRadius: BorderRadius.all(Radius.circular(16))
-                              ),
-                              padding: const EdgeInsets.all(10),
-                              child: Text("Chat",style: normalStyle(),)
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
+                    //     child: Row(
+                    //       mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    //       children: [
+                    //         Container(
+                    //           decoration: const BoxDecoration(
+                    //             color: Colors.orange,
+                    //             borderRadius: BorderRadius.all(Radius.circular(16))
+                    //           ),
+                    //           padding: const EdgeInsets.all(10),
+                    //           child: Text("Camara",style: normalStyle(),)
+                    //         ),
+                    //         Container(
+                    //           decoration: const BoxDecoration(
+                    //             color: Colors.orange,
+                    //             borderRadius: BorderRadius.all(Radius.circular(16))
+                    //           ),
+                    //           padding: const EdgeInsets.all(10),
+                    //           child: Text("Chat",style: normalStyle(),)
+                    //         ),
+                    //       ],
+                    //     ),
+                    //   ),
+                    // ),
                   ]
                 ),
                 // --------- Favoritos
@@ -225,19 +225,13 @@ class _Recetas extends State<Recetas>{
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Image.asset("assets/icons/chat.png",width: 80,),
+                Text("Chat",style: normalStyle(),)
               ]
             ),
           ),
         ),
       )
     );
-  }
-
-  BoxDecoration buttonDecoration() {
-    return const BoxDecoration(
-            color: Color.fromRGBO(255, 168, 50, 1),
-            borderRadius: BorderRadius.all(Radius.circular(16)),
-          );
   }
 
   Expanded cameraButton(BuildContext context) {
@@ -247,6 +241,8 @@ class _Recetas extends State<Recetas>{
         child: InkWell(
           onTap: (){
             // Navigator.push(context, MaterialPageRoute(builder: (context)=> CamaraTiempoReal()));
+            Navigator.push(context, MaterialPageRoute(builder: (context)=> ChatScreen()));
+            
           },
           child: Container(
             decoration: buttonDecoration(),
@@ -255,28 +251,20 @@ class _Recetas extends State<Recetas>{
               mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                 Image.asset("assets/icons/camera.png",width: 80,),
+                Text("Camara",style: normalStyle(),)
               ],
-              
             ),
           ),
         ),
       )
     );
   }
-}
 
-class BackgroundImage extends StatelessWidget {
-  const BackgroundImage({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: const BoxDecoration(
-        image: DecorationImage(image: AssetImage("assets/Background.png"),
-        fit: BoxFit.cover)
-      ),
-    );
+  BoxDecoration buttonDecoration() {
+    return const BoxDecoration(
+            color:Color.fromARGB(255, 241, 141, 0),
+            borderRadius: BorderRadius.all(Radius.circular(16)),
+          );
   }
+
 }

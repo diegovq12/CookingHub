@@ -47,6 +47,7 @@ class MessageFieldContainer extends StatelessWidget {
       child: Row(
         textDirection: TextDirection.rtl,
         children: [
+          // Boton de adjuntar
           MessageFieldButton(
             icon: Icons.photo_size_select_actual_outlined,
             onTap: () 
@@ -54,15 +55,18 @@ class MessageFieldContainer extends StatelessWidget {
               => chatProvider.sendIngredientsByPhoto(ImageSource.gallery)
             
           ),
+          // Boton de abrir camara
           MessageFieldButton(
             icon: Icons.camera_alt_outlined,
             onTap: () => chatProvider.sendIngredientsByPhoto(ImageSource.camera),
           ),
+          // Chat
           Expanded(
             child: MessageFieldBox(
               onValue: (value) => onValue(value),
             ),
           ),
+          SizedBox(width: 10,)
         ],
       ),
     );

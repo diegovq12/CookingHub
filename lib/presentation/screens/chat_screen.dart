@@ -1,18 +1,17 @@
 import 'package:cooking_hub/domain/entities/message.dart';
 import 'package:cooking_hub/presentation/providers/chat_provider.dart';
 import 'package:cooking_hub/presentation/screens/ingredientes.dart';
-import 'package:cooking_hub/presentation/screens/lista_compras.dart';
-import 'package:cooking_hub/presentation/screens/recetas.dart';
 import 'package:cooking_hub/widgets/chat/gtp_message_bubble.dart';
 import 'package:cooking_hub/widgets/chat/my_message_bubble.dart';
-// import 'package:cooking_hub/widgets/shared/background_image.dart';
-import 'package:cooking_hub/widgets/shared/hot_bar.dart';
 import 'package:cooking_hub/widgets/shared/message_field_button.dart';
-import 'package:cooking_hub/widgets/shared/title_container.dart';
 import 'package:cooking_hub/services/user_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+
+import 'package:cooking_hub/widgets/shared/title_container.dart';
+import 'package:cooking_hub/widgets/shared/hot_bar.dart';
+import 'package:cooking_hub/widgets/shared/background_image.dart';
 
 class ChatScreen extends StatelessWidget {
   const ChatScreen({super.key});
@@ -43,8 +42,10 @@ class _ChatViewState extends State<_ChatView> {
 
   List<String>listaGuardada = [""];
 
+  // ----- Preguntar "Quieres guardar la receta generada"
   Future<bool> showExitConfirmationDialog(BuildContext context) async {
-    bool shouldExit = await showDialog(
+    bool shouldExit = false;
+    shouldExit = await showDialog(
           context: context,
           barrierDismissible: true,
           builder: (context) {
@@ -54,53 +55,53 @@ class _ChatViewState extends State<_ChatView> {
                   color: Colors.black54,
                   dismissible: true,
                 ),
+
                 Center(
                   child: Container(
-                    padding: EdgeInsets.all(16),
-                    margin: EdgeInsets.all(20),
-                    decoration: containerDecoration(),
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 10,
+                      vertical: 30
+                    ),
+                    
+                    margin: EdgeInsets.only(
+                      left:30,
+                      right: 30
+                    ),
+                    
+                    decoration: windowBackgroundDecoration(),
+
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
+                        
                         Text(
-                          "Quieres guardar la lista de ingredientes?",
+                          "¿Quieres guardar la lista de ingredientes?",
                           textAlign: TextAlign.center, style: windowTextStyle(),
                         ),
+                        
                         const SizedBox(height: 20),
+                        
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
                             // Botón "No"
-                            Material(
-                              color: Colors.transparent,
-                              child: InkWell(
-                                onTap: () {
-                                  Navigator.of(context).pop(true);
-                                },
-                                child: Container(
-                                  padding: const EdgeInsets.symmetric(
-                                      vertical: 20, horizontal: 30),
-                                  decoration: buttonDecoration(),
-                                  child: Text("No",style: normalStyle(),),
-                                ),
-                              ),
+                            TextButton(
+                              onPressed: (){
+                                Navigator.of(context).pop(true);
+                              }, 
+                              style: textButtonStyle(),
+                              child: Text("No",style:normalStyle(),)
                             ),
-                            // Botón "Sí"
-                            Material(
-                              color: Colors.transparent,
-                              child: InkWell(
-                                onTap: () {
-                                  Navigator.of(context).pop(false); 
-                                  mostrar();
-                                },
-                                child: Container(
-                                  padding: const EdgeInsets.symmetric(
-                                      vertical: 20, horizontal: 30),
-                                  decoration: buttonDecoration(),
-                                  child: Text("Sí",style: normalStyle(),),
-                                ),
-                              ),
-                            ),
+
+                            // Boton "Si"
+                            TextButton(
+                              onPressed: (){
+                                Navigator.of(context).pop(false); 
+                                mostrar();
+                              }, 
+                              style: textButtonStyle(),
+                              child: Text("Si",style:normalStyle(),)
+                            )
                           ],
                         ),
                       ],
@@ -113,7 +114,7 @@ class _ChatViewState extends State<_ChatView> {
         );
 
         // Si el usuario elige "Sí", salir
-        return shouldExit ?? false;
+        return shouldExit;
   }
 
   @override
@@ -136,20 +137,23 @@ class _ChatViewState extends State<_ChatView> {
               decoration: backgroundChatDecoration(),
               width: double.infinity,
               margin: EdgeInsets.only(
-                top: screenHeight * 0.01,
-                left: screenWidth * 0.01,
-                right: screenWidth * 0.01,
+                top: screenHeight * 0.02,
+                left: screenWidth * 0.04,
+                right: screenWidth * 0.04,
                 bottom: screenHeight * 0.06,
               ),
             ),
 
             Container(
-              decoration: const BoxDecoration(
-                color: Color.fromRGBO(226, 151, 50, 1),
-                borderRadius: BorderRadius.all(Radius.circular(16)),
-              ),
               width: double.infinity,
-              margin: const EdgeInsets.only(top: 16, left: 5, right: 5, bottom: 60),
+              
+              margin: EdgeInsets.only(
+                top: screenHeight * 0.02,
+                left: screenWidth * 0.06,
+                right: screenWidth * 0.06,
+                bottom: screenHeight * 0.07,
+              ),
+              
               child: Column(
                 children: [
                   // Contenedor de "CookBot" en la parte superior
@@ -182,73 +186,89 @@ class _ChatViewState extends State<_ChatView> {
               ),
             ),
 
-            HotBarChat(),
+            HotBar(),
 
             // Mostrar el campo de texto solo cuando showSave es true
             if (showSave)
-              Stack(
-                children: [
-                  ModalBarrier(
-                    color: Colors.black54,
-                    dismissible: true,
-                    // Cuando presione afuera del cuadro
-                    onDismiss: mostrar,
-                  )
-                  ,
-                  Center(
-                    child: Container(
-                      padding: const EdgeInsets.all(16),
-                      decoration: containerDecoration(),
-
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Text("Nombre:", style: titleStyle(),),
-                          TextField(
-                            controller: nameControl,
-                            decoration: inputBoxDecoration(),
-                          ),
-                          const SizedBox(height: 16),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              InkWell(
-                                onTap: (){
-                                  Navigator.of(context).pop(false);
-                                },
-                                child: Container(
-                                  decoration: buttonDecoration(),
-                                  padding: EdgeInsets.all(16),
-                                  child: Text("Cancelar",style: normalStyle()),
-                                ),
-                              ),
-                              InkWell(
-                                onTap: () async{
-                                  Navigator.of(context).pop(true);
-                                  
-                                  listaGuardada = chatProvider.recipeList;
-                                  listaGuardada.insert(0,nameControl.text.toString());
-                                  
-                                  await UserService.addNewListOfIngredients("672842c9368c80edf2000000",listaGuardada);
-                                },
-                                child: Container(
-                                  decoration: buttonDecoration(),
-                                  padding: EdgeInsets.all(16),
-                                  child: Text("Continuar",style: normalStyle(),),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ]
-              ),
+              nameList(context, chatProvider,screenWidth,screenHeight),
           ],
         ),
       ),
     );
+  }
+
+  Stack nameList(BuildContext context, ChatProvider chatProvider,double screenWidth,double screenHeight) {
+    return Stack(
+              children: [
+                ModalBarrier(
+                  color: Colors.black54,
+                  dismissible: true,
+                  // Cuando presione afuera del cuadro
+                  onDismiss: mostrar,
+                )
+                ,
+                Center(
+                  child: Container(
+                    
+                    margin: EdgeInsets.symmetric(
+                      horizontal: 20
+                    ),
+
+                    decoration: windowBackgroundDecoration(),
+
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        SizedBox(height: screenHeight*0.02,),
+                        
+                        Text("Nombre :", style: titleStyle(),),
+
+                        SizedBox(height: screenHeight*0.03,),
+                        
+                        Container(
+                          margin: EdgeInsets.symmetric(
+                            horizontal: 15
+                          ),
+                          child: TextField(
+                            controller: nameControl,
+                            decoration: inputBoxDecoration(),
+                          ),
+                        ),
+
+                        const SizedBox(height: 16),
+                        
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            TextButton(
+                              onPressed: (){
+                                Navigator.of(context).pop(false);
+                              }, 
+                              style: textButtonStyle(),
+                              child: Text("Cancelar",style: normalStyle(),)
+                            ),
+                            
+                            TextButton(
+                              onPressed: ()async{
+                                Navigator.of(context).pop(true);
+                                
+                                listaGuardada = chatProvider.recipeList;
+                                listaGuardada.insert(0,nameControl.text.toString());
+                                
+                                await UserService.addNewListOfIngredients("672842c9368c80edf2000000",listaGuardada);
+                              }, 
+                              style: textButtonStyle(),
+                              child: Text("Continuar",style: normalStyle(),)
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: screenHeight*0.03,)
+                      ],
+                    ),
+                  ),
+                ),
+              ]
+            );
   }
 
   TextStyle normalStyle() => const TextStyle(color: Colors.white,fontFamily: "Poppins",fontSize: 20);
@@ -259,7 +279,7 @@ class _ChatViewState extends State<_ChatView> {
 
   TextStyle titleStyle() => const TextStyle(color: Colors.white, fontFamily: "Poppins",fontSize: 36, fontWeight: FontWeight.bold);
   
-  TextStyle windowTextStyle() => const TextStyle(color: Colors.white, fontFamily: "Poppins",fontSize: 36);
+  TextStyle windowTextStyle() => const TextStyle(color: Colors.white, fontFamily: "Poppins",fontSize: 20);
 
   BoxDecoration buttonDecoration() {
     return BoxDecoration(
@@ -276,6 +296,23 @@ class _ChatViewState extends State<_ChatView> {
           );
   }
 
+  ButtonStyle textButtonStyle() {
+    return TextButton.styleFrom(
+                              
+                              padding: EdgeInsets.symmetric(
+                                horizontal: 10,
+                                vertical: 10
+                              )
+                            );
+  }
+
+  BoxDecoration windowBackgroundDecoration(){
+    return BoxDecoration(
+      color:Color.fromARGB(255, 233, 136, 0),
+      borderRadius: BorderRadius.all(Radius.circular(16)),
+    );
+  }
+
   BoxDecoration containerDecoration() {
     return BoxDecoration(
             color: Color(0xFFFFA832),
@@ -290,104 +327,16 @@ class _ChatViewState extends State<_ChatView> {
       hintText: "Nombre",
       hintStyle: TextStyle(color: Colors.grey),
       border: OutlineInputBorder(
-        borderRadius: BorderRadius.all(Radius.circular(16)),
+        borderRadius: BorderRadius.all(Radius.circular(32)),
         borderSide: BorderSide.none,
       ),
     );
   }
-
-  Widget HotBarChat (){
-    return Align(
-      alignment: Alignment.bottomCenter,
-      child: Container(
-        
-        decoration: const BoxDecoration(
-        color: Color.fromRGBO(255, 170, 50, 1),
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(16),
-          topRight: Radius.circular(16)
-          )
-        ),
-        
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            IconButton(onPressed: (){}, icon: Image.asset("assets/HotBar/Home.png",width: 30,)),
-            IconButton(onPressed: ()async{
-              await showExitConfirmationDialog(context);
-              Navigator.push(context, MaterialPageRoute(builder: (context)=> const ingredientes()));
-            }, icon: Image.asset("assets/HotBar/Games.png",width: 30,)),
-            Positioned(
-              child: IconButton(onPressed: ()async{
-                await showExitConfirmationDialog(context);
-                Navigator.push(context, MaterialPageRoute(builder: (context)=> const Recetas()));
-              },
-              padding: const EdgeInsets.only(
-                bottom: 2
-              ), 
-              icon: Image.asset("assets/HotBar/Gorrito.png",width: 50,)) ,
-              ),
-            IconButton(onPressed: ()async{
-              await showExitConfirmationDialog(context);
-              Navigator.push(context, MaterialPageRoute(builder: (context) => const ListaScreen()));}, 
-            icon: Image.asset("assets/HotBar/Lista.png",width: 30,),),
-            IconButton(onPressed: (){}, icon: Image.asset("assets/HotBar/Perfil.png",width: 30,)),
-          ],
-        ),
-      ),
-    );
-  }
-
 }
-// class HotBarChat extends StatelessWidget {
-//   const HotBarChat({
-//     super.key,
-//   });
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Align(
-//       alignment: Alignment.bottomCenter,
-//       child: Container(
-        
-//         decoration: const BoxDecoration(
-//         color: Color.fromRGBO(255, 170, 50, 1),
-//         borderRadius: BorderRadius.only(
-//           topLeft: Radius.circular(16),
-//           topRight: Radius.circular(16)
-//           )
-//         ),
-        
-//         child: Row(
-//           mainAxisAlignment: MainAxisAlignment.spaceAround,
-//           children: [
-//             IconButton(onPressed: (){}, icon: Image.asset("assets/HotBar/Home.png",width: 30,)),
-//             IconButton(onPressed: (){
-//               showExitConfirmationDialog(context);
-//               Navigator.push(context, MaterialPageRoute(builder: (context)=> const ingredientes()));
-//             }, icon: Image.asset("assets/HotBar/Games.png",width: 30,)),
-//             Positioned(
-//               child: IconButton(onPressed: (){
-//                 Navigator.push(context, MaterialPageRoute(builder: (context)=> const Recetas()));
-//               },
-//               padding: const EdgeInsets.only(
-//                 bottom: 2
-//               ), 
-//               icon: Image.asset("assets/HotBar/Gorrito.png",width: 50,)) ,
-//               ),
-//             IconButton(onPressed: (){Navigator.push(context, MaterialPageRoute(builder: (context) => const ListaScreen()));}, 
-//             icon: Image.asset("assets/HotBar/Lista.png",width: 30,),),
-//             IconButton(onPressed: (){}, icon: Image.asset("assets/HotBar/Perfil.png",width: 30,)),
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-// }
 
 BoxDecoration backgroundChatDecoration() {
   return const BoxDecoration(
     color: Color(0xFFE29732),
-    borderRadius: BorderRadius.all(Radius.circular(16)),
+    borderRadius: BorderRadius.all(Radius.circular(32)),
   );
 }
