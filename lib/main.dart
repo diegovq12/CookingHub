@@ -1,3 +1,4 @@
+import 'package:cooking_hub/presentation/screens/recetasGuardadas.dart';
 import 'package:flutter/material.dart';
 import 'package:cooking_hub/config/theme/app_theme.dart';
 import 'package:provider/provider.dart';
@@ -26,7 +27,7 @@ class MainApp extends StatelessWidget {
         title: 'Cooking Hub',
         debugShowCheckedModeBanner: false,
         theme:AppTheme(selectedColor: 0).theme(),
-        home: Mercados()
+        home: RecetaGS()
         ),
     );
 
