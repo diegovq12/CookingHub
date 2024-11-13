@@ -3,10 +3,10 @@ import 'package:cooking_hub/presentation/providers/chat_provider.dart';
 import 'package:cooking_hub/presentation/screens/ingredientes.dart';
 import 'package:cooking_hub/widgets/chat/gtp_message_bubble.dart';
 import 'package:cooking_hub/widgets/chat/my_message_bubble.dart';
+// import 'package:cooking_hub/widgets/shared/background_image.dart';
 import 'package:cooking_hub/widgets/shared/message_field_button.dart';
 import 'package:cooking_hub/services/user_service.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 import 'package:cooking_hub/widgets/shared/title_container.dart';

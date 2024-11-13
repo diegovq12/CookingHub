@@ -204,7 +204,7 @@ class _Favoritos extends State<Favoritos>{
                                 title: Row(
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Expanded(child: Text("${listOfList[selected][current]}", style: titleStyle(),textAlign: TextAlign.center,)),
+                                    Expanded(child: Text(listOfList[selected][current], style: titleStyle(),textAlign: TextAlign.center,)),
                                   ]
                                 ));
                               }
@@ -227,7 +227,7 @@ class _Favoritos extends State<Favoritos>{
                                         child: Row(
                                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                           children: [
-                                            Text("${listOfList[selected][current][0]}",style: normalStyle(),),
+                                            Text(listOfList[selected][current][0],style: normalStyle(),),
                                             Image.asset("assets/icons/edit2.png",width: 20,)
                                           ],
                                         )
@@ -296,7 +296,7 @@ class _Favoritos extends State<Favoritos>{
                           ),
                         ),
                       ),
-                      Container(
+                      SizedBox(
                         width: screenWidth*0.6,
                         
                         child: Expanded(
@@ -336,7 +336,7 @@ class _Favoritos extends State<Favoritos>{
                         String name = _controllerAmount.text.toString();
                         String amount = _controllerName.text.toString();
 
-                        String ful = name+" "+amount;
+                        String ful = "$name $amount";
 
                         listOfList[selected][current] = ful;
 

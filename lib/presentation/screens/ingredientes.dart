@@ -43,12 +43,12 @@ class _ingredientes extends State<ingredientes> {
     final chatProvider = context.watch<ChatProvider>();
 
     // Almaecnar la receta
-    ing = chatProvider.recipeList as List<String>;
+    ing = chatProvider.recipeList;
 
     // Agregar 1 a los ingredientes que no tengan cantidad
     for (int i = 1; i < ing.length; i++) {
       if (!RegExp(r'^[0-9]').hasMatch(ing[i][0])) {
-        ing[i] = "1 " + ing[i];
+        ing[i] = "1 ${ing[i]}";
       }
     }
 
@@ -262,7 +262,7 @@ class _ingredientes extends State<ingredientes> {
                           decoration: inputBoxAmount(),
                         ),
                       ),
-                      Container(
+                      SizedBox(
                         width: screenWidth * 0.6,
                         child: TextField(
                           controller: nameControl,
