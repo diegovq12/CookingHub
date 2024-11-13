@@ -27,7 +27,7 @@ class MainApp extends StatelessWidget {
         title: 'Cooking Hub',
         debugShowCheckedModeBanner: false,
         theme:AppTheme(selectedColor: 0).theme(),
-        home: RecetaGS()
+        home: RecetasGuardadas()
         ),
     );
 

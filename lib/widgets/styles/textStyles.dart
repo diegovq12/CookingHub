@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 class Textstyles {
   static TextStyle normalStyle() => const TextStyle(color: Colors.white,fontFamily: "Poppins",fontSize: 20);
   
+  static TextStyle addStyle() => const TextStyle(color: Color.fromARGB(179, 255, 255, 255),fontFamily: "Poppins",fontSize: 20);
+  
   static TextStyle listsStyle() => const TextStyle(color: Colors.white,fontFamily: "Poppins",fontSize: 20,decoration: TextDecoration.underline,decorationColor: Colors.white);
   
   static TextStyle buttonStyle() => const TextStyle(color: Colors.white,fontFamily: "Poppins",fontSize: 20,fontWeight: FontWeight.bold);
