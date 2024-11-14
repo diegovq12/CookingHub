@@ -33,7 +33,7 @@ class _RecetasGuardadas extends State<RecetasGuardadas>{
               height: screenHeight*0.1,
               width: screenWidth,
               alignment: Alignment.center,
-              child: Text("Recetas Guardadas",style: Textstyles.titleStyle(),),
+              child: Expanded(child: Center(child: Text("Recetas Guardadas",style: Textstyles.recipesGtitleStyle(),))),
             ),
             
             // Container principal de la lista
@@ -361,7 +361,7 @@ class _RecetaGS extends State<RecetaGS>{
               height: screenHeight*0.1,
               width: screenWidth,
               alignment: Alignment.center,
-              child: Text("RecetaSeleccionada",style: Textstyles.titleStyle(),),
+              child: Text("RecetaSeleccionada",style: Textstyles.recipesGtitleStyle(),),
             ),
 
             Container(
@@ -376,11 +376,26 @@ class _RecetaGS extends State<RecetaGS>{
                   children: [
                     SizedBox(height: screenHeight*0.03,),
                 
-                    Text("Ingredientes",style: Textstyles.titleStyle(),),
+                    Row(
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.only(left: screenWidth*0.04,),
+                          child: Text("Ingredientes",style: Textstyles.recipesGtitleStyle(),),
+                        ),
+                      ],
+                    ),
                     
                     ingredientsList(screenHeight,screenWidth),
                 
-                    Text("Procedimiento",style: Textstyles.titleStyle(),),
+                    Row(
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.only(left: screenWidth*0.04,
+                          bottom: screenWidth*0.03),
+                          child: Text("Procedimiento",style: Textstyles.recipesGtitleStyle(),),
+                        ),
+                      ],
+                    ),
                 
                     tutorialList(screenHeight,screenWidth),
                   ],
