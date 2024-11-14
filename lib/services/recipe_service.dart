@@ -5,7 +5,7 @@ import 'package:cooking_hub/domain/entities/recipe_model.dart';
 class RecipeService {
 
   static Future<void> addRecipe(Recipe newRecipe) async{
-    await Mongodb.ConnecWhitMongo();
+    await Mongodb.ConnectWhitMongo();
     await Mongodb.insertRecipe(newRecipe.toJson());
     await Mongodb.closeConnection();
   }

@@ -30,29 +30,34 @@
 // }
 
 import 'package:cooking_hub/domain/entities/recipe_model.dart';
+import 'package:cooking_hub/domain/entities/user_model.dart';
 import 'package:cooking_hub/services/recipe_service.dart';
-
 import 'services/user_service.dart';
 
 
 
 void main() async {
-  String id = '672842c9368c80edf2000000';
-  var result = await UserService.getUsers(id);
-  if(result != null){
-    print("Registro encontrado:");
-    print('Name: ${result.userName}');
-    print('Email: ${result.userEmail}');
-    print('Ingredientes: ${result.favoriteIngredients}');
-    print('Listas de ingredientes: ${result.listOfIngredients}');
-  }
 
-   //String newIngredient = 'Lechuga';
-   //Recipe newRecipe = Recipe(name: 'Caldo de res', region: 'Mexico', ingredients: ['Ingredientes'], steps: ['Pasos']);
-   //await RecipeService.addRecipe(newRecipe);
-   //await UserService.addNewIngredientsFavorites(id, newIngredient);
 
-   await UserService.addNewListOfIngredients(id, ['Hamburguesas','1/2 kilo de Carne molida', 'Queso amarillo', 'Lechuga','Tomate','Pepinillos','Tocino','Mayonesa','Ketshup','Mostasa']);
+  Recipe newRecipe = Recipe(name: "Yogurth", region: "Piltover", ingredients: ["Bacterias","Leche","Fresas","Hijos del tonito"], steps: ["Cuando yogurth mama y yogurth papa se quieren mucho copulan para dar lugar a un yogurht hijo"]);
+  await UserService.modifyElementOfFavoriteList('673516bd55397c8475000000',1,"ingredients","Caramelo",2);
+
+  // String id = '672842c9368c80edf2000000';
+  // var result = await UserService.getUsers(id);
+  // // if(result != null){
+  // //   print("Registro encontrado:");
+  // //   print('Name: ${result.userName}');
+  // //   print('Email: ${result.userEmail}');
+  // //   print('Ingredientes: ${result.favoriteIngredients}');
+  // //   print('Listas de ingredientes: ${result.listOfIngredients}');
+  // // }
+
+  //  String newIngredient = 'Lechuga';
+  //  Recipe newRecipe = Recipe(name: 'Caldo de res', region: 'Mexico', ingredients: ['Ingredientes'], steps: ['Pasos']);
+  //  await RecipeService.addRecipe(newRecipe);
+  //  await UserService.addNewIngredientsFavorites(id, newIngredient);
+
+  //  await UserService.addNewListOfIngredients(id, ['Una prueba']);
 
 
 }

@@ -7,7 +7,7 @@ class Mongodb {
   static Db? db;
 
   //SE CONECTA A LA BASE DE DATOS
-  static Future<void> ConnecWhitMongo() async {
+  static Future<void> ConnectWhitMongo() async {
     db = await Db.create(
         CONNECTIONDB); //AQUI SE AGREGA LA VARIABLE CREADA EN  CONST_DB
     try {
@@ -21,6 +21,7 @@ class Mongodb {
   //CIERRA LA CONEXION CON LA BASE DE DATOS
   static Future<void> closeConnection() async {
     db!.close();
+    print("Conexion cerrada");
   }
 
   static Future<void> insertRecipe(newRecipe) async {
