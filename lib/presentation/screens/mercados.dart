@@ -96,7 +96,7 @@ class MercadosList extends StatelessWidget {
 
   final List<Map<String, dynamic>> mercados;
   final double screenHeight;
-  final BingServices bingServices; 
+  final BingServices bingServices;
 
   @override
   Widget build(BuildContext context) {
@@ -109,62 +109,74 @@ class MercadosList extends StatelessWidget {
 
         return FutureBuilder<Map<String, double>>(
           future: bingServices.getPricesByMarket(
-            [
-              "leche",
-              "huevos",
-              "tomate",
-              "jamon"
-            ], // Lista de productos de prueba
-            currentName
+            ["leche", "huevos", "tomate", "jamon"], // Lista de productos de prueba
+            currentName,
           ),
           builder: (context, priceSnapshot) {
-            String price =
-                "\$"; // Valor predeterminado si no se encuentra el precio
-        
+            String price = "\$"; // Valor predeterminado si no se encuentra el precio
 
-          
+            // if (priceSnapshot.connectionState == ConnectionState.waiting) {
+            //   price = "Cargando...";
+            // } else if (priceSnapshot.hasError) {
+            //   price = "Error";
+            // } else if (priceSnapshot.hasData) {
+            //   final prices = priceSnapshot.data;
+            //   if (prices != null && prices.isNotEmpty) {
+            //     price = "\$" + prices.values.reduce((a, b) => a + b).toStringAsFixed(2);
+            //   }
+            // }
 
-            return ListTile(
-              title: Column(
-                children: [
-                  if (index == 0) ...[
-                    Text("Recomendado", style: Textstyles.titleStyle()),
-                    SizedBox(height: screenHeight * 0.02),
-                  ],
-                  if (index == 2) ...[
-                    Container(
-                      alignment: Alignment.center,
-                      child:
-                          Text("Más opciones", style: Textstyles.titleStyle()),
-                    ),
-                    SizedBox(height: screenHeight * 0.02),
-                  ],
-                  InkWell(
-                    onTap: () {
-                      _launchMaps(lat, lng);
-                    },
-                    child: Container(
-                      decoration: ContainerStyle.buttonContainerDec(),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          Text(currentName, style: Textstyles.semiBoldStyle()),
-                          Text(price,
-                              style: Textstyles
-                                  .semiBoldStyle()), 
-                        ],
-                      ),
-                    ),
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                if (index == 0) ...[
+                  Text("Recomendado", style: Textstyles.titleStyle()),
+                  SizedBox(height: screenHeight * 0.02),
+                ],
+                if (index == 2) ...[
+                  Container(
+                    alignment: Alignment.center,
+                    child: Text("Más opciones", style: Textstyles.titleStyle()),
                   ),
                   SizedBox(height: screenHeight * 0.02),
                 ],
-              ),
+                InkWell(
+                  onTap: () {
+                    _launchMaps(lat, lng);
+                  },
+                  child: Container(
+                    decoration: ContainerStyle.buttonContainerDec(),
+                    padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 12.0),
+                    child: Row(
+                      children: [
+                        // Ajustamos el texto del nombre del mercado
+                        Expanded(
+                          child: Text(
+                            currentName,
+                            style: Textstyles.semiBoldStyle(),
+                            overflow: TextOverflow.ellipsis, // Trunca el texto largo
+                            maxLines: 1, // Solo muestra una línea
+                          ),
+                        ),
+                        SizedBox(width: 10), // Espacio entre el nombre y el precio
+                        Text(
+                          price,
+                          style: Textstyles.semiBoldStyle(),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                SizedBox(height: screenHeight * 0.02),
+              ],
             );
           },
         );
       },
     );
   }
+}
+
 
 // Metodo para abrir Google Maps con las coordenadas.
   void _launchMaps(double lat, double lng) async {
@@ -177,4 +189,4 @@ class MercadosList extends StatelessWidget {
       throw Exception('No se pudo abrir Google Maps.');
     }
   }
-}
+

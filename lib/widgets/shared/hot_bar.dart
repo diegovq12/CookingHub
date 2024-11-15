@@ -1,7 +1,6 @@
-import 'package:cooking_hub/presentation/screens/ingredientes.dart';
 // import 'package:cooking_hub/presentation/screens/lista_compras.dart';
 import 'package:cooking_hub/presentation/screens/recetas.dart';
-import 'package:cooking_hub/presentation/screens/recetasGuardadas.dart';
+import 'package:cooking_hub/presentation/screens/recetas_guardadas.dart';
 import 'package:flutter/material.dart';
 
 class HotBar extends StatelessWidget {
