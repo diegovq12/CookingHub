@@ -5,6 +5,8 @@ import 'package:cooking_hub/widgets/styles/textStyles.dart';
 import 'package:cooking_hub/widgets/styles/containerStyle.dart';
 
 class RecetasGuardadas extends StatefulWidget{
+  const RecetasGuardadas({super.key});
+
   @override
   State<StatefulWidget> createState() => _RecetasGuardadas();
 }
@@ -118,6 +120,8 @@ class _RecetasGuardadas extends State<RecetasGuardadas>{
 }
 
 class RecetaGS extends StatefulWidget{
+  const RecetaGS({super.key});
+
   @override
   State<StatefulWidget> createState() => _RecetaGS();
 }

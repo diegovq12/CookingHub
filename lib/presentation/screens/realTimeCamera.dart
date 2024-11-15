@@ -4,6 +4,8 @@ import 'package:cooking_hub/presentation/screens/chat_screen.dart';
 // import 'package:cooking_hub/presentation/screens/chatBot.dart';
 
 class CamaraTiempoReal extends StatefulWidget {
+  const CamaraTiempoReal({super.key});
+
   @override
   _CamaraTiempoReal createState() => _CamaraTiempoReal();
 }

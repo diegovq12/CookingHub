@@ -41,9 +41,6 @@ static Future<void> ConnecWhitMongo() async {
 
   static DbCollection get recipeCollection {
     ActualCollection = db!.collection(RECIPECOLLECTION);
-    if (ActualCollection == null) {
-      throw Exception('Database is not connected');
-    }
     return ActualCollection;
   }
 
