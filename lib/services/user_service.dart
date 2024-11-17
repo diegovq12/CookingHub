@@ -23,6 +23,8 @@ class UserService {
     return null;
   }
 
+  
+
   //Agrega un nuevo ingrediente a la lista de ingredientes fav
   static Future<void> addNewIngredientsFavorites(String id, String newIngredient) async{
     await Mongodb.ConnectWhitMongo();
@@ -67,7 +69,12 @@ class UserService {
     await Mongodb.closeConnection();
   }
 
+  // ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
   //Aniade una nueva receta a la lista de recetas favoritas
+  // ID USUARIO = "
+  // 673516bd55397c8475000000
+  // "
   static Future<void> addFavoriteRecipe(String id, Recipe newRecipe) async{
     await Mongodb.ConnectWhitMongo();
     await Mongodb.userCollection.updateOne(where.id(ObjectId.parse(id)), modify.push('listFavoriteRecipes', newRecipe.toJson()));
@@ -82,6 +89,7 @@ class UserService {
   }
 
   //Modifica algun elemento de una receta favorita
+  // id = usuario , primaryIndex = indice receta , Space = {nombre, ingrediente ,campo etc}, Newdata= remplazco, secondaryIndex = indice del ingrediente/paso (start=0) 
   static Future<void> modifyElementOfFavoriteList(String id,int primaryIndex, String space, String newData,[int? secondaryIndex]) async{
     await Mongodb.ConnectWhitMongo();
     if(secondaryIndex != null){
