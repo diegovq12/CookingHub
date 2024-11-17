@@ -42,6 +42,9 @@ app.*.map.json
 /android/app/profile
 /android/app/release
 
-# Variables de entorno
+#variables de entorno
 .env
 credencialescloud.json
+
+#otros
+pubspec.lock
