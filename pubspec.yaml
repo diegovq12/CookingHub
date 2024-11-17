@@ -9,16 +9,57 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_dotenv: ^5.2.1
+  googleapis_auth: ^1.6.0
   http: ^1.2.2
+  image_picker: ^1.1.2
   json: ^0.20.2
-  provider: ^6.1.2
+  logger: ^2.4.0
   mongo_dart: ^0.10.3
+  path_provider: ^2.1.5
+  permission_handler: ^11.3.1
+  provider: ^6.1.2
+
+  camera: ^0.11.0+2
+  cupertino_icons: ^1.0.8
+  geolocator: ^13.0.2
+  url_launcher: ^6.3.1
 
 dev_dependencies:
+  flutter_lints: ^5.0.0
   flutter_test:
     sdk: flutter
-  flutter_lints: ^4.0.0
-
 
 flutter:
   uses-material-design: true
+  assets:
+    - .env
+    - credencialescloud.json
+
+    - assets/HotBar/Gorrito.png
+    - assets/HotBar/Games.png
+    - assets/HotBar/Lista.png
+    - assets/HotBar/Perfil.png
+    - assets/HotBar/Home.png
+
+    - assets/Background.png
+    - assets/HotCakes.png
+    - assets/Arepas.png
+
+    - assets/chatIcons/camera.png
+    - assets/chatIcons/adjuntar.png
+
+    - assets/icons/chat.png
+    - assets/icons/camera.png
+    - assets/icons/eat.png
+    - assets/icons/edit.png
+    - assets/icons/edit2.png
+    - assets/icons/canasta.png
+    - assets/icons/star.png
+    - assets/icons/delete.png
+  fonts:
+    - family: Poppins
+      fonts:
+        - asset: assets/fonts/Poppins/Poppins-Regular.ttf
+        - asset: assets/fonts/Poppins/Poppins-Medium.ttf
+        - asset: assets/fonts/Poppins/Poppins-Bold.ttf
