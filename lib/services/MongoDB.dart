@@ -1,6 +1,11 @@
 import 'CONST-DB.dart';
 import 'package:mongo_dart/mongo_dart.dart';
 
+/*
+  id1 = 672842c9368c80edf2000000
+  id2= 673516bd55397c8475000000
+*/
+
 class Mongodb {
   //VARIABLE QUE REPRESENTA LA COLECCION A LA QUE SE QUIERE CONECTAR
   static late DbCollection ActualCollection;

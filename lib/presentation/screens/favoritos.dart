@@ -60,7 +60,7 @@ class _Favoritos extends State<Favoritos>{
   final TextEditingController _controllerAmount = TextEditingController();
 
   void recibir() async{
-    var user = await UserService.getUsers("673516bd55397c8475000000");
+    var user = await UserService.getUsers("672842c9368c80edf2000000");
     
     listOfList = user!.listOfIngredients;
 
