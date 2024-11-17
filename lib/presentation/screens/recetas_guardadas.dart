@@ -1,3 +1,6 @@
+import 'package:cooking_hub/domain/entities/recipe_model.dart';
+import 'package:cooking_hub/domain/entities/user_model.dart';
+import 'package:cooking_hub/services/user_service.dart';
 import 'package:flutter/material.dart';
 import 'package:cooking_hub/widgets/shared/background_image.dart';
 import 'package:cooking_hub/widgets/shared/hot_bar.dart';
@@ -12,15 +15,29 @@ class RecetasGuardadas extends StatefulWidget{
 }
 
 class _RecetasGuardadas extends State<RecetasGuardadas>{
-  
-  List<String> recipes = [
-    "Lista1","Lista2","Lista52"
-  ];
+
+  List<String> recipes = [];
+
+  void loadrecipes()async{
+    var user = await UserService.getUsers("673516bd55397c8475000000");
+    
+    List<Recipe> recetas;
+    recetas = user!.listFavoriteRecipes;
+
+    for(int i =0; i< recetas.length;i++){
+      recipes.add(recetas[i].name);
+    }
+    print("HOLA");
+    setState(() {
+    });
+  }
   
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
+
+    // loadrecipes();
 
     return SafeArea(
       child: Scaffold(
