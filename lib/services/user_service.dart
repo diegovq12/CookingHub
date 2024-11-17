@@ -70,26 +70,42 @@ class UserService {
   //Aniade una nueva receta a la lista de recetas favoritas
   static Future<void> addFavoriteRecipe(String id, Recipe newRecipe) async{
     await Mongodb.ConnectWhitMongo();
-    await Mongodb.userCollection.update(where.id(ObjectId.parse(id)), modify.push('listFavoriteRecipes', newRecipe.toJson()));
+    await Mongodb.userCollection.updateOne(where.id(ObjectId.parse(id)), modify.push('listFavoriteRecipes', newRecipe.toJson()));
     await Mongodb.closeConnection();
   }
 
   //Elimina una receta de la lista de favortitas
   static Future<void> deleteFavoriteRecipe(String id, Recipe deleteRecipe) async{
     await Mongodb.ConnectWhitMongo();
-    await Mongodb.userCollection.update(where.id(ObjectId.parse(id)), modify.pull('listFavoriteRecipes', deleteRecipe.toJson()));
+    await Mongodb.userCollection.updateOne(where.id(ObjectId.parse(id)), modify.pull('listFavoriteRecipes', deleteRecipe.toJson()));
     await Mongodb.closeConnection();
   }
 
+  //Modifica algun elemento de una receta favorita
   static Future<void> modifyElementOfFavoriteList(String id,int primaryIndex, String space, String newData,[int? secondaryIndex]) async{
     await Mongodb.ConnectWhitMongo();
     if(secondaryIndex != null){
       String listCon = 'listFavoriteRecipes.' + primaryIndex.toString()+"."+space+"."+secondaryIndex.toString();
-      await Mongodb.userCollection.update(where.id(ObjectId.parse(id)), modify.set(listCon, newData));
+      await Mongodb.userCollection.updateOne(where.id(ObjectId.parse(id)), modify.set(listCon, newData));
     }else{
       String listCon = 'listFavoriteRecipes.' + primaryIndex.toString()+"."+space;
-      await Mongodb.userCollection.update(where.id(ObjectId.parse(id)), modify.set(listCon, newData));
+      await Mongodb.userCollection.updateOne(where.id(ObjectId.parse(id)), modify.set(listCon, newData));
     }
+    await Mongodb.closeConnection();
+  }
+
+  //Elimina un elemento de los ingredientes o los pasos
+  static Future<void> deleteOfListIngredients_Steps(String id, int primaryIndex, String space,String itemToDelete) async{
+    String listCon = 'listFavoriteRecipes.' + primaryIndex.toString() +"."+ space.toString();
+    await Mongodb.ConnectWhitMongo();
+    await Mongodb.userCollection.updateOne(where.id(ObjectId.parse(id)),modify.pull(listCon, itemToDelete));
+    await Mongodb.closeConnection();
+  }
+
+  static Future<void> addOfIngredients_Steps(String id, int primaryIndex, String space, String newItem) async{
+    String listCon = 'listFavoriteRecipes.$primaryIndex.$space';
+    await Mongodb.ConnectWhitMongo();
+    await Mongodb.userCollection.updateOne(where.id(ObjectId.parse(id)), modify.push(listCon, newItem));
     await Mongodb.closeConnection();
   }
 

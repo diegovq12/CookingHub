@@ -34,13 +34,18 @@ import 'package:cooking_hub/domain/entities/user_model.dart';
 import 'package:cooking_hub/services/recipe_service.dart';
 import 'services/user_service.dart';
 
-
-
 void main() async {
+  Recipe newRecipe = Recipe(name: "Yogurth", region: "Piltover", ingredients: [
+    "Bacterias",
+    "Leche",
+    "Fresas",
+    "Hijos del tonito"
+  ], steps: [
+    "Cuando yogurth mama y yogurth papa se quieren mucho copulan para dar lugar a un yogurht hijo"
+  ]);
 
-
-  Recipe newRecipe = Recipe(name: "Yogurth", region: "Piltover", ingredients: ["Bacterias","Leche","Fresas","Hijos del tonito"], steps: ["Cuando yogurth mama y yogurth papa se quieren mucho copulan para dar lugar a un yogurht hijo"]);
-  await UserService.modifyElementOfFavoriteList('673516bd55397c8475000000',1,"ingredients","Caramelo",2);
+  await UserService.addOfIngredients_Steps(
+      '673516bd55397c8475000000', 1, "steps", "Partir las fresas");
 
   // String id = '672842c9368c80edf2000000';
   // var result = await UserService.getUsers(id);
@@ -58,6 +63,4 @@ void main() async {
   //  await UserService.addNewIngredientsFavorites(id, newIngredient);
 
   //  await UserService.addNewListOfIngredients(id, ['Una prueba']);
-
-
 }
