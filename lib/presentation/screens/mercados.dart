@@ -108,29 +108,41 @@ class MercadosList extends StatelessWidget {
         double lng = mercados[index]['lng'];
 
         return FutureBuilder<Map<String, double>>(
-          future: bingServices.getPricesByMarket(
-            ["leche", "huevos", "tomate", "jamon"], // Lista de productos de prueba
+          future: bingServices.getProductsPrice(
+            [
+              "galon de leche",
+              "cartera de huevos",
+              "250 gr de tomate",
+              "100 gr jamon"
+            ], // Lista de productos de prueba
             currentName,
           ),
           builder: (context, priceSnapshot) {
-            String price = "\$"; // Valor predeterminado si no se encuentra el precio
+            String price =
+                "\$..."; // Valor predeterminado si no se encuentra el precio
 
-            // if (priceSnapshot.connectionState == ConnectionState.waiting) {
-            //   price = "Cargando...";
-            // } else if (priceSnapshot.hasError) {
-            //   price = "Error";
-            // } else if (priceSnapshot.hasData) {
-            //   final prices = priceSnapshot.data;
-            //   if (prices != null && prices.isNotEmpty) {
-            //     price = "\$" + prices.values.reduce((a, b) => a + b).toStringAsFixed(2);
-            //   }
-            // }
+            if (priceSnapshot.connectionState == ConnectionState.waiting) {
+              price = "\$..."; // Cargando precios
+            } else if (priceSnapshot.hasError) {
+              price = "Error"; // Error al cargar los precios
+            } else if (priceSnapshot.hasData) {
+              final prices = priceSnapshot.data;
+              if (prices != null && prices.isNotEmpty) {
+                // Suma de precios y formateo
+                price = "\$" +
+                    prices.values.reduce((a, b) => a + b).toStringAsFixed(2);
+              } else {
+                price = "No precios disponibles"; // Cuando no hay precios
+              }
+            }
 
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 if (index == 0) ...[
-                  Text("Recomendado", style: Textstyles.titleStyle()),
+                  Center(
+                      child:
+                          Text("Recomendado", style: Textstyles.titleStyle())),
                   SizedBox(height: screenHeight * 0.02),
                 ],
                 if (index == 2) ...[
@@ -146,7 +158,8 @@ class MercadosList extends StatelessWidget {
                   },
                   child: Container(
                     decoration: ContainerStyle.buttonContainerDec(),
-                    padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 12.0),
+                    padding:
+                        EdgeInsets.symmetric(vertical: 8.0, horizontal: 12.0),
                     child: Row(
                       children: [
                         // Ajustamos el texto del nombre del mercado
@@ -154,11 +167,13 @@ class MercadosList extends StatelessWidget {
                           child: Text(
                             currentName,
                             style: Textstyles.semiBoldStyle(),
-                            overflow: TextOverflow.ellipsis, // Trunca el texto largo
+                            overflow:
+                                TextOverflow.ellipsis, // Trunca el texto largo
                             maxLines: 1, // Solo muestra una línea
                           ),
                         ),
-                        SizedBox(width: 10), // Espacio entre el nombre y el precio
+                        SizedBox(
+                            width: 10), // Espacio entre el nombre y el precio
                         Text(
                           price,
                           style: Textstyles.semiBoldStyle(),
@@ -175,8 +190,6 @@ class MercadosList extends StatelessWidget {
       },
     );
   }
-}
-
 
 // Metodo para abrir Google Maps con las coordenadas.
   void _launchMaps(double lat, double lng) async {
@@ -189,4 +202,4 @@ class MercadosList extends StatelessWidget {
       throw Exception('No se pudo abrir Google Maps.');
     }
   }
-
+}

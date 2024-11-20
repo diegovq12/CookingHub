@@ -12,82 +12,82 @@ class BingServices {
   Future<Map<String, double>> getProductsPrice(
       List<String> products, String market) async {
     Map<String, double> preciosPorProducto = {};
+    print("Mercado: $market");
+    // Iterar sobre los productos
     for (String product in products) {
-      final query = '$product $market precio';
+      final query = '$product precio en $market, solamente quiero saber precio';
       final url = Uri.parse('$endpoint?q=$query');
       final headers = {
         'Ocp-Apim-Subscription-Key': apiKey,
       };
-      final response = await http.get(url, headers: headers);
 
-      if (response.statusCode == 200) {
-        final data = json.decode(response.body);
-        final resultados = data['webPages']['value'];
-        for (var resultado in resultados) {
-          final snippet = resultado['snippet'];
-          final price = _getPriceFromString(snippet);
-          if (price != null) {
-            preciosPorProducto[product] = double.parse(price);
-            break;
+      try {
+        final response = await http.get(url, headers: headers);
+
+        // Validar respuesta de la API
+        if (response.statusCode == 200) {
+          final data = json.decode(response.body);
+
+          // Validar si existen resultados en la API
+          if (data['webPages'] != null && data['webPages']['value'] != null) {
+            final resultados = data['webPages']['value'];
+            print(resultados);
+            // Intentar extraer precio valido
+            double? precioValido = _extractValidPrice(resultados);
+
+            if (precioValido != null) {
+              preciosPorProducto[product] = precioValido;
+            } else {
+              // Si no se encuentra precio valido, ignorar este producto
+              print(
+                  "No se encontró un precio valido para $product en $market.");
+            }
+          } else {
+            print("Sin resultados relevantes para $product en $market.");
           }
+        } else {
+          print("Error en la API: ${response.statusCode}");
         }
+      } catch (e) {
+        print("Error al consultar precios: $e");
       }
     }
+
+    print("Precios encontrados: $preciosPorProducto");
     return preciosPorProducto;
   }
 
+// Función para extraer un precio valido de los resultados
+  double? _extractValidPrice(List<dynamic> resultados) {
+    for (var resultado in resultados) {
+      final snippet = resultado['snippet'];
+      final priceString = _getPriceFromString(snippet);
 
-// honestamente no entiendo completamente esto pero chatsito me dijo que era una buena manera de extraer 
-// el precio de la respuesta de bing
-  String? _getPriceFromString(String texto) {
-    final regex = RegExp(r'(\d+(\.\d{1,2})?)');
-    final match = regex.firstMatch(texto);
-    return match?.group(0);
-  }
+      if (priceString != null) {
+        final price = double.tryParse(priceString);
 
-  Map<String, double> getTotalByMarket(
-      Map<String, Map<String, double>> priceByMarket) {
-    Map<String, double> totalByMarket = {};
-
-    priceByMarket.forEach((market, products) {
-      final total = products.values.reduce((a, b) => a + b);
-      totalByMarket[market] = total;
-    });
-
-    return totalByMarket;
-  }
-
-  String? findBestMarket(Map<String, double> totalByMarket) {
-    String? bestMarket;
-    double minPrice = double.infinity;
-
-    totalByMarket.forEach((market, total) {
-      if (total < minPrice) {
-        minPrice = total;
-        bestMarket = market;
+        // Validar precios dentro de un rango razonable
+        if (price != null && price > 0 && price < 10000) {
+          return price;
+        }
       }
-    });
-
-    return bestMarket;
+    }
+    return null; // Si no se encuentra un precio valido
   }
 
+  String? _getPriceFromString(String texto) {
+    // Regex para capturar numeros con contexto claro de precio
+    final regex = RegExp(
+        r'(?:(?:\$|MXN|USD|precio:?)\s?\d{1,3}(?:[,\.]\d{3})*(?:\.\d{1,2})?)');
+    final match = regex.firstMatch(texto);
 
-Future<Map<String, double>> getPricesByMarket(List<String> products, String marketName) async {
-  // Obtener coordenadas del mercado a partir del nombre utilizando la API de Google Maps
-  Map<String, double> pricesByMarket = {};
+    if (match != null) {
+      String matchedPrice = match.group(0)!;
+      matchedPrice = matchedPrice.replaceAll(
+          RegExp(r'[^\d.]'), ''); // Limpiar caracteres extraños
+      return matchedPrice;
+    }
 
-  try {
-    // Obtener precios de productos para este mercado
-    Map<String, double> productsPrice = await getProductsPrice(products, marketName);
-
-    // Sumar precios de productos para calcular el total en el supermercado
-    final total = productsPrice.values.reduce((a, b) => a + b);
-    pricesByMarket[marketName] = total;
-  } catch (e) {
-    logger.d('Error al obtener precios para $marketName: $e');
+    return null; // Retornar nulo si no hay coincidencias validas
   }
-
-  return pricesByMarket;
-}
-
 }
