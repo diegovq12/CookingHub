@@ -1,3 +1,6 @@
+import 'package:cooking_hub/domain/entities/recipe_model.dart';
+import 'package:cooking_hub/domain/entities/user_model.dart';
+import 'package:cooking_hub/services/user_service.dart';
 import 'package:flutter/material.dart';
 import 'package:cooking_hub/widgets/shared/background_image.dart';
 import 'package:cooking_hub/widgets/shared/hot_bar.dart';
@@ -12,15 +15,63 @@ class RecetasGuardadas extends StatefulWidget{
 }
 
 class _RecetasGuardadas extends State<RecetasGuardadas>{
-  
-  List<String> recipes = [
-    "Lista1","Lista2","Lista52"
-  ];
+
+  bool loadedBand = false;
+
+  List<String> recipes = [];
+
+  void loadrecipes() async {
+    var user = await UserService.getUsers("673516bd55397c8475000000");
+
+    if (user == null) {
+      return;
+    }
+
+    for(int i =0;i<user.listFavoriteRecipes.length;i++){
+      recipes.add(user.listFavoriteRecipes[i].name);
+    }
+
+    loadedBand=true;
+    
+    setState(() {
+      
+    });
+  }
+
+  Future<void> deleteRecipe(int index)async{
+    var user = await UserService.getUsers("673516bd55397c8475000000");
+
+    if (user == null) {
+      return;
+    }
+    await UserService.deleteFavoriteRecipe("673516bd55397c8475000000", user.listFavoriteRecipes[index]);
+    recipes.removeAt(index);
+    setState(() {
+      
+    });
+  }
+
+  Future<void> addRecipe(String newRecipe)async{
+    
+    List<String> nulo = [];
+    Recipe temp=Recipe(name: newRecipe, region: "", ingredients: nulo, steps: nulo);
+    
+    await UserService.addFavoriteRecipe("673516bd55397c8475000000", temp);
+    recipes.add(newRecipe);
+    setState(() {
+      
+    });
+    
+  }
   
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
+
+    if(!loadedBand) {
+      loadrecipes();
+    }
 
     return SafeArea(
       child: Scaffold(
@@ -89,7 +140,7 @@ class _RecetasGuardadas extends State<RecetasGuardadas>{
                               children: [
                                 InkWell(
                                   onTap: (){
-                                    Navigator.of(context).push(MaterialPageRoute(builder: (context)=>RecetaGS()));
+                                    Navigator.of(context).push(MaterialPageRoute(builder: (context)=>RecetaGS(index)));
                                   },
                                   child: Text("• ${recipes[index]}", style: Textstyles.normalStyle(),)
                                 ),
@@ -168,9 +219,16 @@ class _RecetasGuardadas extends State<RecetasGuardadas>{
                     InkWell(
                       onTap: (){
                         setState(() {  
-                          createNewRecipe(screenWidth, screenHeight);
-                          Navigator.of(context).pop(true);
-                          recipeOK(context, screenWidth, screenHeight);
+                          // createNewRecipe(screenWidth, screenHeight);
+                          if(nameController.text.toString() != "")
+                          {
+                            addRecipe(nameController.text.toString());
+                            // Navigator.of(context).pop(true);
+                            recipeOK(context, screenWidth, screenHeight);
+                          }
+                          else{
+                            Navigator.of(context).pop(true);
+                          }
                         });
                       },
                       child: Text("Confirmar",style: Textstyles.normalStyle(),),
@@ -295,9 +353,10 @@ class _RecetasGuardadas extends State<RecetasGuardadas>{
                       ),
                     ),
                     InkWell(
-                      onTap: (){
-                        setState(() {
-                          recipes.removeAt(index);
+                      onTap: ()async{
+                        setState(() async{
+                          // recipes.removeAt(index);
+                          await deleteRecipe(index);
                           Navigator.of(context).pop(true);
                         });
                       },
@@ -335,9 +394,11 @@ class _RecetasGuardadas extends State<RecetasGuardadas>{
 }
 
 
-
 class RecetaGS extends StatefulWidget{
-  const RecetaGS({super.key});
+  final int selected;
+
+  RecetaGS(this.selected);
+  // const RecetaGS({super.key,});
 
   @override
   State<StatefulWidget> createState() => _RecetaGS();
@@ -345,14 +406,128 @@ class RecetaGS extends StatefulWidget{
 
 class _RecetaGS extends State<RecetaGS>{
 
-  List<String>ingredients=["1 Manzana","12 Manwdadzana","5 Orange"];
-  List<String>tutorial=["amazar","aplanar","disfrutar","disfrutar","disfrutar","disfrutar","disfrutar"];
+  List<String>ingredients=[];
+  List<String>tutorial=[];
+  String title="Cargando...";
+
+  int selected=0;
+
+  bool loadedBand=false;
+
+  void loadData(int index)async{
+    var usuario = await UserService.getUsers("673516bd55397c8475000000");
+    
+    if(usuario == null){
+      return;
+    }
+
+    title= usuario.listFavoriteRecipes[index].name;
+
+    for(int i=0;i<usuario.listFavoriteRecipes[index].ingredients.length;i++){
+      ingredients.add(usuario.listFavoriteRecipes[index].ingredients[i]);
+    }
+    
+    for(int i=0;i<usuario.listFavoriteRecipes[index].steps.length;i++){
+      tutorial.add(usuario.listFavoriteRecipes[index].steps[i]);
+    }
+
+    loadedBand=true;
+
+    setState(() {
+      
+    });
+  }
+
+  Future<void> addIngredient(String newIng)async{
+    var usuario = await UserService.getUsers("673516bd55397c8475000000");
+
+    if(usuario == null){
+      return;
+    }
+
+    await UserService.addOfIngredients_Steps("673516bd55397c8475000000", selected, "ingredients", newIng);
+    ingredients.add(newIng);
+    setState(() {
+      
+    });
+  }
+
+  Future<void> modifyIngredient(int index ,String newIng)async{
+    var usuario = await UserService.getUsers("673516bd55397c8475000000");
+    if(usuario == null){
+      return;
+    }
+
+    await UserService.modifyElementOfFavoriteList("673516bd55397c8475000000", selected, "ingredients", newIng,index);
+    ingredients[index]=newIng;
+    setState(() {
+      
+    });
+  }
+
+  Future<void> deleteIngredient(int index)async{
+    var usuario = await UserService.getUsers("673516bd55397c8475000000");
+    if(usuario == null){
+      return;
+    }
+
+    await UserService.deleteOfListIngredients_Steps("673516bd55397c8475000000", selected, "ingredients", ingredients[index]);
+    ingredients.removeAt(index);
+    setState(() {
+      
+    });
+  }
   
+  Future<void> addStep(String step)async{
+    var usuario = await UserService.getUsers("673516bd55397c8475000000");
+    if(usuario == null){
+      return;
+    }
+
+    await UserService.addOfIngredients_Steps("673516bd55397c8475000000", selected, "steps", step);
+    tutorial.add(step);
+    setState(() {
+      
+    });
+  }
+
+  Future<void> modifyStep(int index ,String newStep)async{
+    var usuario = await UserService.getUsers("673516bd55397c8475000000");
+    if(usuario == null){
+      return;
+    }
+
+    await UserService.modifyElementOfFavoriteList("673516bd55397c8475000000", selected, "steps", newStep,index);
+    tutorial[index]=newStep;
+    setState(() {
+      
+    });
+  }
+
+  Future<void> deleteStep(int index)async{
+    var usuario = await UserService.getUsers("673516bd55397c8475000000");
+    if(usuario == null){
+      return;
+    }
+
+    await UserService.deleteOfListIngredients_Steps("673516bd55397c8475000000", selected, "steps", tutorial[index]);
+    tutorial.removeAt(index);
+    setState(() {
+      
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
     
+    selected = widget.selected;
+
+    if(!loadedBand){
+      loadData(selected);
+    }
+
     return SafeArea(
       child: Scaffold(
         body: Stack(
@@ -364,7 +539,7 @@ class _RecetaGS extends State<RecetaGS>{
               height: screenHeight*0.1,
               width: screenWidth,
               alignment: Alignment.center,
-              child: Text("RecetaSeleccionada",style: Textstyles.recipesGtitleStyle(),),
+              child: Text(title,style: Textstyles.recipesGtitleStyle(),),
             ),
 
             Container(
@@ -598,8 +773,9 @@ class _RecetaGS extends State<RecetaGS>{
                       ),
                     ),
                     InkWell(
-                      onTap: (){
-                        deleteIng(index,screenWidth,screenHeight);
+                      onTap: ()async{
+                        // deleteIng(index,screenWidth,screenHeight);
+                        await deleteIngredient(index);
                         Navigator.of(context).pop(true);
                         deleteOk(context, screenWidth, screenHeight);
                       },
@@ -651,8 +827,9 @@ class _RecetaGS extends State<RecetaGS>{
                       ),
                     ),
                     InkWell(
-                      onTap: (){
-                        deleteInst(index,screenWidth,screenHeight);
+                      onTap: ()async{
+                        // deleteInst(index,screenWidth,screenHeight);
+                        await deleteStep(index);
                         Navigator.of(context).pop(true);
                         deleteOk(context, screenWidth, screenHeight);
                       },
@@ -815,11 +992,12 @@ class _RecetaGS extends State<RecetaGS>{
                         ),
                         InkWell(
                           onTap: () {
-                            setState(() {
+                            setState(()async {
                               String newKey = ingNameControl.text.toString();
                               String newAmo = ingAmountControl.text.toString();
                               String newIng = "$newAmo $newKey";
-                              ingredients[index] = newIng;
+                              // ingredients[index] = newIng;
+                              await modifyIngredient(index, newIng);
                               limpiarIng();
                               Navigator.pop(context);
                             });
@@ -917,14 +1095,15 @@ class _RecetaGS extends State<RecetaGS>{
                         ),
                         InkWell(
                           onTap: () {
-                            setState(() {
+                            setState(() async{
                               String newIng = instController.text.toString();
                               if(newIng == ''){
                                 campoVacio(context, screenWidth, screenHeight);
                               }
                               else
                               {
-                                tutorial[index] = newIng;
+                                // tutorial[index] = newIng;
+                                await modifyStep(index, newIng);
                                 limpiarTut();
                                 Navigator.pop(context);
                               }
@@ -964,6 +1143,7 @@ class _RecetaGS extends State<RecetaGS>{
   }
 
   Future<dynamic> tutAddSection(BuildContext context, double screenHeight,double screenWidth, int length) {
+    limpiarTut();
     return showModalBottomSheet(
       context: context,
       isScrollControlled: true, // Permite que el teclado suba el BottomSheet
@@ -1022,15 +1202,16 @@ class _RecetaGS extends State<RecetaGS>{
                             ),
                           ),
                           InkWell(
-                            onTap: () {
-                              setState(() {
+                            onTap: () async{
+                              setState(()async {
                                 String newIng = instController.text.toString();
                                 if(newIng == ''){
                                   campoVacio(context, screenWidth, screenHeight);
                                 }
                                 else
                                 {
-                                  tutorial.add(newIng);
+                                  // tutorial.add(newIng);
+                                  await addStep(newIng);
                                   limpiarTut();
                                   Navigator.pop(context);
                                 }
@@ -1123,15 +1304,16 @@ class _RecetaGS extends State<RecetaGS>{
                             ),
                           ),
                           InkWell(
-                            onTap: () {
-                              setState(() {
-                                String newIng = ingNameControl.text.toString() + ingAmountControl.text.toString();
-                                if(newIng == ''){
+                            onTap: () async{
+                              setState(() async{
+                                String newIng = ingAmountControl.text.toString() + " "+ ingNameControl.text.toString();
+                                if(ingNameControl.text.toString() == "" || ingAmountControl.text.toString() == "" ){
                                   campoVacio(context, screenWidth, screenHeight);
                                 }
                                 else
                                 {
-                                  ingredients.add(newIng);
+                                  // ingredients.add(newIng);
+                                  await addIngredient(newIng);
                                   limpiarIng();
                                   Navigator.pop(context);
                                 }
@@ -1186,6 +1368,7 @@ class _RecetaGS extends State<RecetaGS>{
                               InkWell(
                                 onTap: (){
                                   int length = ingredients.length;
+                                  limpiarIng();
                                   ingAddSection(context, screenHeight, screenWidth, length);
                                 },
                                 child: Text("+ Agregar",style: Textstyles.addStyle(),)

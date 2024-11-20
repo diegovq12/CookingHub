@@ -31,7 +31,6 @@ Future<String> sendTextCompletionRequest(String message) async {
     "max_tokens": 550,
     "temperature": 0.7,
   });
-
   try {
     final response = await http.post(
       Uri.parse(baseUrl),
