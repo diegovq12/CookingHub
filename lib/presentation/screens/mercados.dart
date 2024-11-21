@@ -162,7 +162,7 @@ class MercadosList extends StatelessWidget {
                         Expanded(
                           child: Text(
                             currentName,
-                            style: Textstyles.semiBoldStyle(),
+                            style: Textstyles.semiBoldStyle2(),
                             overflow:
                                 TextOverflow.ellipsis, // Trunca el texto largo
                             maxLines: 1, // Solo muestra una línea
@@ -172,7 +172,7 @@ class MercadosList extends StatelessWidget {
                             width: 10), // Espacio entre el nombre y el precio
                         Text(
                           price,
-                          style: Textstyles.semiBoldStyle(),
+                          style: Textstyles.semiBoldStyle2(),
                         ),
                       ],
                     ),

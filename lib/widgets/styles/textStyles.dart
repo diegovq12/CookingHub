@@ -14,5 +14,7 @@ class Textstyles {
   static TextStyle recipesGtitleStyle() => const TextStyle(color: Colors.white, fontFamily: "Poppins",fontSize: 28, fontWeight: FontWeight.bold);
 
   static TextStyle semiBoldStyle() => const TextStyle(color: Colors.white, fontFamily: "Poppins",fontSize: 26, fontWeight: FontWeight.bold);
+  
+  static TextStyle semiBoldStyle2() => const TextStyle(color: Colors.white, fontFamily: "Poppins",fontSize: 18, fontWeight: FontWeight.bold);
 
 }
