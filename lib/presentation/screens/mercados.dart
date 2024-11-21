@@ -8,7 +8,8 @@ import 'package:cooking_hub/widgets/styles/containerStyle.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class Mercados extends StatefulWidget {
-  const Mercados({super.key});
+  const Mercados({super.key, required this.ingredients});
+  final List<String> ingredients;
 
   @override
   State<StatefulWidget> createState() => _Mercados();
@@ -68,8 +69,9 @@ class _Mercados extends State<Mercados> {
                           return MercadosList(
                             mercados: snapshot.data!,
                             screenHeight: screenHeight,
-                            bingServices:
-                                BingServices(), // Pasamos el servicio de Bing
+                            bingServices: BingServices(),
+                            ingredients: widget
+                                .ingredients, // Pasamos el servicio de Bing
                           );
                         }
                       },
@@ -87,17 +89,17 @@ class _Mercados extends State<Mercados> {
 }
 
 class MercadosList extends StatelessWidget {
-  const MercadosList({
-    super.key,
-    required this.mercados,
-    required this.screenHeight,
-    required this.bingServices, // Instancia de BingServices pasada desde el constructor
-  });
+  const MercadosList(
+      {super.key,
+      required this.mercados,
+      required this.screenHeight,
+      required this.bingServices,
+      required this.ingredients});
 
   final List<Map<String, dynamic>> mercados;
   final double screenHeight;
   final BingServices bingServices;
-
+  final List<String> ingredients;
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
@@ -108,13 +110,7 @@ class MercadosList extends StatelessWidget {
         double lng = mercados[index]['lng'];
 
         return FutureBuilder<Map<String, double>>(
-          future: bingServices.getProductsPrice(
-            [
-              "galon de leche",
-              "cartera de huevos",
-              "250 gr de tomate",
-              "100 gr jamon"
-            ], // Lista de productos de prueba
+          future: bingServices.getProductsPrice(ingredients,
             currentName,
           ),
           builder: (context, priceSnapshot) {
@@ -129,8 +125,8 @@ class MercadosList extends StatelessWidget {
               final prices = priceSnapshot.data;
               if (prices != null && prices.isNotEmpty) {
                 // Suma de precios y formateo
-                price = "\$" +
-                    prices.values.reduce((a, b) => a + b).toStringAsFixed(2);
+                price =
+                    "\$${prices.values.reduce((a, b) => a + b).toStringAsFixed(2)}";
               } else {
                 price = "No precios disponibles"; // Cuando no hay precios
               }

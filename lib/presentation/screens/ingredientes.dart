@@ -120,36 +120,35 @@ class _ingredientes extends State<ingredientes> {
       top: screenHeight * 0.07, // Ajusta para sobresalir en la parte superior
       left: screenWidth * 0.1,
       right: screenWidth * 0.1,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 5,vertical: 0),
-        child: Container(
-          height: screenHeight * 0.08, // Provide a bounded height
-          decoration: titleDecoration(),
-          child: Center(
-            child: chatProvider.recipeNamesList.isEmpty
-                ? Text(
-                    "", // Mostrar nada si la lista esta vacía
-                    style: titleStyle(),
-                    textAlign: TextAlign.center,
-                  )
-                : ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: 1, 
-                    itemBuilder: (context, index) {
-                      return Center(
-                        child: Text(
-                          chatProvider
-                              .recipeNamesList.last, // Mostrar el ultimo elemento
-                          style: titleStyle(),
-                          textAlign: TextAlign.center,
-                        ),
-                      );
-                    },
-                  ),
+      child: Expanded(
+          child: Container(
+            height: screenHeight * 0.08, // Provide a bounded height
+            decoration: titleDecoration(),
+            child: Center(
+              child: chatProvider.recipeNamesList.isEmpty
+                  ? Text(
+                      "", // Mostrar nada si la lista esta vacía
+                      style: titleStyle(),
+                      textAlign: TextAlign.center,
+                    )
+                  : ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: 1, 
+                      itemBuilder: (context, index) {
+                        return Center(
+                          child: Text(
+                            chatProvider
+                                .recipeNamesList.last, // Mostrar el ultimo elemento
+                            style: titleStyle(),
+                            textAlign: TextAlign.center,
+                          ),
+                        );
+                      },
+                    ),
+            ),
           ),
         ),
-      ),
-    );
+      );
   }
 
   InkWell allSetButton() {

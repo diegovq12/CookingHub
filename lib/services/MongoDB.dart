@@ -1,32 +1,32 @@
 import 'CONST-DB.dart';
 import 'package:mongo_dart/mongo_dart.dart';
 
+/*
+  id1 = 672842c9368c80edf2000000
+  id2= 673516bd55397c8475000000
+*/
+
 class Mongodb {
   //VARIABLE QUE REPRESENTA LA COLECCION A LA QUE SE QUIERE CONECTAR
   static late DbCollection ActualCollection;
   static Db? db;
 
   //SE CONECTA A LA BASE DE DATOS
-static Future<void> ConnecWhitMongo() async {
-  db ??= await Db.create(CONNECTIONDB);
-  if (db!.state != State.open) {
+  static Future<void> ConnectWhitMongo() async {
+    db = await Db.create(
+        CONNECTIONDB); //AQUI SE AGREGA LA VARIABLE CREADA EN  CONST_DB
     try {
       await db!.open();
-      print("Conexión exitosa");
+      print("Conexion exitosa");
     } catch (e) {
       print("Error al conectar: $e");
-      rethrow; // Volver a lanzar la excepción para que se gestione correctamente.
     }
-  } else {
-    print("La base de datos ya está abierta");
   }
-}
-
-  
 
   //CIERRA LA CONEXION CON LA BASE DE DATOS
   static Future<void> closeConnection() async {
     db!.close();
+    print("Conexion cerrada");
   }
 
   static Future<void> insertRecipe(newRecipe) async {

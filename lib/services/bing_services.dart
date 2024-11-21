@@ -11,6 +11,8 @@ class BingServices {
 
   Future<Map<String, double>> getProductsPrice(
       List<String> products, String market) async {
+    print("ingredientes recibidos: ${products.toString()}");
+
     Map<String, double> preciosPorProducto = {};
     print("Mercado: $market");
     // Iterar sobre los productos
@@ -40,7 +42,7 @@ class BingServices {
             } else {
               // Si no se encuentra precio valido, ignorar este producto
               print(
-                  "No se encontró un precio valido para $product en $market.");
+                  "No se encontro un precio valido para $product en $market.");
             }
           } else {
             print("Sin resultados relevantes para $product en $market.");
@@ -57,7 +59,7 @@ class BingServices {
     return preciosPorProducto;
   }
 
-// Función para extraer un precio valido de los resultados
+// Funcion para extraer un precio valido de los resultados
   double? _extractValidPrice(List<dynamic> resultados) {
     for (var resultado in resultados) {
       final snippet = resultado['snippet'];
@@ -67,7 +69,7 @@ class BingServices {
         final price = double.tryParse(priceString);
 
         // Validar precios dentro de un rango razonable
-        if (price != null && price > 0 && price < 10000) {
+        if (price != null && price > 0 && price < 1000) {
           return price;
         }
       }
