@@ -12,10 +12,10 @@ class Recipe {
 
   factory Recipe.fromJson(Map<String, dynamic> json) {
     return Recipe(
-      name: json['nombre'] as String? ?? 'Desconocido', // Valor por defecto
+      name: json['name'] as String? ?? 'Desconocido', // Valor por defecto
       region: json['region'] as String? ?? 'Desconocida', // Valor por defecto
       ingredients:
-          List<String>.from(json['ingredientes'] ?? []), // Manejo de null
+          List<String>.from(json['ingredients'] ?? []), // Manejo de null
       steps: List<String>.from(json['pasos'] ?? []), // Manejo de null
     );
   }
