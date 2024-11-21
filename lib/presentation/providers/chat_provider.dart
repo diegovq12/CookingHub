@@ -13,7 +13,7 @@ class ChatProvider extends ChangeNotifier {
   List<Message> messageList = [
     Message(
         text:
-            '¡Hola! Soy CookBot, tu asistente en la cocina. ¿Listo para sorprender a tu paladar? ¡Dime qué se te antoja y juntos cocinemos algo increíble!',
+            '¡Hola! Soy CookBot, tu asistente en la cocina. ¿Listo para sorprender a tu paladar? ¡Dime qué se te antoja y juntos cocinemos algo increíble! Ejemplo: Receta de pizza',
         fromWho: FromWho.gpt)
   ];
 
