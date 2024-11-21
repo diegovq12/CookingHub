@@ -13,7 +13,7 @@ class UserService {
 
   static Future<User?> getUsers(String id) async{
     await Mongodb.ConnectWhitMongo();
-    final userRecovery = Mongodb.userCollection;
+    final userRecovery = await Mongodb.userCollection;
     var userResult = await userRecovery.findOne(where.id(ObjectId.parse(id)));
     await Mongodb.closeConnection();
 
@@ -41,7 +41,7 @@ class UserService {
 
   //Modifica un elemento de la una de las listas de ingredientes
   static Future<void> modifyListOfIngredients(String id, List<String> newList, int indexList) async{
-    String listCon = 'listOfIngredients.$indexList';
+    String listCon = 'listOfIngredients.' + indexList.toString();
     await Mongodb.ConnectWhitMongo();
     await Mongodb.userCollection.updateOne(where.id(ObjectId.parse(id)), modify.set(listCon, newList));
     await Mongodb.closeConnection();
@@ -56,14 +56,14 @@ class UserService {
 
   //Modifica un solo ingrediente de una de las lista de ingredientes
   static Future<void> modifyIngredientInList(String id, int indexPrimaryList, int indexSecondaryList, String newIngredient) async{
-    String listCon = 'listOfIngredients.$indexPrimaryList.$indexSecondaryList';
+    String listCon = 'listOfIngredients.' + indexPrimaryList.toString() + '.' + indexSecondaryList.toString();
     await Mongodb.ConnectWhitMongo();
     await Mongodb.userCollection.updateOne(where.id(ObjectId.parse(id)), modify.set(listCon, newIngredient));
     await Mongodb.closeConnection();
   }
   //Elimina un solo ingrediente de una lista de recetas
   static Future<void> deleteIngredientInList(String id, int indexPrimaryList, String removeIngredient) async{
-    String listCon = 'listOfIngredients.$indexPrimaryList';
+    String listCon = 'listOfIngredients.' + indexPrimaryList.toString();
     await Mongodb.ConnectWhitMongo();
     await Mongodb.userCollection.updateOne(where.id(ObjectId.parse(id)), modify.pull(listCon, removeIngredient));
     await Mongodb.closeConnection();

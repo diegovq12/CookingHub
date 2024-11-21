@@ -1,5 +1,9 @@
 import 'package:cooking_hub/domain/entities/recipe_model.dart';
+<<<<<<< HEAD
 import 'package:cooking_hub/presentation/screens/mercados.dart';
+=======
+import 'package:cooking_hub/domain/entities/user_model.dart';
+>>>>>>> dce6bb2042a2d6d257517c3870b4474d549bdf9d
 import 'package:cooking_hub/services/user_service.dart';
 import 'package:flutter/material.dart';
 import 'package:cooking_hub/widgets/shared/background_image.dart';
@@ -14,7 +18,12 @@ class RecetasGuardadas extends StatefulWidget {
   State<StatefulWidget> createState() => _RecetasGuardadas();
 }
 
+<<<<<<< HEAD
 class _RecetasGuardadas extends State<RecetasGuardadas> {
+=======
+class _RecetasGuardadas extends State<RecetasGuardadas>{
+
+>>>>>>> dce6bb2042a2d6d257517c3870b4474d549bdf9d
   bool loadedBand = false;
 
   List<String> recipes = [];
@@ -26,6 +35,7 @@ class _RecetasGuardadas extends State<RecetasGuardadas> {
       return;
     }
 
+<<<<<<< HEAD
     for (int i = 0; i < user.listFavoriteRecipes.length; i++) {
       recipes.add(user.listFavoriteRecipes[i].name);
     }
@@ -36,11 +46,26 @@ class _RecetasGuardadas extends State<RecetasGuardadas> {
   }
 
   Future<void> deleteRecipe(int index) async {
+=======
+    for(int i =0;i<user.listFavoriteRecipes.length;i++){
+      recipes.add(user.listFavoriteRecipes[i].name);
+    }
+
+    loadedBand=true;
+    
+    setState(() {
+      
+    });
+  }
+
+  Future<void> deleteRecipe(int index)async{
+>>>>>>> dce6bb2042a2d6d257517c3870b4474d549bdf9d
     var user = await UserService.getUsers("673516bd55397c8475000000");
 
     if (user == null) {
       return;
     }
+<<<<<<< HEAD
     await UserService.deleteFavoriteRecipe(
         "673516bd55397c8475000000", user.listFavoriteRecipes[index]);
     recipes.removeAt(index);
@@ -57,14 +82,67 @@ class _RecetasGuardadas extends State<RecetasGuardadas> {
     setState(() {});
   }
 
+=======
+    await UserService.deleteFavoriteRecipe("673516bd55397c8475000000", user.listFavoriteRecipes[index]);
+    recipes.removeAt(index);
+    setState(() {
+      
+    });
+  }
+
+  Future<void> addRecipe(String newRecipe)async{
+    
+    List<String> nulo = [];
+    Recipe temp=Recipe(name: newRecipe, region: "", ingredients: nulo, steps: nulo);
+    
+    await UserService.addFavoriteRecipe("673516bd55397c8475000000", temp);
+    recipes.add(newRecipe);
+    setState(() {
+      
+    });
+    
+  }
+  
+>>>>>>> dce6bb2042a2d6d257517c3870b4474d549bdf9d
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
 
+<<<<<<< HEAD
     if (!loadedBand) {
       loadrecipes();
     }
+=======
+    if(!loadedBand) {
+      loadrecipes();
+    }
+
+    return SafeArea(
+      child: Scaffold(
+        body: Stack(
+          children: [
+            BackgroundImage(),
+            
+            // Titulo
+            Container(
+              decoration: ContainerStyle.topContainerDec(),
+              height: screenHeight*0.1,
+              width: screenWidth,
+              alignment: Alignment.center,
+              child: Expanded(child: Center(child: Text("Recetas Guardadas",style: Textstyles.recipesGtitleStyle(),))),
+            ),
+            
+            // Container principal de la lista
+            Container(
+              decoration: ContainerStyle.genContainerDec(),
+              height: screenHeight,
+              width: screenWidth,
+              margin: EdgeInsets.only(top: screenHeight*0.15,),
+              child: 
+                recipesList(screenWidth, screenHeight),
+            ),
+>>>>>>> dce6bb2042a2d6d257517c3870b4474d549bdf9d
 
     return SafeArea(
         child: Scaffold(
@@ -121,6 +199,7 @@ class _RecetasGuardadas extends State<RecetasGuardadas> {
 
   Container recipesList(double screenWidth, double screenHeight) {
     return Container(
+<<<<<<< HEAD
       margin: EdgeInsets.only(left: screenWidth * 0.02),
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -167,6 +246,49 @@ class _RecetasGuardadas extends State<RecetasGuardadas> {
         ],
       ),
     );
+=======
+                margin: EdgeInsets.only(left: screenWidth*0.02),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    SizedBox(height: screenHeight*0.02,),
+                    Expanded(
+                      child: ListView.builder(
+                        itemCount: recipes.length,
+                        itemBuilder: (context,index){
+                          return ListTile(
+                            title: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                InkWell(
+                                  onTap: (){
+                                    Navigator.of(context).push(MaterialPageRoute(builder: (context)=>RecetaGS(index)));
+                                  },
+                                  child: Text("• ${recipes[index]}", style: Textstyles.normalStyle(),)
+                                ),
+                                InkWell(
+                                  onTap: (){
+                                    confirmDelete(context, screenWidth, screenHeight, index);
+                                  },
+                                  child: Container(
+                                    decoration: ContainerStyle.buttonContainerDec(),
+                                    padding: EdgeInsets.symmetric(
+                                      horizontal: 15,
+                                      vertical: 8
+                                    ),
+                                    child: Image.asset("assets/icons/delete.png",width: screenHeight*0.02,),
+                                  )
+                                ),
+                              ],
+                            ),
+                          );
+                        }
+                      ),
+                    )
+                  ],
+                ),
+              );
+>>>>>>> dce6bb2042a2d6d257517c3870b4474d549bdf9d
   }
 
   final TextEditingController nameController = TextEditingController();
@@ -185,6 +307,7 @@ class _RecetasGuardadas extends State<RecetasGuardadas> {
 
   void createNewRecipe(double screenWidth, double screenHeight) {
     showDialog(
+<<<<<<< HEAD
         context: context,
         barrierColor: Colors.black.withOpacity(0.5),
         barrierDismissible: true,
@@ -252,6 +375,61 @@ class _RecetasGuardadas extends State<RecetasGuardadas> {
                   ),
                 ],
               ),
+=======
+      context: context,
+      barrierColor: Colors.black.withOpacity(0.5),
+      barrierDismissible: true,
+      builder: (BuildContext context){
+        return Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(32))
+          ),
+          backgroundColor: Color(0xFFFF8330),
+          child: Padding(
+            padding: EdgeInsets.all(16),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                SizedBox(height: screenHeight*0.01,),
+                Text("Titulo de la receta",style: Textstyles.normalStyle(),),
+                SizedBox(height: screenHeight*0.02,),
+                TextField(
+                  controller: nameController,
+                  decoration: inputBoxName(),
+                ),
+                SizedBox(height: screenHeight*0.02,),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    InkWell(
+                      onTap: (){
+                        Navigator.of(context).pop(true);
+                      },
+                      child: Text("Cancelar",style: Textstyles.normalStyle(),),
+                    ),
+                    
+                    InkWell(
+                      onTap: (){
+                        setState(() {  
+                          // createNewRecipe(screenWidth, screenHeight);
+                          if(nameController.text.toString() != "")
+                          {
+                            addRecipe(nameController.text.toString());
+                            // Navigator.of(context).pop(true);
+                            recipeOK(context, screenWidth, screenHeight);
+                          }
+                          else{
+                            Navigator.of(context).pop(true);
+                          }
+                        });
+                      },
+                      child: Text("Confirmar",style: Textstyles.normalStyle(),),
+                    ),
+                  ],
+                ),
+                SizedBox(height: screenHeight*0.02,),
+              ],
+>>>>>>> dce6bb2042a2d6d257517c3870b4474d549bdf9d
             ),
           );
         });
@@ -390,8 +568,13 @@ class _RecetasGuardadas extends State<RecetasGuardadas> {
                       ),
                     ),
                     InkWell(
+<<<<<<< HEAD
                       onTap: () async {
                         setState(() async {
+=======
+                      onTap: ()async{
+                        setState(() async{
+>>>>>>> dce6bb2042a2d6d257517c3870b4474d549bdf9d
                           // recipes.removeAt(index);
                           await deleteRecipe(index);
                           Navigator.of(context).pop(true);
@@ -431,7 +614,14 @@ class _RecetasGuardadas extends State<RecetasGuardadas> {
 class RecetaGS extends StatefulWidget {
   final int selected;
 
+<<<<<<< HEAD
   const RecetaGS(this.selected, {super.key});
+=======
+class RecetaGS extends StatefulWidget{
+  final int selected;
+
+  RecetaGS(this.selected);
+>>>>>>> dce6bb2042a2d6d257517c3870b4474d549bdf9d
   // const RecetaGS({super.key,});
 
   @override
@@ -544,18 +734,140 @@ class _RecetaGS extends State<RecetaGS> {
     setState(() {});
   }
 
+<<<<<<< HEAD
+=======
+  List<String>ingredients=[];
+  List<String>tutorial=[];
+  String title="Cargando...";
+
+  int selected=0;
+
+  bool loadedBand=false;
+
+  void loadData(int index)async{
+    var usuario = await UserService.getUsers("673516bd55397c8475000000");
+    
+    if(usuario == null){
+      return;
+    }
+
+    title= usuario.listFavoriteRecipes[index].name;
+
+    for(int i=0;i<usuario.listFavoriteRecipes[index].ingredients.length;i++){
+      ingredients.add(usuario.listFavoriteRecipes[index].ingredients[i]);
+    }
+    
+    for(int i=0;i<usuario.listFavoriteRecipes[index].steps.length;i++){
+      tutorial.add(usuario.listFavoriteRecipes[index].steps[i]);
+    }
+
+    loadedBand=true;
+
+    setState(() {
+      
+    });
+  }
+
+  Future<void> addIngredient(String newIng)async{
+    var usuario = await UserService.getUsers("673516bd55397c8475000000");
+
+    if(usuario == null){
+      return;
+    }
+
+    await UserService.addOfIngredients_Steps("673516bd55397c8475000000", selected, "ingredients", newIng);
+    ingredients.add(newIng);
+    setState(() {
+      
+    });
+  }
+
+  Future<void> modifyIngredient(int index ,String newIng)async{
+    var usuario = await UserService.getUsers("673516bd55397c8475000000");
+    if(usuario == null){
+      return;
+    }
+
+    await UserService.modifyElementOfFavoriteList("673516bd55397c8475000000", selected, "ingredients", newIng,index);
+    ingredients[index]=newIng;
+    setState(() {
+      
+    });
+  }
+
+  Future<void> deleteIngredient(int index)async{
+    var usuario = await UserService.getUsers("673516bd55397c8475000000");
+    if(usuario == null){
+      return;
+    }
+
+    await UserService.deleteOfListIngredients_Steps("673516bd55397c8475000000", selected, "ingredients", ingredients[index]);
+    ingredients.removeAt(index);
+    setState(() {
+      
+    });
+  }
+  
+  Future<void> addStep(String step)async{
+    var usuario = await UserService.getUsers("673516bd55397c8475000000");
+    if(usuario == null){
+      return;
+    }
+
+    await UserService.addOfIngredients_Steps("673516bd55397c8475000000", selected, "steps", step);
+    tutorial.add(step);
+    setState(() {
+      
+    });
+  }
+
+  Future<void> modifyStep(int index ,String newStep)async{
+    var usuario = await UserService.getUsers("673516bd55397c8475000000");
+    if(usuario == null){
+      return;
+    }
+
+    await UserService.modifyElementOfFavoriteList("673516bd55397c8475000000", selected, "steps", newStep,index);
+    tutorial[index]=newStep;
+    setState(() {
+      
+    });
+  }
+
+  Future<void> deleteStep(int index)async{
+    var usuario = await UserService.getUsers("673516bd55397c8475000000");
+    if(usuario == null){
+      return;
+    }
+
+    await UserService.deleteOfListIngredients_Steps("673516bd55397c8475000000", selected, "steps", tutorial[index]);
+    tutorial.removeAt(index);
+    setState(() {
+      
+    });
+  }
+
+>>>>>>> dce6bb2042a2d6d257517c3870b4474d549bdf9d
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
+<<<<<<< HEAD
 
     selected = widget.selected;
 
     if (!loadedBand) {
+=======
+    
+    selected = widget.selected;
+
+    if(!loadedBand){
+>>>>>>> dce6bb2042a2d6d257517c3870b4474d549bdf9d
       loadData(selected);
     }
 
     return SafeArea(
+<<<<<<< HEAD
         child: Scaffold(
       body: Stack(
         children: [
@@ -568,6 +880,19 @@ class _RecetaGS extends State<RecetaGS> {
             child: Text(
               title,
               style: Textstyles.recipesGtitleStyle(),
+=======
+      child: Scaffold(
+        body: Stack(
+          children: [
+            BackgroundImage(),
+
+            Container(
+              decoration: ContainerStyle.topContainerDec(),
+              height: screenHeight*0.1,
+              width: screenWidth,
+              alignment: Alignment.center,
+              child: Text(title,style: Textstyles.recipesGtitleStyle(),),
+>>>>>>> dce6bb2042a2d6d257517c3870b4474d549bdf9d
             ),
           ),
           Container(
@@ -812,7 +1137,11 @@ class _RecetaGS extends State<RecetaGS> {
                       ),
                     ),
                     InkWell(
+<<<<<<< HEAD
                       onTap: () async {
+=======
+                      onTap: ()async{
+>>>>>>> dce6bb2042a2d6d257517c3870b4474d549bdf9d
                         // deleteIng(index,screenWidth,screenHeight);
                         await deleteIngredient(index);
                         Navigator.of(context).pop(true);
@@ -877,7 +1206,11 @@ class _RecetaGS extends State<RecetaGS> {
                       ),
                     ),
                     InkWell(
+<<<<<<< HEAD
                       onTap: () async {
+=======
+                      onTap: ()async{
+>>>>>>> dce6bb2042a2d6d257517c3870b4474d549bdf9d
                         // deleteInst(index,screenWidth,screenHeight);
                         await deleteStep(index);
                         Navigator.of(context).pop(true);
@@ -1063,7 +1396,11 @@ class _RecetaGS extends State<RecetaGS> {
                         ),
                         InkWell(
                           onTap: () {
+<<<<<<< HEAD
                             setState(() async {
+=======
+                            setState(()async {
+>>>>>>> dce6bb2042a2d6d257517c3870b4474d549bdf9d
                               String newKey = ingNameControl.text.toString();
                               String newAmo = ingAmountControl.text.toString();
                               String newIng = "$newAmo $newKey";
@@ -1174,11 +1511,21 @@ class _RecetaGS extends State<RecetaGS> {
                         ),
                         InkWell(
                           onTap: () {
+<<<<<<< HEAD
                             setState(() async {
+=======
+                            setState(() async{
+>>>>>>> dce6bb2042a2d6d257517c3870b4474d549bdf9d
                               String newIng = instController.text.toString();
                               if (newIng == '') {
                                 campoVacio(context, screenWidth, screenHeight);
+<<<<<<< HEAD
                               } else {
+=======
+                              }
+                              else
+                              {
+>>>>>>> dce6bb2042a2d6d257517c3870b4474d549bdf9d
                                 // tutorial[index] = newIng;
                                 await modifyStep(index, newIng);
                                 limpiarTut();
@@ -1224,8 +1571,12 @@ class _RecetaGS extends State<RecetaGS> {
     );
   }
 
+<<<<<<< HEAD
   Future<dynamic> tutAddSection(BuildContext context, double screenHeight,
       double screenWidth, int length) {
+=======
+  Future<dynamic> tutAddSection(BuildContext context, double screenHeight,double screenWidth, int length) {
+>>>>>>> dce6bb2042a2d6d257517c3870b4474d549bdf9d
     limpiarTut();
     return showModalBottomSheet(
       context: context,
@@ -1286,6 +1637,7 @@ class _RecetaGS extends State<RecetaGS> {
                             ),
                           ),
                           InkWell(
+<<<<<<< HEAD
                             onTap: () async {
                               setState(() async {
                                 String newIng = instController.text.toString();
@@ -1293,6 +1645,16 @@ class _RecetaGS extends State<RecetaGS> {
                                   campoVacio(
                                       context, screenWidth, screenHeight);
                                 } else {
+=======
+                            onTap: () async{
+                              setState(()async {
+                                String newIng = instController.text.toString();
+                                if(newIng == ''){
+                                  campoVacio(context, screenWidth, screenHeight);
+                                }
+                                else
+                                {
+>>>>>>> dce6bb2042a2d6d257517c3870b4474d549bdf9d
                                   // tutorial.add(newIng);
                                   await addStep(newIng);
                                   limpiarTut();
@@ -1391,6 +1753,7 @@ class _RecetaGS extends State<RecetaGS> {
                             ),
                           ),
                           InkWell(
+<<<<<<< HEAD
                             onTap: () async {
                               setState(() async {
                                 String newIng =
@@ -1400,6 +1763,16 @@ class _RecetaGS extends State<RecetaGS> {
                                   campoVacio(
                                       context, screenWidth, screenHeight);
                                 } else {
+=======
+                            onTap: () async{
+                              setState(() async{
+                                String newIng = ingAmountControl.text.toString() + " "+ ingNameControl.text.toString();
+                                if(ingNameControl.text.toString() == "" || ingAmountControl.text.toString() == "" ){
+                                  campoVacio(context, screenWidth, screenHeight);
+                                }
+                                else
+                                {
+>>>>>>> dce6bb2042a2d6d257517c3870b4474d549bdf9d
                                   // ingredients.add(newIng);
                                   await addIngredient(newIng);
                                   limpiarIng();
@@ -1431,6 +1804,7 @@ class _RecetaGS extends State<RecetaGS> {
 
   Expanded ingredientsList(double screenHeight, double screenWidth) {
     return Expanded(
+<<<<<<< HEAD
       child: ListView.builder(
           itemCount: ingredients.length + 1,
           itemBuilder: (context, index) {
@@ -1476,6 +1850,48 @@ class _RecetaGS extends State<RecetaGS> {
             );
           }),
     );
+=======
+                  child: ListView.builder(
+                    itemCount: ingredients.length+1,
+                    itemBuilder: (context,index){
+                      return ListTile(
+                        title: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            if(index <= ingredients.length-1)...[
+                              Text("• ${ingredients[index]}",style: Textstyles.normalStyle(),),
+                              InkWell(
+                                onTap: (){
+                                  ingEditSection(context, screenHeight, screenWidth, index);
+                                },
+                                child: Container(
+                                  decoration: ContainerStyle.buttonContainerDec(),
+                                  padding: EdgeInsets.symmetric(
+                                    horizontal: 15,
+                                    vertical: 8
+                                  ),
+                                  child: Image.asset("assets/icons/edit2.png",width: screenHeight*0.02,),
+                                )
+                              ),
+                            ],
+                            if(index == ingredients.length)...[
+                              InkWell(
+                                onTap: (){
+                                  int length = ingredients.length;
+                                  limpiarIng();
+                                  ingAddSection(context, screenHeight, screenWidth, length);
+                                },
+                                child: Text("+ Agregar",style: Textstyles.addStyle(),)
+                              )
+                            ]
+                            
+                          ],
+                        ),
+                      );
+                    }
+                  ),
+                );
+>>>>>>> dce6bb2042a2d6d257517c3870b4474d549bdf9d
   }
 
   Expanded tutorialList(double screenHeight, double screenWidth) {
