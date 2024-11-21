@@ -8,56 +8,67 @@ final logger = Logger();
 class BingServices {
   String apiKey = dotenv.env['BING_API_KEY'] ?? 'Clave OpenAI no encontrada';
   final endpoint = 'https://api.bing.microsoft.com/v7.0/search';
+final List<String> whitelistMarkets = ["Soriana", "Walmart", "Ley", "Oxxo"];
 
-  Future<Map<String, double>> getProductsPrice(
-      List<String> products, String market) async {
-    print("ingredientes recibidos: ${products.toString()}");
+Future<Map<String, double>> getProductsPrice(
+    List<String> products, String market) async {
 
-    Map<String, double> preciosPorProducto = {};
-    print("Mercado: $market");
-    // Iterar sobre los productos
-    for (String product in products) {
-      final query = '$product precio en $market, solamente quiero saber precio';
-      final url = Uri.parse('$endpoint?q=$query');
-      final headers = {
-        'Ocp-Apim-Subscription-Key': apiKey,
-      };
+  final lowerWhitelist = whitelistMarkets.map((m) => m.toLowerCase()).toList();
+  final lowerMarketWords = market.toLowerCase().split(' ');
 
-      try {
-        final response = await http.get(url, headers: headers);
+  final hasPartialMatch = lowerMarketWords.any((word) =>
+      lowerWhitelist.any((whitelistItem) => whitelistItem.contains(word)));
 
-        // Validar respuesta de la API
-        if (response.statusCode == 200) {
-          final data = json.decode(response.body);
+  if (!hasPartialMatch) {
+    print("El mercado $market no está en la lista blanca.");
+    return {};
+  }
 
-          // Validar si existen resultados en la API
-          if (data['webPages'] != null && data['webPages']['value'] != null) {
-            final resultados = data['webPages']['value'];
-            print(resultados);
-            // Intentar extraer precio valido
-            double? precioValido = _extractValidPrice(resultados);
+  print("Ingredientes recibidos: ${products.toString()}");
 
-            if (precioValido != null) {
-              preciosPorProducto[product] = precioValido;
-            } else {
-              // Si no se encuentra precio valido, ignorar este producto
-              print(
-                  "No se encontro un precio valido para $product en $market.");
-            }
+  Map<String, double> preciosPorProducto = {};
+  print("Mercado: $market");
+
+  for (String product in products) {
+    final query = '$product precio en $market';
+    final url = Uri.parse('$endpoint?q=$query');
+    final headers = {
+      'Ocp-Apim-Subscription-Key': apiKey,
+    };
+
+    try {
+      final response = await http.get(url, headers: headers);
+
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        print('Data: $data');
+
+        if (data['webPages'] != null && data['webPages']['value'] != null) {
+          final resultados = data['webPages']['value'];
+          print(resultados);
+
+          double? precioValido = _extractValidPrice(resultados);
+
+          if (precioValido != null) {
+            preciosPorProducto[product] = precioValido;
           } else {
-            print("Sin resultados relevantes para $product en $market.");
+            print(
+                "No se encontro un precio válido para $product en $market.");
           }
         } else {
-          print("Error en la API: ${response.statusCode}");
+          print("Sin resultados relevantes para $product en $market.");
         }
-      } catch (e) {
-        print("Error al consultar precios: $e");
+      } else {
+        print("Error en la API: ${response.statusCode}");
       }
+    } catch (e) {
+      print("Error al consultar precios: $e");
     }
-
-    print("Precios encontrados: $preciosPorProducto");
-    return preciosPorProducto;
   }
+
+  print("Precios encontrados: $preciosPorProducto");
+  return preciosPorProducto;
+}
 
 // Funcion para extraer un precio valido de los resultados
   double? _extractValidPrice(List<dynamic> resultados) {

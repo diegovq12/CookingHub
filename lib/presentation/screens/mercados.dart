@@ -128,7 +128,7 @@ class MercadosList extends StatelessWidget {
                 price =
                     "\$${prices.values.reduce((a, b) => a + b).toStringAsFixed(2)}";
               } else {
-                price = "No precios disponibles"; // Cuando no hay precios
+                price = ""; // Cuando no hay precios
               }
             }
 
