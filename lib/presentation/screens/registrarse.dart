@@ -166,6 +166,12 @@ class _Registrarse extends State<Registrarse>{
                             if(!terms){
                               showMessange(context, screenWidth, screenHeight, "Porfavor acepte los terminos y condiciones");
                             }
+                            if(passwordController.text.length < 6){
+                              showMessange(context, screenWidth, screenHeight, "Contraseña demasiado corta, minimo 6 caracteres");
+                            }
+                            if(passwordController.text.length > 30){
+                              showMessange(context, screenWidth, screenHeight, "Contraseña demasiado larga, maximo 30 caracteres");
+                            }
                           },
                           child: Text("Registrarte",style: Textstyles.buttonStyle(),)
                         ),
