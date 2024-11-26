@@ -1,4 +1,4 @@
-import 'package:cooking_hub/domain/entities/message.dart';
+import 'package:cooking_hub/presentation/screens/recetas.dart';
 import 'package:cooking_hub/presentation/screens/registrarse.dart';
 import 'package:flutter/material.dart';
 import 'package:cooking_hub/widgets/shared/background_image.dart';
@@ -150,6 +150,8 @@ class _IniciarSesion extends State<IniciarSesion>{
                           onTap: (){
                             if(emailController.text == "" || passwordController.text == ""){
                               showMessange(context, screenWidth, screenHeight, "Por favor llenar los campos correo y contraseña");
+                            }else{
+                              Navigator.push(context, MaterialPageRoute(builder: (context)=> Recetas()));
                             }
                             // --- aqui haria falta una verificacion de datos por parte de la base de datos
                           },

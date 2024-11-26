@@ -43,6 +43,7 @@ flutter:
     - assets/HotBar/Home.png
 
     - assets/Background.png
+    - assets/startBackground.png
     - assets/HotCakes.png
     - assets/Arepas.png
 
