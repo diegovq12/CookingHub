@@ -35,4 +35,11 @@ class ContainerStyle {
       borderRadius: BorderRadius.all(Radius.circular(32)),
     );
   }
+  
+  static BoxDecoration button2ContainerDec() {
+    return BoxDecoration(
+      color: Color(0xFFFFCC33),
+      borderRadius: BorderRadius.all(Radius.circular(12)),
+    );
+  }
 }

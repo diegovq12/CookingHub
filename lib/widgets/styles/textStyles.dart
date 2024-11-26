@@ -7,6 +7,8 @@ class Textstyles {
   
   static TextStyle listsStyle() => const TextStyle(color: Colors.white,fontFamily: "Poppins",fontSize: 20,decoration: TextDecoration.underline,decorationColor: Colors.white);
   
+  static TextStyle listsStyle2() => const TextStyle(color: Colors.white,fontFamily: "Poppins",fontSize: 12,decoration: TextDecoration.underline,decorationColor: Colors.white);
+  
   static TextStyle buttonStyle() => const TextStyle(color: Colors.white,fontFamily: "Poppins",fontSize: 20,fontWeight: FontWeight.bold);
 
   static TextStyle titleStyle() => const TextStyle(color: Colors.white, fontFamily: "Poppins",fontSize: 36, fontWeight: FontWeight.bold);
