@@ -1,16 +1,16 @@
 import 'package:cooking_hub/domain/entities/message.dart';
+import 'package:cooking_hub/presentation/screens/registrarse.dart';
 import 'package:flutter/material.dart';
 import 'package:cooking_hub/widgets/shared/background_image.dart';
-import 'package:cooking_hub/widgets/shared/hot_bar.dart';
 import 'package:cooking_hub/widgets/styles/containerStyle.dart';
 import 'package:cooking_hub/widgets/styles/textStyles.dart';
 
-class LogginScreen extends StatefulWidget{
+class IniciarSesion extends StatefulWidget{
   @override
-  State<StatefulWidget> createState() => _LogginScreen();
+  State<StatefulWidget> createState() => _IniciarSesion();
 }
 
-class _LogginScreen extends State<LogginScreen>{
+class _IniciarSesion extends State<IniciarSesion>{
   
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
@@ -50,14 +50,14 @@ class _LogginScreen extends State<LogginScreen>{
               alignment: Alignment.topLeft,
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: Text("Bienvenido a Cooking Hub", style: Textstyles.titleStyle(),),
+                child: Text("Bienvenido a \nCooking Hub", style: Textstyles.titleStyle(),),
               ),
             ),
 
             Align(
               alignment: Alignment.bottomCenter,
               child: Container(
-                decoration: ContainerStyle.genContainerDec(),
+                decoration: ContainerStyle.bottomContainerDec(),
                 height: screenHeight*0.7,
                 width: screenWidth,
                 child: Padding(
@@ -70,7 +70,9 @@ class _LogginScreen extends State<LogginScreen>{
                         children: [
                         Text("Aun no tienes cuenta? ", style: Textstyles.normalStyle(),),
                         InkWell(
-                          onTap: (){},
+                          onTap: (){
+                            Navigator.push(context, MaterialPageRoute(builder: (context)=> Registrarse()));
+                          },
                           child: Text("Registrate", style: Textstyles.listsStyle(),)
                         ),
                       ],),
