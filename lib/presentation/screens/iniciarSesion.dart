@@ -1,3 +1,4 @@
+import 'package:cooking_hub/domain/entities/message.dart';
 import 'package:flutter/material.dart';
 import 'package:cooking_hub/widgets/shared/background_image.dart';
 import 'package:cooking_hub/widgets/shared/hot_bar.dart';
@@ -13,6 +14,26 @@ class _LogginScreen extends State<LogginScreen>{
   
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+
+  void showMessange(BuildContext context, double screenWidth, double screenHeight, String messange){
+    showDialog(
+      context: context, 
+      barrierDismissible: true,
+      barrierColor: Colors.black.withOpacity(0.5), 
+      builder: (BuildContext context){
+        return Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
+          backgroundColor: Color(0xFFFF8330),
+          child: Padding(
+            padding: const EdgeInsets.all(32.0),
+            child: Text(messange,style: Textstyles.normalStyle(),),
+          ),
+        );
+      }
+    );
+  }
   
   @override
   Widget build(BuildContext context) {
@@ -71,7 +92,7 @@ class _LogginScreen extends State<LogginScreen>{
                           vertical: 28
                         ),
                         child: TextField(
-                          controller: emailController,
+                          controller: passwordController,
                           decoration: inputDecoration("Contraseña"),
                         ),
                       ),
@@ -80,7 +101,12 @@ class _LogginScreen extends State<LogginScreen>{
                         padding: const EdgeInsets.only(left: 8, bottom: 32),
                         child: Row(
                           children: [
-                            Text("Olvide mi contraseña", style: Textstyles.listsStyle2(),),
+                            InkWell(
+                              onTap: (){
+                                showMessange(context, screenWidth, screenHeight, "No disponible por ahora");
+                              },
+                              child: Text("Olvide mi contraseña", style: Textstyles.listsStyle2(),)
+                            ),
                           ],
                         ),
                       ),
@@ -97,11 +123,15 @@ class _LogginScreen extends State<LogginScreen>{
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
                             InkWell(
-                              onTap: (){},
+                              onTap: (){
+                                showMessange(context, screenWidth, screenHeight, "No disponible por ahora");
+                              },
                               child: Image.asset("assets/icons/facebook.png", width: screenWidth*0.1,)
                             ),
                             InkWell(
-                              onTap: (){},
+                              onTap: (){
+                                showMessange(context, screenWidth, screenHeight, "No disponible por ahora");
+                              },
                               child: Image.asset("assets/icons/google.png", width: screenWidth*0.1,)
                             ),
                           ],
@@ -114,7 +144,15 @@ class _LogginScreen extends State<LogginScreen>{
                           horizontal: screenWidth*0.04,
                           vertical: screenHeight*0.01
                         ),
-                        child: Text("Iniciar Sesion", style: Textstyles.buttonStyle(),),
+                        child: InkWell(
+                          onTap: (){
+                            if(emailController.text == "" || passwordController.text == ""){
+                              showMessange(context, screenWidth, screenHeight, "Por favor llenar los campos correo y contraseña");
+                            }
+                            // --- aqui haria falta una verificacion de datos por parte de la base de datos
+                          },
+                          child: Text("Iniciar Sesion", style: Textstyles.buttonStyle(),)
+                          ),
                       )
                     ],
                   ),
