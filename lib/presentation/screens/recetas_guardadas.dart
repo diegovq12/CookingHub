@@ -139,11 +139,13 @@ class _RecetasGuardadas extends State<RecetasGuardadas>{
                             title: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                InkWell(
-                                  onTap: (){
-                                    Navigator.of(context).push(MaterialPageRoute(builder: (context)=>RecetaGS(index)));
-                                  },
-                                  child: Text("• ${recipes[index]}", style: Textstyles.normalStyle(),)
+                                Expanded(
+                                  child: InkWell(
+                                    onTap: (){
+                                      Navigator.of(context).push(MaterialPageRoute(builder: (context)=>RecetaGS(index)));
+                                    },
+                                    child: Text("• ${recipes[index]}", style: Textstyles.normalStyle(),)
+                                  ),
                                 ),
                                 InkWell(
                                   onTap: (){
