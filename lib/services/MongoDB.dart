@@ -61,4 +61,22 @@ class Mongodb {
     }
     return ActualCollection;
   }
+
+static Future<bool> checkUsername(String username) async {
+  ActualCollection = db!.collection(USERCOLLECTION);
+  // Hacer búsqueda sin importar mayúsculas y minúsculas
+  var existingUser = await ActualCollection.findOne({'userName': RegExp('^' + username + '\$', caseSensitive: false)});
+  print("Buscando usuario: $username");
+  print("Usuario encontrado: $existingUser");
+  return existingUser != null; // Si existe, retorna true
+}
+
+static Future<bool> checkEmail(String email) async {
+  ActualCollection = db!.collection(USERCOLLECTION);
+  // Hacer búsqueda sin importar mayúsculas y minúsculas
+  var existingEmail = await ActualCollection.findOne({'userEmail': RegExp('^' + email + '\$', caseSensitive: false)});
+  print("Buscando email: $email");
+  print("Email encontrado: $existingEmail");
+  return existingEmail != null; // Si existe, retorna true
+}
 }

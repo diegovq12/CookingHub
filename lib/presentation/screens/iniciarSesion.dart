@@ -1,11 +1,13 @@
 import 'package:cooking_hub/presentation/screens/recetas.dart';
-import 'package:cooking_hub/presentation/screens/registrarse.dart';
+import 'package:cooking_hub/presentation/screens/register_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:cooking_hub/widgets/shared/background_image.dart';
 import 'package:cooking_hub/widgets/styles/containerStyle.dart';
 import 'package:cooking_hub/widgets/styles/textStyles.dart';
 
 class IniciarSesion extends StatefulWidget{
+  const IniciarSesion({super.key});
+
   @override
   State<StatefulWidget> createState() => _IniciarSesion();
 }
@@ -71,7 +73,7 @@ class _IniciarSesion extends State<IniciarSesion>{
                         Text("Aun no tienes cuenta? ", style: Textstyles.normalStyle(),),
                         InkWell(
                           onTap: (){
-                            Navigator.push(context, MaterialPageRoute(builder: (context)=> Registrarse()));
+                            Navigator.push(context, MaterialPageRoute(builder: (context)=> RegisterScreen()));
                           },
                           child: Text("Registrate", style: Textstyles.listsStyle(),)
                         ),

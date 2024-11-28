@@ -1,5 +1,5 @@
 import 'package:cooking_hub/presentation/screens/iniciarSesion.dart';
-import 'package:cooking_hub/presentation/screens/registrarse.dart';
+import 'package:cooking_hub/presentation/screens/register_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:cooking_hub/widgets/shared/background_image.dart';
 import 'package:cooking_hub/widgets/styles/containerStyle.dart';
@@ -28,7 +28,7 @@ class Start extends StatelessWidget{
                 children: [
                   InkWell(
                     onTap: (){
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=> Registrarse()));
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=> RegisterScreen()));
                     },
                     child: Container(
                       decoration: ContainerStyle.button2ContainerDec(),
