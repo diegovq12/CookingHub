@@ -6,6 +6,12 @@ import 'package:mongo_dart/mongo_dart.dart';
 import 'package:cooking_hub/domain/entities/recipe_model.dart';
 
 class UserService {
+  String userId = "";
+
+  String getId(){
+    return userId;
+  }
+
   static Future<void> addUser(User newUser) async {
     await Mongodb.ConnectWhitMongo();
     await Mongodb.insertUser(newUser.toJson());
@@ -33,14 +39,8 @@ class UserService {
     await Mongodb.closeConnection();
   }
 
-  //Agrega una nueva lista a la lista de recetas
-  static Future<void> addNewListOfIngredients(
-      String id, List<String> newList) async {
-    await Mongodb.ConnectWhitMongo();
-    await Mongodb.userCollection.updateOne(where.id(ObjectId.parse(id)),
-        modify.push('listOfIngredients', newList));
-    await Mongodb.closeConnection();
-  }
+  
+
 
   //Modifica un elemento de la una de las listas de ingredientes
   static Future<void> modifyListOfIngredients(
@@ -152,7 +152,7 @@ class UserService {
     await Mongodb.closeConnection();
   }
 
-static Future<String> registerUser(String userName, String userEmail,
+  static Future<String> registerUser(String userName, String userEmail,
       String password, String confirmPassword) async {
     // Verificar si las contraseñas coinciden
     if (password != confirmPassword) {
@@ -204,8 +204,7 @@ static Future<String> registerUser(String userName, String userEmail,
     }
   }
 
-
-  static Future<String> loginUser(String userName, String password) async {
+Future<bool> loginUser(String userName, String password) async {
     try {
       await Mongodb.ConnectWhitMongo();
       final userCollection = await Mongodb.userCollection;
@@ -216,7 +215,8 @@ static Future<String> registerUser(String userName, String userEmail,
 
       if (userResult == null) {
         await Mongodb.closeConnection();
-        return 'Usuario no encontrado';
+        print("login: no se encontro");
+        return false;
       }
 
       // Comparamos las contraseñas
@@ -224,16 +224,16 @@ static Future<String> registerUser(String userName, String userEmail,
       bool passwordMatches = BCrypt.checkpw(password, storedPassword);
 
       if (passwordMatches) {
+        userId = userResult['_id'].toString();  // Aquí actualizas el userId
+        print("user id despues de login: $userId");
         await Mongodb.closeConnection();
-        return 'Inicio de sesión exitoso';
-      } else {
-        await Mongodb.closeConnection();
-        return 'Contraseña incorrecta';
+        return true;
       }
     } catch (e) {
       await Mongodb.closeConnection();
-      return 'Error al iniciar sesión: $e';
+      return false;
     }
+    return false;
   }
 
   Future<String> checkIfUserExists(String name, String email) async {
@@ -253,4 +253,36 @@ static Future<String> registerUser(String userName, String userEmail,
     }
   }
 
+
+  //Agrega una nueva lista a la lista de recetas
+Future<void> addNewListOfIngredients(String userId,List<String> newList) async {
+  // Obtener el userId directamente desde el servicio
+
+  print("receta agregar id: ${getId()}");
+
+  // Verificar si el userId es válido (debe tener 24 caracteres)
+  if (userId.length != 24) {
+    print("ID inválido: El ID debe tener 24 caracteres.");
+    return; // Salir o manejar el error
+  }
+
+  // Conexión con la base de datos
+  await Mongodb.ConnectWhitMongo();
+  final userCollection = await Mongodb.userCollection;
+
+  try {
+    // Actualizar los ingredientes en la colección del usuario
+    var result = await userCollection.update(
+      where.id(ObjectId.parse(userId)), // Convertir el userId a ObjectId
+      modify.set("listOfIngredients", newList), // Establecer la lista de ingredientes
+    );
+
+    print("Resultado de la actualización: $result");
+  } catch (e) {
+    print("Error al actualizar la receta: $e");
+  } finally {
+    // Cerrar la conexión a la base de datos
+    await Mongodb.closeConnection();
+  }
+}
 }

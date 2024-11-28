@@ -1,6 +1,8 @@
 import 'package:cooking_hub/config/theme/app_theme.dart';
 import 'package:cooking_hub/presentation/providers/chat_provider.dart';
+import 'package:cooking_hub/presentation/screens/iniciarSesion.dart';
 import 'package:cooking_hub/presentation/screens/register_screen.dart';
+import 'package:cooking_hub/presentation/screens/start.dart';
 import 'package:cooking_hub/services/MongoDB.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -25,7 +27,7 @@ class MainApp extends StatelessWidget {
         title: 'Cooking Hub',
         debugShowCheckedModeBanner: false,
         theme: AppTheme(selectedColor: 0).theme(),
-        home: const ConnectionHandler(), // Manejo de conexión inicial.
+        home: const ConnectionHandler(), // Manejo de conexion inicial.
       ),
     );
   }
@@ -37,12 +39,12 @@ class ConnectionHandler extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: Mongodb.ConnectWhitMongo(), // Intentar conectar a MongoDB.
+      future: Mongodb.ConnectWhitMongo(), 
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Scaffold(
             body: Center(
-              child: CircularProgressIndicator(), // Cargando...
+              child: CircularProgressIndicator(), 
             ),
           );
         } else if (snapshot.hasError) {
@@ -73,7 +75,7 @@ class ConnectionHandler extends StatelessWidget {
             ),
           );
         } else {
-          return RegisterScreen(); // Conexión exitosa.
+          return Start(); // Conexion exitosa.
         }
       },
     );

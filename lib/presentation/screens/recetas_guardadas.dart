@@ -1,5 +1,4 @@
 import 'package:cooking_hub/domain/entities/recipe_model.dart';
-import 'package:cooking_hub/domain/entities/user_model.dart';
 import 'package:cooking_hub/presentation/screens/mercados.dart';
 import 'package:cooking_hub/services/user_service.dart';
 import 'package:flutter/material.dart';
@@ -22,7 +21,10 @@ class _RecetasGuardadas extends State<RecetasGuardadas>{
   List<String> recipes = [];
 
   void loadrecipes() async {
-    var user = await UserService.getUsers("673516bd55397c8475000000");
+
+    var user = await UserService.getUsers(UserService().userId);
+    print("Recetas: $recipes");
+    print("user id: $UserService().userId");
 
     if (user == null) {
       return;
@@ -40,12 +42,12 @@ class _RecetasGuardadas extends State<RecetasGuardadas>{
   }
 
   Future<void> deleteRecipe(int index)async{
-    var user = await UserService.getUsers("673516bd55397c8475000000");
+    var user = await UserService.getUsers(UserService().userId);
 
     if (user == null) {
       return;
     }
-    await UserService.deleteFavoriteRecipe("673516bd55397c8475000000", user.listFavoriteRecipes[index]);
+    await UserService.deleteFavoriteRecipe(UserService().userId, user.listFavoriteRecipes[index]);
     recipes.removeAt(index);
     setState(() {
       
@@ -57,7 +59,7 @@ class _RecetasGuardadas extends State<RecetasGuardadas>{
     List<String> nulo = [];
     Recipe temp=Recipe(name: newRecipe, region: "", ingredients: nulo, steps: nulo);
     
-    await UserService.addFavoriteRecipe("673516bd55397c8475000000", temp);
+    await UserService.addFavoriteRecipe(UserService().userId, temp);
     recipes.add(newRecipe);
     setState(() {
       
@@ -418,7 +420,7 @@ class _RecetaGS extends State<RecetaGS>{
   bool loadedBand=false;
 
   void loadData(int index)async{
-    var usuario = await UserService.getUsers("673516bd55397c8475000000");
+    var usuario = await UserService.getUsers(UserService().userId);
     
     if(usuario == null){
       return;
@@ -442,13 +444,13 @@ class _RecetaGS extends State<RecetaGS>{
   }
 
   Future<void> addIngredient(String newIng)async{
-    var usuario = await UserService.getUsers("673516bd55397c8475000000");
+    var usuario = await UserService.getUsers(UserService().userId);
 
     if(usuario == null){
       return;
     }
 
-    await UserService.addOfIngredients_Steps("673516bd55397c8475000000", selected, "ingredients", newIng);
+    await UserService.addOfIngredients_Steps(UserService().userId, selected, "ingredients", newIng);
     ingredients.add(newIng);
     setState(() {
       
@@ -456,12 +458,12 @@ class _RecetaGS extends State<RecetaGS>{
   }
 
   Future<void> modifyIngredient(int index ,String newIng)async{
-    var usuario = await UserService.getUsers("673516bd55397c8475000000");
+    var usuario = await UserService.getUsers(UserService().userId);
     if(usuario == null){
       return;
     }
 
-    await UserService.modifyElementOfFavoriteList("673516bd55397c8475000000", selected, "ingredients", newIng,index);
+    await UserService.modifyElementOfFavoriteList(UserService().userId, selected, "ingredients", newIng,index);
     ingredients[index]=newIng;
     setState(() {
       
@@ -469,12 +471,12 @@ class _RecetaGS extends State<RecetaGS>{
   }
 
   Future<void> deleteIngredient(int index)async{
-    var usuario = await UserService.getUsers("673516bd55397c8475000000");
+    var usuario = await UserService.getUsers(UserService().userId);
     if(usuario == null){
       return;
     }
 
-    await UserService.deleteOfListIngredients_Steps("673516bd55397c8475000000", selected, "ingredients", ingredients[index]);
+    await UserService.deleteOfListIngredients_Steps(UserService().userId, selected, "ingredients", ingredients[index]);
     ingredients.removeAt(index);
     setState(() {
       
@@ -482,12 +484,12 @@ class _RecetaGS extends State<RecetaGS>{
   }
   
   Future<void> addStep(String step)async{
-    var usuario = await UserService.getUsers("673516bd55397c8475000000");
+    var usuario = await UserService.getUsers(UserService().userId);
     if(usuario == null){
       return;
     }
 
-    await UserService.addOfIngredients_Steps("673516bd55397c8475000000", selected, "steps", step);
+    await UserService.addOfIngredients_Steps(UserService().userId, selected, "steps", step);
     tutorial.add(step);
     setState(() {
       
@@ -495,12 +497,12 @@ class _RecetaGS extends State<RecetaGS>{
   }
 
   Future<void> modifyStep(int index ,String newStep)async{
-    var usuario = await UserService.getUsers("673516bd55397c8475000000");
+    var usuario = await UserService.getUsers(UserService().userId);
     if(usuario == null){
       return;
     }
 
-    await UserService.modifyElementOfFavoriteList("673516bd55397c8475000000", selected, "steps", newStep,index);
+    await UserService.modifyElementOfFavoriteList(UserService().userId, selected, "steps", newStep,index);
     tutorial[index]=newStep;
     setState(() {
       
@@ -508,12 +510,12 @@ class _RecetaGS extends State<RecetaGS>{
   }
 
   Future<void> deleteStep(int index)async{
-    var usuario = await UserService.getUsers("673516bd55397c8475000000");
+    var usuario = await UserService.getUsers(UserService().userId);
     if(usuario == null){
       return;
     }
 
-    await UserService.deleteOfListIngredients_Steps("673516bd55397c8475000000", selected, "steps", tutorial[index]);
+    await UserService.deleteOfListIngredients_Steps(UserService().userId, selected, "steps", tutorial[index]);
     tutorial.removeAt(index);
     setState(() {
       

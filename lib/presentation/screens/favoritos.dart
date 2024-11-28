@@ -60,8 +60,9 @@ class _Favoritos extends State<Favoritos>{
   final TextEditingController _controllerAmount = TextEditingController();
 
   void recibir() async{
-    var user = await UserService.getUsers("672842c9368c80edf2000000");
-    
+    var user =await UserService.getUsers(UserService().userId);
+    print("Usuario recuperado: $user");  // Verificar el resultado del usuario
+
     listOfList = user!.listOfIngredients;
 
     setState(() {
@@ -158,7 +159,7 @@ class _Favoritos extends State<Favoritos>{
                                         onPressed: (){
                                           setState((){
                                             print("AdanBug $current");
-                                            UserService.deleteOneListOfIngredients("672842c9368c80edf2000000", listOfList[current]);
+                                            UserService.deleteOneListOfIngredients(UserService().userId.toString(), listOfList[current]);
                                             listOfList.removeAt(current);
                                           });
                                         }, icon: Image.asset("assets/icons/delete.png",width: 20,))
@@ -340,7 +341,7 @@ class _Favoritos extends State<Favoritos>{
 
                         listOfList[selected][current] = ful;
 
-                        UserService.modifyIngredientInList("672842c9368c80edf2000000",selected,current,ful);
+                        UserService.modifyIngredientInList(UserService().userId.toString(),selected,current,ful);
                           
                         });
                         Navigator.of(context).pop(true);
