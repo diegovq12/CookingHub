@@ -1,4 +1,5 @@
 import 'package:cooking_hub/services/bing_services.dart';
+import 'package:cooking_hub/services/openai_services.dart';
 import 'package:flutter/material.dart';
 import 'package:cooking_hub/services/google_maps_services.dart';
 import 'package:cooking_hub/widgets/shared/background_image.dart';
@@ -89,105 +90,136 @@ class _Mercados extends State<Mercados> {
 }
 
 class MercadosList extends StatelessWidget {
-  const MercadosList(
-      {super.key,
-      required this.mercados,
-      required this.screenHeight,
-      required this.bingServices,
-      required this.ingredients});
+  const MercadosList({
+    super.key,
+    required this.mercados,
+    required this.screenHeight,
+    required this.bingServices,
+    required this.ingredients,
+  });
 
   final List<Map<String, dynamic>> mercados;
   final double screenHeight;
   final BingServices bingServices;
   final List<String> ingredients;
-  @override
-  Widget build(BuildContext context) {
-    return ListView.builder(
-      itemCount: mercados.length,
-      itemBuilder: (context, index) {
-        String currentName = mercados[index]['name'];
-        double lat = mercados[index]['lat'];
-        double lng = mercados[index]['lng'];
 
-        return FutureBuilder<Map<String, double>>(
-          future: bingServices.getProductsPrice(ingredients,
-            currentName,
-          ),
-          builder: (context, priceSnapshot) {
-            String price =
-                "\$..."; // Valor predeterminado si no se encuentra el precio
+@override
+Widget build(BuildContext context) {
+  // Guardamos el Future en una variable local para que no se llame repetidamente.
+  final Future<double> averagePriceFuture = 
+      OpenAIService().calculateApproximatePrice(ingredients);
 
-            if (priceSnapshot.connectionState == ConnectionState.waiting) {
-              price = "\$..."; // Cargando precios
-            } else if (priceSnapshot.hasError) {
-              price = "Error"; // Error al cargar los precios
-            } else if (priceSnapshot.hasData) {
-              final prices = priceSnapshot.data;
-              if (prices != null && prices.isNotEmpty) {
-                // Suma de precios y formateo
-                price =
-                    "\$${prices.values.reduce((a, b) => a + b).toStringAsFixed(2)}";
-              } else {
-                price = ""; // Cuando no hay precios
-              }
-            }
+  return FutureBuilder<double>(
+    future: averagePriceFuture, // Usamos el Future predefinido
+    builder: (context, averageSnapshot) {
+      String averagePrice = "\$..."; // Texto predeterminado mientras carga
 
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+      if (averageSnapshot.connectionState == ConnectionState.waiting) {
+        averagePrice = "\$..."; // Cargando el promedio
+      } else if (averageSnapshot.hasError) {
+        averagePrice = "Error"; // Error al cargar
+      } else if (averageSnapshot.hasData) {
+        double? averageData = averageSnapshot.data;
+        if (averageData != null && averageData > 0) {
+          averagePrice = "\$${averageData.toStringAsFixed(2)}"; // Formateo
+        } else {
+          averagePrice = "NE"; // Si no hay promedio válido
+        }
+      }
+
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          // Texto del precio promedio centrado
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 16.0),
+            child: Column(
               children: [
-                if (index == 0) ...[
-                  Center(
-                      child:
-                          Text("Recomendado", style: Textstyles.titleStyle())),
-                  SizedBox(height: screenHeight * 0.02),
-                ],
-                if (index == 2) ...[
-                  Container(
-                    alignment: Alignment.center,
-                    child: Text("Más opciones", style: Textstyles.titleStyle()),
-                  ),
-                  SizedBox(height: screenHeight * 0.02),
-                ],
-                InkWell(
-                  onTap: () {
-                    _launchMaps(lat, lng);
-                  },
-                  child: Container(
-                    decoration: ContainerStyle.buttonContainerDec(),
-                    padding:
-                        EdgeInsets.symmetric(vertical: 8.0, horizontal: 12.0),
-                    child: Row(
-                      children: [
-                        // Ajustamos el texto del nombre del mercado
-                        Expanded(
-                          child: Text(
-                            currentName,
-                            style: Textstyles.semiBoldStyle(),
-                            overflow:
-                                TextOverflow.ellipsis, // Trunca el texto largo
-                            maxLines: 1, // Solo muestra una línea
-                          ),
-                        ),
-                        SizedBox(
-                            width: 10), // Espacio entre el nombre y el precio
-                        Text(
-                          price,
-                          style: Textstyles.semiBoldStyle(),
-                        ),
-                      ],
-                    ),
-                  ),
+                Text(
+                  "Precio promedio",
+                  style: Textstyles.titleStyle(),
+                  textAlign: TextAlign.center,
                 ),
-                SizedBox(height: screenHeight * 0.02),
+                SizedBox(height: 8.0), // Espaciado entre el texto y el precio
+                Text(
+                  averagePrice,
+                  style: Textstyles.semiBoldStyle(),
+                  textAlign: TextAlign.center,
+                ),
               ],
-            );
-          },
-        );
-      },
-    );
-  }
+            ),
+          ),
+          // Lista de mercados con etiquetas personalizadas
+          Expanded(
+            child: ListView.builder(
+              itemCount: mercados.length,
+              itemBuilder: (context, index) {
+                String currentName = mercados[index]['name'];
+                double lat = mercados[index]['lat'];
+                double lng = mercados[index]['lng'];
 
-// Metodo para abrir Google Maps con las coordenadas.
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    if (index == 0) ...[
+                      Center(
+                        child: Text(
+                          "Recomendado",
+                          style: Textstyles.titleStyle(),
+                        ),
+                      ),
+                      SizedBox(height: screenHeight * 0.02),
+                    ],
+                    if (index == 2) ...[
+                      Container(
+                        alignment: Alignment.center,
+                        child: Text(
+                          "Más opciones",
+                          style: Textstyles.titleStyle(),
+                        ),
+                      ),
+                      SizedBox(height: screenHeight * 0.02),
+                    ],
+                    InkWell(
+                      onTap: () {
+                        _launchMaps(lat, lng);
+                      },
+                      child: Container(
+                        margin: EdgeInsets.symmetric(vertical: 8.0), // Separación entre botones
+                        decoration: ContainerStyle.buttonContainerDec(),
+                        padding: EdgeInsets.symmetric(
+                          vertical: 12.0,
+                          horizontal: 16.0,
+                        ),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: Text(
+                                currentName,
+                                style: Textstyles.semiBoldStyle(),
+                                overflow:
+                                    TextOverflow.ellipsis, // Trunca el texto largo
+                                maxLines: 1, // Solo muestra una línea
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                );
+              },
+            ),
+          ),
+        ],
+      );
+    },
+  );
+}
+
+
+
+  // Método para abrir Google Maps con las coordenadas.
   void _launchMaps(double lat, double lng) async {
     final googleMapsUrl =
         'https://www.google.com/maps/dir/?api=1&destination=$lat,$lng&travelmode=driving';

@@ -70,4 +70,9 @@ class GoogleMapsServices {
           'Los permisos de ubicación estan permanentemente denegados.');
     }
   }
+
+  
+
 }
+
+

@@ -1,7 +1,6 @@
 import 'package:cooking_hub/config/theme/app_theme.dart';
 import 'package:cooking_hub/presentation/providers/chat_provider.dart';
-import 'package:cooking_hub/presentation/screens/mercados.dart';
-import 'package:cooking_hub/presentation/screens/recetas_guardadas.dart';
+import 'package:cooking_hub/presentation/screens/recetas.dart';
 // import 'package:cooking_hub/presentation/screens/chat_screen.dart';
 // import 'package:cooking_hub/presentation/screens/chat_screen.dart';
 import 'package:flutter/material.dart';
@@ -27,7 +26,7 @@ class MainApp extends StatelessWidget {
         title: 'Cooking Hub',
         debugShowCheckedModeBanner: false,
         theme:AppTheme(selectedColor: 0).theme(),
-        home: const RecetasGuardadas()
+        home: const Recetas()
         ),
     );
 

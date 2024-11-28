@@ -99,5 +99,90 @@ Future<String> sendTextCompletionRequest(String message) async {
     return response;
   }
 
+
+Future<double> calculateApproximatePrice(List<String> products) async {
+  const String baseUrl = "https://api.openai.com/v1/chat/completions";
+
+  Map<String, String> headers = {
+    'Content-Type': 'application/json',
+    'Authorization': 'Bearer $apiKey', 
+  };
+
+  var logger = Logger();
+  logger.d('Diebug Productos: $products');
+
+  final body = jsonEncode({
+    "model": "gpt-3.5-turbo", 
+    "messages": [
+      {
+        "role": "system",
+        "content": "Eres un experto en precios de mercado, especialmente en productos comunes como alimentos y artículos de uso diario. "
+                   "Calcula el precio aproximado de cada producto en la lista proporcionada, usando tus conocimientos sobre precios promedio de mercado "
+                   "y factores de variación según la ubicación y temporada. Asegúrate de proporcionar el precio de cada producto de acuerdo a su cantidad en formato de lista. "
+                   "Responde estrictamente en formato JSON con los productos y sus precios individuales en pesos mexicanos. Ejemplo: "
+                   "{\"fresas\": 30, \"leche\": 15, \"crema batida\": 25}"
+      },
+      {
+        "role": "user",
+        "content": "Calcular el precio aproximado de los siguientes productos: ${products.join(', ')}"
+      }
+    ],
+    "max_tokens": 200,
+    "temperature": 0.7,
+  });
+
+  try {
+    final response = await http.post(
+      Uri.parse(baseUrl),
+      headers: headers,
+      body: body,
+    );
+
+    if (response.statusCode == 200) {
+      final data = jsonDecode(utf8.decode(response.bodyBytes));
+      String content = data['choices'][0]['message']['content'].trim();
+
+      logger.d('Diebugprice contenido: $content'); 
+
+      // Intentamos parsear la respuesta de OpenAI
+      try {
+        final jsonData = jsonDecode(content);
+
+        if (jsonData != null && jsonData is Map) {
+          double totalPrice = 0.0;
+
+          // Recorremos los precios de los productos en la respuesta y los sumamos
+          jsonData.forEach((product, price) {
+            if (price is double || price is int) {
+              totalPrice += price.toDouble();
+            } else {
+              logger.w('Diebugprice Precio no válido para el producto $product: $price');
+            }
+          });
+
+          // Validamos que el total no sea cero o irreal
+          if (totalPrice > 0) {
+            return totalPrice;
+          } else {
+            logger.w('Diebugprice Total calculado es 0 o inválido.');
+            return 0.0;
+          }
+        } else {
+          logger.w('Diebugprice Respuesta JSON no tiene formato válido: $jsonData');
+          return 0.0;
+        }
+      } catch (jsonError) {
+        logger.e('Diebugprice Error al decodificar JSON: $jsonError');
+        return 0.0;
+      }
+    } else {
+      logger.e('Error en la API: ${response.statusCode} - ${response.body}');
+      return 0.0;
+    }
+  } catch (e) {
+    logger.e('Diebugprice Error calculando el precio: $e');
+    return 0.0;
+  }
+}
  
 }
