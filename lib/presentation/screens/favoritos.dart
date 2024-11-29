@@ -60,7 +60,7 @@ class _Favoritos extends State<Favoritos>{
   final TextEditingController _controllerAmount = TextEditingController();
 
   void recibir() async{
-    var user =await UserService.getUsers(UserService().userId);
+    var user =await UserService().getUsers(UserService().getId());
     print("Usuario recuperado: $user");  // Verificar el resultado del usuario
 
     listOfList = user!.listOfIngredients;
@@ -159,7 +159,7 @@ class _Favoritos extends State<Favoritos>{
                                         onPressed: (){
                                           setState((){
                                             print("AdanBug $current");
-                                            UserService.deleteOneListOfIngredients(UserService().userId.toString(), listOfList[current]);
+                                            UserService().deleteOneListOfIngredients(UserService().getId(), listOfList[current]);
                                             listOfList.removeAt(current);
                                           });
                                         }, icon: Image.asset("assets/icons/delete.png",width: 20,))
@@ -341,7 +341,7 @@ class _Favoritos extends State<Favoritos>{
 
                         listOfList[selected][current] = ful;
 
-                        UserService.modifyIngredientInList(UserService().userId.toString(),selected,current,ful);
+                        UserService().modifyIngredientInList(UserService().getId(),selected,current,ful);
                           
                         });
                         Navigator.of(context).pop(true);

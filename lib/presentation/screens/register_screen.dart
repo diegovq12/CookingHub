@@ -206,7 +206,7 @@ class _RegisterScreen extends State<RegisterScreen> {
                               } else {
                                 // Llamada a la función de registro
                                 String result =
-                                    await UserService.registerUser(
+                                    await UserService().registerUser(
                                   nameController.text,
                                   emailController.text,
                                   passwordController.text,

@@ -20,52 +20,70 @@ class _RecetasGuardadas extends State<RecetasGuardadas>{
 
   List<String> recipes = [];
 
-  void loadrecipes() async {
+void loadrecipes() async {
+  // Obtener el userId desde UserService
+  String userIdText = UserService().getId();
+  String userId = UserService().extractId(userIdText);  // Extraer solo el ID
 
-    var user = await UserService.getUsers(UserService().userId);
-    print("Recetas: $recipes");
-    print("user id: $UserService().userId");
+  // Obtener el usuario usando el userId
+  var user = await UserService().getUsers(userId);
+  
+  print("Recetas: $recipes");
+  print("User id: $userId");
 
-    if (user == null) {
-      return;
-    }
-
-    for(int i =0;i<user.listFavoriteRecipes.length;i++){
-      recipes.add(user.listFavoriteRecipes[i].name);
-    }
-
-    loadedBand=true;
-    
-    setState(() {
-      
-    });
+  if (user == null) {
+    return;
   }
 
-  Future<void> deleteRecipe(int index)async{
-    var user = await UserService.getUsers(UserService().userId);
-
-    if (user == null) {
-      return;
-    }
-    await UserService.deleteFavoriteRecipe(UserService().userId, user.listFavoriteRecipes[index]);
-    recipes.removeAt(index);
-    setState(() {
-      
-    });
+  // Agregar las recetas favoritas del usuario a la lista de recetas
+  for (int i = 0; i < user.listFavoriteRecipes.length; i++) {
+    recipes.add(user.listFavoriteRecipes[i].name);
   }
 
-  Future<void> addRecipe(String newRecipe)async{
-    
-    List<String> nulo = [];
-    Recipe temp=Recipe(name: newRecipe, region: "", ingredients: nulo, steps: nulo);
-    
-    await UserService.addFavoriteRecipe(UserService().userId, temp);
-    recipes.add(newRecipe);
-    setState(() {
-      
-    });
-    
+  loadedBand = true;
+
+  setState(() {});
+}
+
+Future<void> deleteRecipe(int index) async {
+  // Obtener el userId desde UserService
+  String userIdText = UserService().getId();
+  String userId = UserService().extractId(userIdText);  // Extraer solo el ID
+
+  // Obtener el usuario usando el userId
+  var user = await UserService().getUsers(userId);
+
+  if (user == null) {
+    return;
   }
+
+  // Eliminar la receta favorita del usuario
+  await UserService().deleteFavoriteRecipe(userId, user.listFavoriteRecipes[index]);
+  recipes.removeAt(index);
+
+  setState(() {});
+}
+
+Future<void> addRecipe(String newRecipe) async {
+  // Primero realizamos la tarea asíncrona fuera de setState()
+  
+  String userIdText = UserService().getId();
+  String userId = UserService().extractId(userIdText);  // Extraer solo el ID
+
+  // Crear una receta temporal
+  List<String> nulo = [];
+  Recipe temp = Recipe(name: newRecipe, region: "", ingredients: nulo, steps: nulo);
+
+  // Agregar la nueva receta a las recetas favoritas del usuario
+  await UserService().addFavoriteRecipe(userId, temp);
+  recipes.add(newRecipe);
+
+  // Luego, una vez que la tarea asíncrona se haya completado, llamamos a setState() para actualizar la UI
+  setState(() {
+    // Aquí no estamos realizando tareas asíncronas dentro de setState()
+  });
+}
+
   
   @override
   Widget build(BuildContext context) {
@@ -420,7 +438,7 @@ class _RecetaGS extends State<RecetaGS>{
   bool loadedBand=false;
 
   void loadData(int index)async{
-    var usuario = await UserService.getUsers(UserService().userId);
+    var usuario = await UserService().getUsers(UserService().getId());
     
     if(usuario == null){
       return;
@@ -443,84 +461,121 @@ class _RecetaGS extends State<RecetaGS>{
     });
   }
 
-  Future<void> addIngredient(String newIng)async{
-    var usuario = await UserService.getUsers(UserService().userId);
+Future<void> addIngredient(String newIng) async {
+  try {
+    // Obtener el ID del usuario
+    String userIdText = UserService().getId();
+    String userId = UserService().extractId(userIdText);  // Extraer solo el ID
 
-    if(usuario == null){
+    var usuario = await UserService().getUsers(userId);
+
+    if (usuario == null) {
       return;
     }
 
-    await UserService.addOfIngredients_Steps(UserService().userId, selected, "ingredients", newIng);
+    await UserService().addOfIngredients_Steps(userId, selected, "ingredients", newIng);
     ingredients.add(newIng);
-    setState(() {
-      
-    });
+    setState(() {});
+  } catch (e) {
+    print("Error al agregar ingrediente: $e");
   }
+}
 
-  Future<void> modifyIngredient(int index ,String newIng)async{
-    var usuario = await UserService.getUsers(UserService().userId);
-    if(usuario == null){
+Future<void> modifyIngredient(int index, String newIng) async {
+  try {
+    // Obtener el ID del usuario
+    String userIdText = UserService().getId();
+    String userId = UserService().extractId(userIdText);  // Extraer solo el ID
+
+    var usuario = await UserService().getUsers(userId);
+    if (usuario == null) {
       return;
     }
 
-    await UserService.modifyElementOfFavoriteList(UserService().userId, selected, "ingredients", newIng,index);
-    ingredients[index]=newIng;
-    setState(() {
-      
-    });
+    await UserService().modifyElementOfFavoriteList(userId, selected, "ingredients", newIng, index);
+    ingredients[index] = newIng;
+    setState(() {});
+  } catch (e) {
+    print("Error al modificar ingrediente: $e");
   }
+}
 
-  Future<void> deleteIngredient(int index)async{
-    var usuario = await UserService.getUsers(UserService().userId);
-    if(usuario == null){
+Future<void> deleteIngredient(int index) async {
+  try {
+    // Obtener el ID del usuario
+    String userIdText = UserService().getId();
+    String userId = UserService().extractId(userIdText);  // Extraer solo el ID
+
+    var usuario = await UserService().getUsers(userId);
+    if (usuario == null) {
       return;
     }
 
-    await UserService.deleteOfListIngredients_Steps(UserService().userId, selected, "ingredients", ingredients[index]);
+    await UserService().deleteOfListIngredients_Steps(userId, selected, "ingredients", ingredients[index]);
     ingredients.removeAt(index);
-    setState(() {
-      
-    });
+    setState(() {});
+  } catch (e) {
+    print("Error al eliminar ingrediente: $e");
   }
-  
-  Future<void> addStep(String step)async{
-    var usuario = await UserService.getUsers(UserService().userId);
-    if(usuario == null){
+}
+
+Future<void> addStep(String step) async {
+  try {
+    // Obtener el ID del usuario
+    String userIdText = UserService().getId();
+    String userId = UserService().extractId(userIdText);  // Extraer solo el ID
+
+    var usuario = await UserService().getUsers(userId);
+    if (usuario == null) {
       return;
     }
 
-    await UserService.addOfIngredients_Steps(UserService().userId, selected, "steps", step);
+    await UserService().addOfIngredients_Steps(userId, selected, "steps", step);
     tutorial.add(step);
-    setState(() {
-      
-    });
+    setState(() {});
+  } catch (e) {
+    print("Error al agregar paso: $e");
   }
+}
 
-  Future<void> modifyStep(int index ,String newStep)async{
-    var usuario = await UserService.getUsers(UserService().userId);
-    if(usuario == null){
+Future<void> modifyStep(int index, String newStep) async {
+  try {
+    // Obtener el ID del usuario
+    String userIdText = UserService().getId();
+    String userId = UserService().extractId(userIdText);  // Extraer solo el ID
+
+    var usuario = await UserService().getUsers(userId);
+    if (usuario == null) {
       return;
     }
 
-    await UserService.modifyElementOfFavoriteList(UserService().userId, selected, "steps", newStep,index);
-    tutorial[index]=newStep;
-    setState(() {
-      
-    });
+    await UserService().modifyElementOfFavoriteList(userId, selected, "steps", newStep, index);
+    tutorial[index] = newStep;
+    setState(() {});
+  } catch (e) {
+    print("Error al modificar paso: $e");
   }
+}
 
-  Future<void> deleteStep(int index)async{
-    var usuario = await UserService.getUsers(UserService().userId);
-    if(usuario == null){
+Future<void> deleteStep(int index) async {
+  try {
+    // Obtener el ID del usuario
+    String userIdText = UserService().getId();
+    String userId = UserService().extractId(userIdText);  // Extraer solo el ID
+
+    var usuario = await UserService().getUsers(userId);
+    if (usuario == null) {
       return;
     }
 
-    await UserService.deleteOfListIngredients_Steps(UserService().userId, selected, "steps", tutorial[index]);
+    await UserService().deleteOfListIngredients_Steps(userId, selected, "steps", tutorial[index]);
     tutorial.removeAt(index);
-    setState(() {
-      
-    });
+    setState(() {});
+  } catch (e) {
+    print("Error al eliminar paso: $e");
   }
+}
+
 
   @override
   Widget build(BuildContext context) {

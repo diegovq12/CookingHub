@@ -6,45 +6,103 @@ import 'package:mongo_dart/mongo_dart.dart';
 import 'package:cooking_hub/domain/entities/recipe_model.dart';
 
 class UserService {
+  static final UserService _instance = UserService._internal();
+  factory UserService() => _instance;
+
+  UserService._internal();
+
   String userId = "";
 
-  String getId(){
+  String getId() {
     return userId;
   }
 
-  static Future<void> addUser(User newUser) async {
+  void setId(String userId) {
+    this.userId = userId;
+  }
+
+  String extractId(String objectIdText) {
+    // Usa una expresión regular para extraer el ID
+    final match =
+        RegExp(r'ObjectId\("([a-fA-F0-9]{24})"\)').firstMatch(objectIdText);
+    return match != null
+        ? match.group(1)!
+        : ""; // Devuelve el ID o una cadena vacía
+  }
+
+  Future<void> addUser(User newUser) async {
     await Mongodb.ConnectWhitMongo();
     await Mongodb.insertUser(newUser.toJson());
     await Mongodb.closeConnection();
   }
 
-  static Future<User?> getUsers(String id) async {
+  Future<User?> getUsers(String id) async {
+    // Extraer el userId utilizando la función extractId
+    String extractedId = extractId(id);
+
+    // Validar que el ID extraído tenga 24 caracteres
+    if (extractedId.length != 24) {
+      print("ID inválido: El ID debe tener 24 caracteres.");
+      return null; // Salir si el ID no es válido
+    }
+
     await Mongodb.ConnectWhitMongo();
     final userRecovery = await Mongodb.userCollection;
-    var userResult = await userRecovery.findOne(where.id(ObjectId.parse(id)));
-    await Mongodb.closeConnection();
 
-    if (userResult != null) {
-      return User.fromJson(userResult);
+    try {
+      // Buscar el usuario en la base de datos por ID
+      var userResult =
+          await userRecovery.findOne(where.id(ObjectId.parse(extractedId)));
+
+      if (userResult != null) {
+        return User.fromJson(
+            userResult); // Convertir el resultado a un objeto User
+      } else {
+        print("Usuario no encontrado.");
+      }
+    } catch (e) {
+      print("Error al buscar el usuario: $e");
+    } finally {
+      await Mongodb.closeConnection(); // Cerrar la conexión
     }
+
     return null;
   }
 
-  //Agrega un nuevo ingrediente a la lista de ingredientes fav
-  static Future<void> addNewIngredientsFavorites(
+//Agrega un nuevo ingrediente a la lista de ingredientes fav
+  Future<void> addNewIngredientsFavorites(
       String id, String newIngredient) async {
+    // Obtener el userId directamente desde el servicio
+    String userId = extractId(getId()); // Extraer solo el ID
+
+    print("ID de usuario: $userId");
+
+    // Verificar si el userId es válido (debe tener 24 caracteres)
+    if (userId.length != 24) {
+      print("ID inválido: El ID debe tener 24 caracteres.");
+      return; // Salir o manejar el error
+    }
+
     await Mongodb.ConnectWhitMongo();
     await Mongodb.userCollection.updateOne(where.id(ObjectId.parse(id)),
         modify.push('favoriteIngredients', newIngredient));
     await Mongodb.closeConnection();
   }
 
-  
-
-
-  //Modifica un elemento de la una de las listas de ingredientes
-  static Future<void> modifyListOfIngredients(
+//Modifica un elemento de una de las listas de ingredientes
+  Future<void> modifyListOfIngredients(
       String id, List<String> newList, int indexList) async {
+    // Obtener el userId directamente desde el servicio
+    String userId = extractId(getId()); // Extraer solo el ID
+
+    print("ID de usuario: $userId");
+
+    // Verificar si el userId es válido (debe tener 24 caracteres)
+    if (userId.length != 24) {
+      print("ID inválido: El ID debe tener 24 caracteres.");
+      return; // Salir o manejar el error
+    }
+
     String listCon = 'listOfIngredients.' + indexList.toString();
     await Mongodb.ConnectWhitMongo();
     await Mongodb.userCollection
@@ -52,18 +110,40 @@ class UserService {
     await Mongodb.closeConnection();
   }
 
-  //Elimina un de las lista de ingredientes
-  static Future<void> deleteOneListOfIngredients(
+//Elimina un de las lista de ingredientes
+  Future<void> deleteOneListOfIngredients(
       String id, List<String> removeList) async {
+    // Obtener el userId directamente desde el servicio
+    String userId = extractId(getId()); // Extraer solo el ID
+
+    print("ID de usuario: $userId");
+
+    // Verificar si el userId es válido (debe tener 24 caracteres)
+    if (userId.length != 24) {
+      print("ID inválido: El ID debe tener 24 caracteres.");
+      return; // Salir o manejar el error
+    }
+
     await Mongodb.ConnectWhitMongo();
     await Mongodb.userCollection.updateOne(where.id(ObjectId.parse(id)),
         modify.pull('listOfIngredients', removeList));
     await Mongodb.closeConnection();
   }
 
-  //Modifica un solo ingrediente de una de las lista de ingredientes
-  static Future<void> modifyIngredientInList(String id, int indexPrimaryList,
+//Modifica un solo ingrediente de una de las lista de ingredientes
+  Future<void> modifyIngredientInList(String id, int indexPrimaryList,
       int indexSecondaryList, String newIngredient) async {
+    // Obtener el userId directamente desde el servicio
+    String userId = extractId(getId()); // Extraer solo el ID
+
+    print("ID de usuario: $userId");
+
+    // Verificar si el userId es válido (debe tener 24 caracteres)
+    if (userId.length != 24) {
+      print("ID inválido: El ID debe tener 24 caracteres.");
+      return; // Salir o manejar el error
+    }
+
     String listCon = 'listOfIngredients.' +
         indexPrimaryList.toString() +
         '.' +
@@ -74,9 +154,20 @@ class UserService {
     await Mongodb.closeConnection();
   }
 
-  //Elimina un solo ingrediente de una lista de recetas
-  static Future<void> deleteIngredientInList(
+//Elimina un solo ingrediente de una lista de recetas
+  Future<void> deleteIngredientInList(
       String id, int indexPrimaryList, String removeIngredient) async {
+    // Obtener el userId directamente desde el servicio
+    String userId = extractId(getId()); // Extraer solo el ID
+
+    print("ID de usuario: $userId");
+
+    // Verificar si el userId es válido (debe tener 24 caracteres)
+    if (userId.length != 24) {
+      print("ID inválido: El ID debe tener 24 caracteres.");
+      return; // Salir o manejar el error
+    }
+
     String listCon = 'listOfIngredients.' + indexPrimaryList.toString();
     await Mongodb.ConnectWhitMongo();
     await Mongodb.userCollection.updateOne(
@@ -84,33 +175,63 @@ class UserService {
     await Mongodb.closeConnection();
   }
 
-  // ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-  //Aniade una nueva receta a la lista de recetas favoritas
-  // ID USUARIO = "
-  // 673516bd55397c8475000000
-  // "
-  static Future<void> addFavoriteRecipe(String id, Recipe newRecipe) async {
+//Aniade una nueva receta a la lista de recetas favoritas
+// ID USUARIO = "673516bd55397c8475000000"
+  Future<void> addFavoriteRecipe(String id, Recipe newRecipe) async {
+    // Obtener el userId directamente desde el servicio
+    String userId = extractId(getId()); // Extraer solo el ID
+
+    print("ID de usuario: $userId");
+
+    // Verificar si el userId es válido (debe tener 24 caracteres)
+    if (userId.length != 24) {
+      print("ID inválido: El ID debe tener 24 caracteres.");
+      return; // Salir o manejar el error
+    }
+
     await Mongodb.ConnectWhitMongo();
     await Mongodb.userCollection.updateOne(where.id(ObjectId.parse(id)),
         modify.push('listFavoriteRecipes', newRecipe.toJson()));
     await Mongodb.closeConnection();
   }
 
-  //Elimina una receta de la lista de favortitas
-  static Future<void> deleteFavoriteRecipe(
-      String id, Recipe deleteRecipe) async {
+//Elimina una receta de la lista de favortitas
+  Future<void> deleteFavoriteRecipe(String id, Recipe deleteRecipe) async {
+    // Obtener el userId directamente desde el servicio
+    String userId = extractId(getId()); // Extraer solo el ID
+
+    print("ID de usuario: $userId");
+
+    // Verificar si el userId es válido (debe tener 24 caracteres)
+    if (userId.length != 24) {
+      print("ID inválido: El ID debe tener 24 caracteres.");
+      return; // Salir o manejar el error
+    }
+
     await Mongodb.ConnectWhitMongo();
     await Mongodb.userCollection.updateOne(where.id(ObjectId.parse(id)),
         modify.pull('listFavoriteRecipes', deleteRecipe.toJson()));
     await Mongodb.closeConnection();
   }
 
-  //Modifica algun elemento de una receta favorita
-  // id = usuario , primaryIndex = indice receta , Space = {nombre, ingrediente ,campo etc}, Newdata= remplazco, secondaryIndex = indice del ingrediente/paso (start=0)
-  static Future<void> modifyElementOfFavoriteList(
+//Modifica algun elemento de una receta favorita
+// id = usuario , primaryIndex = indice receta , Space = {nombre, ingrediente ,campo etc}, Newdata= remplazco, secondaryIndex = indice del ingrediente/paso (start=0)
+  Future<void> modifyElementOfFavoriteList(
       String id, int primaryIndex, String space, String newData,
       [int? secondaryIndex]) async {
+    // Obtener el userId directamente desde el servicio
+    String userId = extractId(getId()); // Extraer solo el ID
+
+    print("ID de usuario: $userId");
+
+    // Verificar si el userId es válido (debe tener 24 caracteres)
+    if (userId.length != 24) {
+      print("ID inválido: El ID debe tener 24 caracteres.");
+      return; // Salir o manejar el error
+    }
+
     await Mongodb.ConnectWhitMongo();
     if (secondaryIndex != null) {
       String listCon = 'listFavoriteRecipes.' +
@@ -130,9 +251,20 @@ class UserService {
     await Mongodb.closeConnection();
   }
 
-  //Elimina un elemento de los ingredientes o los pasos
-  static Future<void> deleteOfListIngredients_Steps(
+//Elimina un elemento de los ingredientes o los pasos
+  Future<void> deleteOfListIngredients_Steps(
       String id, int primaryIndex, String space, String itemToDelete) async {
+    // Obtener el userId directamente desde el servicio
+    String userId = extractId(getId()); // Extraer solo el ID
+
+    print("ID de usuario: $userId");
+
+    // Verificar si el userId es válido (debe tener 24 caracteres)
+    if (userId.length != 24) {
+      print("ID inválido: El ID debe tener 24 caracteres.");
+      return; // Salir o manejar el error
+    }
+
     String listCon = 'listFavoriteRecipes.' +
         primaryIndex.toString() +
         "." +
@@ -143,8 +275,20 @@ class UserService {
     await Mongodb.closeConnection();
   }
 
-  static Future<void> addOfIngredients_Steps(
+//Añade un nuevo ingrediente o paso
+  Future<void> addOfIngredients_Steps(
       String id, int primaryIndex, String space, String newItem) async {
+    // Obtener el userId directamente desde el servicio
+    String userId = extractId(getId()); // Extraer solo el ID
+
+    print("ID de usuario: $userId");
+
+    // Verificar si el userId es válido (debe tener 24 caracteres)
+    if (userId.length != 24) {
+      print("ID inválido: El ID debe tener 24 caracteres.");
+      return; // Salir o manejar el error
+    }
+
     String listCon = 'listFavoriteRecipes.$primaryIndex.$space';
     await Mongodb.ConnectWhitMongo();
     await Mongodb.userCollection
@@ -152,7 +296,7 @@ class UserService {
     await Mongodb.closeConnection();
   }
 
-  static Future<String> registerUser(String userName, String userEmail,
+  Future<String> registerUser(String userName, String userEmail,
       String password, String confirmPassword) async {
     // Verificar si las contraseñas coinciden
     if (password != confirmPassword) {
@@ -204,7 +348,7 @@ class UserService {
     }
   }
 
-Future<bool> loginUser(String userName, String password) async {
+  Future<bool> loginUser(String userName, String password) async {
     try {
       await Mongodb.ConnectWhitMongo();
       final userCollection = await Mongodb.userCollection;
@@ -224,7 +368,8 @@ Future<bool> loginUser(String userName, String password) async {
       bool passwordMatches = BCrypt.checkpw(password, storedPassword);
 
       if (passwordMatches) {
-        userId = userResult['_id'].toString();  // Aquí actualizas el userId
+        String idUser = userResult['_id'].toString();
+        setId(idUser); // Aquí actualizas el userId
         print("user id despues de login: $userId");
         await Mongodb.closeConnection();
         return true;
@@ -253,15 +398,15 @@ Future<bool> loginUser(String userName, String password) async {
     }
   }
 
-
-  //Agrega una nueva lista a la lista de recetas
-Future<void> addNewListOfIngredients(String userId,List<String> newList) async {
+Future<void> addNewListOfIngredients(String userId, List<String> newList) async {
   // Obtener el userId directamente desde el servicio
+  String id = extractId(getId()); // Extraer solo el ID
 
-  print("receta agregar id: ${getId()}");
+  print("Receta agregar id: $id");
+  print("Nueva lista de ingredientes: $newList");
 
   // Verificar si el userId es válido (debe tener 24 caracteres)
-  if (userId.length != 24) {
+  if (id.length != 24) {
     print("ID inválido: El ID debe tener 24 caracteres.");
     return; // Salir o manejar el error
   }
@@ -271,10 +416,45 @@ Future<void> addNewListOfIngredients(String userId,List<String> newList) async {
   final userCollection = await Mongodb.userCollection;
 
   try {
-    // Actualizar los ingredientes en la colección del usuario
+    // Obtener el documento actual del usuario
+    var userDocument = await userCollection.findOne(where.id(ObjectId.parse(id)));
+
+    if (userDocument == null) {
+      print("Usuario no encontrado.");
+      return;
+    }
+
+    // Obtener la lista actual de ingredientes
+    dynamic currentListOfIngredients = userDocument["listOfIngredients"];
+
+    // Si no existe la lista de ingredientes, inicialízala
+    if (currentListOfIngredients == null) {
+      print("Inicializando listOfIngredients...");
+      currentListOfIngredients = [];
+    } else if (currentListOfIngredients is! List<dynamic>) {
+      print("Formato incorrecto de listOfIngredients. Inicializando...");
+      currentListOfIngredients = [];
+    }
+
+    // Asegurarse de que todos los elementos de currentListOfIngredients sean List<String>
+    List<List<String>> safeListOfIngredients = [];
+    for (var ingredientList in currentListOfIngredients) {
+      if (ingredientList is List) {
+        safeListOfIngredients.add(List<String>.from(ingredientList));
+      } else {
+        print("Elemento en listOfIngredients tiene un formato incorrecto.");
+        // Si encuentras un elemento con formato incorrecto, puedes agregarlo como una lista vacía o saltarlo
+        safeListOfIngredients.add([]);
+      }
+    }
+
+    // Agregar la nueva lista a la colección
+    safeListOfIngredients.add(newList);
+
+    // Actualizar la base de datos con la nueva lista
     var result = await userCollection.update(
-      where.id(ObjectId.parse(userId)), // Convertir el userId a ObjectId
-      modify.set("listOfIngredients", newList), // Establecer la lista de ingredientes
+      where.id(ObjectId.parse(id)),
+      modify.set("listOfIngredients", safeListOfIngredients),
     );
 
     print("Resultado de la actualización: $result");
@@ -285,4 +465,7 @@ Future<void> addNewListOfIngredients(String userId,List<String> newList) async {
     await Mongodb.closeConnection();
   }
 }
+
+
+
 }

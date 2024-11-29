@@ -31,7 +31,6 @@ class _ChatView extends StatefulWidget {
 
 class _ChatViewState extends State<_ChatView> {
   final TextEditingController nameControl = TextEditingController();
-  String userId = UserService().userId; 
   bool showSave = false;
 
   void mostrar() {
@@ -255,7 +254,7 @@ class _ChatViewState extends State<_ChatView> {
                                 listaGuardada = chatProvider.recipeList;
                                 listaGuardada.insert(0,nameControl.text.toString());
                                 
-                                await UserService().addNewListOfIngredients(userId,listaGuardada);
+                                await UserService().addNewListOfIngredients(UserService().getId(),listaGuardada);
                               }, 
                               style: textButtonStyle(),
                               child: Text("Continuar",style: normalStyle(),)
