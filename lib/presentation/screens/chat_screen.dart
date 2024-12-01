@@ -6,6 +6,7 @@ import 'package:cooking_hub/widgets/chat/my_message_bubble.dart';
 // import 'package:cooking_hub/widgets/shared/background_image.dart';
 import 'package:cooking_hub/widgets/shared/message_field_button.dart';
 import 'package:cooking_hub/services/user_service.dart';
+import 'package:cooking_hub/widgets/styles/containerStyle.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -135,8 +136,7 @@ class _ChatViewState extends State<_ChatView> {
               const BackgroundImage(),
       
               Container(
-                decoration: backgroundChatDecoration(),
-                width: double.infinity,
+                decoration: ContainerStyle.bottomContainerDec(),
                 margin: EdgeInsets.only(
                   top: screenHeight * 0.02,
                   left: screenWidth * 0.04,
@@ -146,8 +146,6 @@ class _ChatViewState extends State<_ChatView> {
               ),
       
               Container(
-                width: double.infinity,
-                
                 margin: EdgeInsets.only(
                   top: screenHeight * 0.02,
                   left: screenWidth * 0.06,
@@ -180,10 +178,11 @@ class _ChatViewState extends State<_ChatView> {
                       ),
                     ),
       
-                    // Botones de adjuntar y cámara y espacio para que el usuario escriba
+                    // Botones de adjuntar y cámara y espacio para que el usuario escriba  
                     MessageFieldContainer(
                       onValue: ((value) => chatProvider.sendMessage(value)),
                     ),
+                    
                   ],
                 ),
               ),

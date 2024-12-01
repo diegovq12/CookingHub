@@ -96,7 +96,7 @@ class _Favoritos extends State<Favoritos> {
                     ))),
           ),
           const HotBar(),
-          if (listBand) ...[listOfLists(screenHeight)],
+          if (listBand) ...[listOfLists(screenHeight, screenWidth)],
           if (listIngBand) ...[listOfIngredients(screenHeight, screenWidth)]
         ],
       ),
@@ -105,7 +105,7 @@ class _Favoritos extends State<Favoritos> {
 
   // --------- Lista de listas --------- //
 
-  Stack listOfLists(double screenHeight) {
+  Stack listOfLists(double screenHeight, double screenWidth) {
     return Stack(
       children: [
         ModalBarrier(
@@ -121,7 +121,10 @@ class _Favoritos extends State<Favoritos> {
           Center(
             child: Container(
               decoration: ContainerStyle.genContainerDec(),
-              margin: EdgeInsets.all(30),
+              margin: EdgeInsets.symmetric(
+                horizontal: screenWidth*0.05,
+                vertical: screenHeight*0.03
+              ),
               child: Column(
                 children: [
                   SizedBox(height: screenHeight * 0.02),
@@ -143,13 +146,12 @@ class _Favoritos extends State<Favoritos> {
                                   child: InkWell(
                                       onTap: () {
                                         showList();
-                                        // listSelected = name;
                                         showIngrd();
                                         selected = current;
                                       },
                                       child: Text(
                                         "- ${listOfList[current][0]}",
-                                        style: Textstyles.listsStyle(),
+                                        style: Textstyles.normalStyle(),
                                       )),
                                 ),
                                 Container(
@@ -197,7 +199,10 @@ class _Favoritos extends State<Favoritos> {
         Center(
           child: Container(
             decoration: ContainerStyle.genContainerDec(),
-            margin: EdgeInsets.all(30),
+            margin: EdgeInsets.symmetric(
+              horizontal: screenWidth*0.05,
+              vertical: screenHeight*0.03
+            ),
             child: Column(
               children: [
                 Expanded(
@@ -234,9 +239,12 @@ class _Favoritos extends State<Favoritos> {
                                 },
                                 child: Container(
                                     decoration: ContainerStyle.buttonContainerDec(),
-                                    padding: EdgeInsets.only(
+                                    width: screenWidth*0.18,
+                                    padding: const EdgeInsets.only(
                                       left: 15,
                                       right: 15,
+                                      top: 5,
+                                      bottom: 5
                                     ),
                                     child: Row(
                                       mainAxisAlignment:
@@ -244,7 +252,7 @@ class _Favoritos extends State<Favoritos> {
                                       children: [
                                         Text(
                                           listOfList[selected][current][0],
-                                          style: Textstyles.normalStyle(),
+                                          style: Textstyles.smallNormalStyle(),
                                         ),
                                         Image.asset(
                                           "assets/icons/edit2.png",

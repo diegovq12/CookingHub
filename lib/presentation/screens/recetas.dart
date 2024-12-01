@@ -1,5 +1,6 @@
 import 'package:cooking_hub/presentation/screens/FueraDeServicio.dart';
 import 'package:cooking_hub/widgets/shared/hot_bar.dart';
+import 'package:cooking_hub/widgets/styles/containerStyle.dart';
 import 'package:flutter/material.dart';
 import 'package:cooking_hub/presentation/screens/favoritos.dart';
 import 'package:cooking_hub/widgets/shared/background_image.dart';
@@ -194,7 +195,7 @@ class _Recetas extends State<Recetas>{
           },
 
           child: Container(
-            decoration: buttonDecoration(),
+            decoration: ContainerStyle.genContainerDec(),
             
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -220,7 +221,7 @@ class _Recetas extends State<Recetas>{
             
           },
           child: Container(
-            decoration: buttonDecoration(),
+            decoration: ContainerStyle.genContainerDec(),
             
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,

@@ -1,5 +1,6 @@
 import 'package:cooking_hub/presentation/providers/chat_provider.dart';
 import 'package:cooking_hub/widgets/shared/message_field_box.dart';
+import 'package:cooking_hub/widgets/styles/containerStyle.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
@@ -43,7 +44,8 @@ class MessageFieldContainer extends StatelessWidget {
     final chatProvider = context.watch<ChatProvider>();
 
     return Container(
-      margin: const EdgeInsets.only(bottom: 10, right: 10),
+      // margin: const EdgeInsets.only(bottom: 10, right: 10),
+      
       child: Row(
         textDirection: TextDirection.rtl,
         children: [

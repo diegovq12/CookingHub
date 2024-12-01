@@ -1,25 +1,34 @@
 # Cooking Hub
 
-### Una aplicacion de cocina facil y sencilla de entender
+### Conoce nuevas recetas para tu dia a dia.
 
 <img src="assets/CookingHub_2.gif" >
 
-### Su funcionalidad principal es obtener recetas mediante los ingredientes que TU quieras
+# Te damos la bienvenida a Cooking Hub 
+#### Una aplicacion la cual puede generar recetas para tu dia a dia, si sientes que tu rutina de comida es un cliche, puedes probar recetas nuevas con Cooking Hub, otorgale los ingredientes que tu quieras y te daremos una receta personalizada.
 
-## Esta aplicacion fue desarrolada con
+#### Necesitas comprar ingredientes y no sabes que tanto podria costarte?, No te preocupes, con Cooking Hub puedes generar una lista de ingredientes para posteriormente cotizarla en los mercados mas cercanos a tu ubicacion actual
+
+#### Platillos de temporada, recetas personalizadas, recetas nuevas, lista de compras, mercados cercados todo esto y mas en Cooking Hub.
+
+## Herramientas de desarrollo
 ```
-    Flutter/Dart
-    Python
-    MongoDB
-    Visual Studio Code
-    Apis de google
-    Y mucho desvelo
+    Lenguaje y FrameWork
+        Flutter - Dart
+    Servicios en la nube
+        MongoDB
+        ChatGPT 3.0
+        Apis de google
+    IDE
+        Visual Studio Code
 ```
 
 ## Desarrollado por
-- Antonio Ramos - Project Manager, Base de datos y Auxiliar Backend
+```
+- Antonio Ramos - Project Manager, Base de datos
 - Ivan Hernandez - Analista
-- Diego Quiros - Principal Backend
-- Adan Ceseña - Fronted y Auxilar Backend
+- Diego Quiros - Backend
+- Adan Ceseña - Fronted, Auxilar Backend
 - Alexander Towers - Tester
-## 
+```
+

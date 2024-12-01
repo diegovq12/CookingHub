@@ -13,7 +13,7 @@ class ChatProvider extends ChangeNotifier {
   List<Message> messageList = [
     Message(
         text:
-            '¡Hola! Soy CookBot, tu asistente en la cocina. ¿Listo para sorprender a tu paladar? ¡Dime qué se te antoja y juntos cocinemos algo increíble! Ejemplo: Receta de pizza',
+            '¡Hola! Soy CookBot, tu asistente en la cocina. ¿Listo para sorprender a tu paladar? Puedes pedirme recetas de la siguiente forma : Receta de pizza. !Adelante!',
         fromWho: FromWho.gpt)
   ];
 
@@ -65,13 +65,13 @@ Future<void> sendMessage(String text) async {
         }
       } else {
         messageList.add(Message(
-          text: 'Este asistente solo proporciona ayuda con temas de cocina.',
+          text: 'Lo siento, solo te puedo ayudar con recetas.',
           fromWho: FromWho.gpt,
         ));
       }
     } else {
       messageList.add(Message(
-        text: 'Este asistente solo proporciona ayuda con temas de cocina.',
+        text: 'Lo siento, solo te puedo ayudar con recetas.',
         fromWho: FromWho.gpt,
       ));
       print('Diebug respuesta gpt: $responseText La respuesta no está en formato JSON');
