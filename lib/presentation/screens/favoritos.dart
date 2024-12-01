@@ -1,3 +1,5 @@
+import 'package:cooking_hub/widgets/styles/containerStyle.dart';
+import 'package:cooking_hub/widgets/styles/inputStyle.dart';
 import 'package:cooking_hub/widgets/styles/textStyles.dart';
 import 'package:flutter/material.dart';
 import 'package:cooking_hub/services/user_service.dart';
@@ -55,7 +57,6 @@ class _Favoritos extends State<Favoritos> {
 
   void recibir() async {
     var user = await UserService().getUsers(UserService().getId());
-    print("Usuario recuperado: $user");
 
     listOfList = user!.listOfIngredients;
 
@@ -83,7 +84,7 @@ class _Favoritos extends State<Favoritos> {
             top: screenHeight * 0.17,
             left: screenWidth * 0.02,
             child: Container(
-                decoration: buttonDecoration(),
+                decoration: ContainerStyle.buttonContainerDec(),
                 child: IconButton(
                     onPressed: () {
                       recibir();
@@ -119,14 +120,14 @@ class _Favoritos extends State<Favoritos> {
         if(listLoaded)...[
           Center(
             child: Container(
-              decoration: containerDecoration(),
+              decoration: ContainerStyle.genContainerDec(),
               margin: EdgeInsets.all(30),
               child: Column(
                 children: [
                   SizedBox(height: screenHeight * 0.02),
                   Text(
                     "Listas guardadas",
-                    style: titleStyle(),
+                    style: Textstyles.titleStyle(),
                     textAlign: TextAlign.center,
                   ),
                   SizedBox(height: screenHeight * 0.02),
@@ -148,15 +149,15 @@ class _Favoritos extends State<Favoritos> {
                                       },
                                       child: Text(
                                         "- ${listOfList[current][0]}",
-                                        style: listsStyle(),
+                                        style: Textstyles.listsStyle(),
                                       )),
                                 ),
                                 Container(
-                                    decoration: deleteDecoration(),
+                                    decoration: ContainerStyle.buttonContainerDec(),
                                     child: IconButton(
                                         onPressed: () {
                                           setState(() {
-                                            print("AdanBug $current");
+                                            
                                             UserService()
                                                 .deleteOneListOfIngredients(
                                                     UserService().getId(),
@@ -195,7 +196,7 @@ class _Favoritos extends State<Favoritos> {
         ),
         Center(
           child: Container(
-            decoration: containerDecoration(),
+            decoration: ContainerStyle.genContainerDec(),
             margin: EdgeInsets.all(30),
             child: Column(
               children: [
@@ -212,7 +213,7 @@ class _Favoritos extends State<Favoritos> {
                                 Expanded(
                                     child: Text(
                                   listOfList[selected][current],
-                                  style: titleStyle(),
+                                  style: Textstyles.titleStyle(),
                                   textAlign: TextAlign.center,
                                 )),
                               ]));
@@ -224,7 +225,7 @@ class _Favoritos extends State<Favoritos> {
                               Expanded(
                                   child: Text(
                                 "- ${listOfList[selected][current]}",
-                                style: normalStyle(),
+                                style: Textstyles.normalStyle(),
                               )),
                               InkWell(
                                 onTap: () {
@@ -232,7 +233,7 @@ class _Favoritos extends State<Favoritos> {
                                       screenWidth, current);
                                 },
                                 child: Container(
-                                    decoration: deleteDecoration(),
+                                    decoration: ContainerStyle.buttonContainerDec(),
                                     padding: EdgeInsets.only(
                                       left: 15,
                                       right: 15,
@@ -243,7 +244,7 @@ class _Favoritos extends State<Favoritos> {
                                       children: [
                                         Text(
                                           listOfList[selected][current][0],
-                                          style: normalStyle(),
+                                          style: Textstyles.normalStyle(),
                                         ),
                                         Image.asset(
                                           "assets/icons/edit2.png",
@@ -287,7 +288,7 @@ class _Favoritos extends State<Favoritos> {
                 child: Container(
                   alignment: Alignment.bottomLeft,
                   height: screenHeight * 0.4,
-                  decoration: backgroundDecoration(),
+                  decoration: ContainerStyle.genContainerDec(),
                   child: Column(
                     children: [
                       editarIngredienteTitle(screenHeight, screenWidth),
@@ -307,7 +308,7 @@ class _Favoritos extends State<Favoritos> {
                               child: Expanded(
                                 child: TextField(
                                   controller: _controllerAmount,
-                                  decoration: inputBoxAmount(),
+                                  decoration: InputStyle.inputDecoration("Cantidad"),
                                 ),
                               ),
                             ),
@@ -316,7 +317,7 @@ class _Favoritos extends State<Favoritos> {
                               child: Expanded(
                                 child: TextField(
                                   controller: _controllerName,
-                                  decoration: inputBoxName(),
+                                  decoration: InputStyle.inputDecoration("Nombre"),
                                 ),
                               ),
                             ),
@@ -338,10 +339,10 @@ class _Favoritos extends State<Favoritos> {
                               },
                               child: Container(
                                 padding: const EdgeInsets.all(10),
-                                decoration: titleDecorationWithShadow(),
+                                decoration: ContainerStyle.buttonContainerDec(),
                                 child: Text(
                                   "Cancelar",
-                                  style: buttonStyle(),
+                                  style: Textstyles.buttonStyle(),
                                 ),
                               ),
                             ),
@@ -367,10 +368,10 @@ class _Favoritos extends State<Favoritos> {
                               },
                               child: Container(
                                 padding: const EdgeInsets.all(10),
-                                decoration: titleDecorationWithShadow(),
+                                decoration: ContainerStyle.buttonContainerDec(),
                                 child: Text(
                                   "Continuar",
-                                  style: buttonStyle(),
+                                  style: Textstyles.buttonStyle(),
                                 ),
                               ),
                             )
@@ -384,40 +385,6 @@ class _Favoritos extends State<Favoritos> {
         });
   }
 
-  InputDecoration inputBoxName() {
-    return const InputDecoration(
-        filled: true,
-        fillColor: Colors.white,
-        hintText: "Ingrediente",
-        hintStyle: TextStyle(color: Colors.grey),
-        border: OutlineInputBorder(
-            borderRadius: BorderRadius.all(Radius.circular(16)),
-            borderSide: BorderSide.none));
-  }
-
-  InputDecoration inputBoxAmount() {
-    return const InputDecoration(
-        filled: true,
-        fillColor: Colors.white,
-        hintText: "Cantidad",
-        hintStyle: TextStyle(color: Colors.grey),
-        border: OutlineInputBorder(
-            borderRadius: BorderRadius.all(Radius.circular(16)),
-            borderSide: BorderSide.none));
-  }
-
-  BoxDecoration titleDecorationWithShadow() {
-    return const BoxDecoration(
-        color: Color.fromRGBO(255, 131, 48, 1),
-        borderRadius: BorderRadius.all(Radius.circular(16)),
-        boxShadow: [
-          BoxShadow(
-              color: Color.fromARGB(120, 0, 0, 0),
-              spreadRadius: 0,
-              blurRadius: 5,
-              offset: Offset(0, 2))
-        ]);
-  }
 
   Padding editarIngredienteTitle(double screenHeight, double screenWidth) {
     return Padding(
@@ -440,21 +407,9 @@ class _Favoritos extends State<Favoritos> {
     );
   }
 
-  BoxDecoration backgroundDecoration() {
-    return const BoxDecoration(
-      color: Color.fromRGBO(255, 168, 50, 1),
-      borderRadius: BorderRadius.only(
-        topLeft: Radius.circular(16),
-        topRight: Radius.circular(16),
-      ),
-    );
-  }
-
-  // ------ Estilos
-
   Container titleContainer(double screenHeight, double screenWidth) {
     return Container(
-      decoration: containerDecoration(),
+      decoration: ContainerStyle.genContainerDec(),
       margin: EdgeInsets.only(
         top: screenHeight * 0.02,
         left: screenWidth * 0.05,
@@ -467,7 +422,7 @@ class _Favoritos extends State<Favoritos> {
         children: [
           Text(
             "Ingredientes Favoritos",
-            style: titleStyle(),
+            style: Textstyles.titleStyle(),
             textAlign: TextAlign.center,
           ),
         ],
@@ -477,7 +432,7 @@ class _Favoritos extends State<Favoritos> {
 
   Container ingredientsList(double screenHeight) {
     return Container(
-      decoration: containerDecoration(),
+      decoration: ContainerStyle.genContainerDec(),
       margin: EdgeInsets.only(top: screenHeight * 0.2),
       child: Column(
         children: [
@@ -512,7 +467,7 @@ class _Favoritos extends State<Favoritos> {
                           children: [
                             Text(
                               "• $amount $name",
-                              style: normalStyle(),
+                              style: Textstyles.normalStyle(),
                             ),
                           ],
                         ),
@@ -524,51 +479,5 @@ class _Favoritos extends State<Favoritos> {
     );
   }
 
-  TextStyle normalStyle() =>
-      const TextStyle(color: Colors.white, fontFamily: "Poppins", fontSize: 20);
-
-  TextStyle listsStyle() => const TextStyle(
-      color: Colors.white,
-      fontFamily: "Poppins",
-      fontSize: 20,
-      decoration: TextDecoration.underline,
-      decorationColor: Colors.white);
-
-  TextStyle buttonStyle() => const TextStyle(
-      color: Colors.white,
-      fontFamily: "Poppins",
-      fontSize: 20,
-      fontWeight: FontWeight.bold);
-
-  TextStyle titleStyle() => const TextStyle(
-      color: Colors.white,
-      fontFamily: "Poppins",
-      fontSize: 36,
-      fontWeight: FontWeight.bold);
-
-  BoxDecoration containerDecoration() {
-    return BoxDecoration(
-        color: Color(0xFFFFA832),
-        borderRadius: BorderRadius.all(Radius.circular(16)));
-  }
-
-  BoxDecoration buttonDecoration() {
-    return BoxDecoration(
-        color: Color(0xFFFF9300),
-        borderRadius: BorderRadius.all(Radius.circular(16)),
-        boxShadow: [
-          BoxShadow(
-              color: Color.fromARGB(120, 0, 0, 0),
-              spreadRadius: 0,
-              blurRadius: 5,
-              offset: Offset(0, 1))
-        ]);
-  }
-
-  BoxDecoration deleteDecoration() {
-    return BoxDecoration(
-      color: Color(0xFFFF8330),
-      borderRadius: BorderRadius.all(Radius.circular(16)),
-    );
-  }
+  
 }

@@ -123,75 +123,78 @@ class _ChatViewState extends State<_ChatView> {
 
     final chatProvider = context.watch<ChatProvider>();
 
-    return WillPopScope(
-      onWillPop: () async =>showExitConfirmationDialog(context),
-
-      child: SafeArea(
-        child: Stack(
-          children: [
-            // Fondo de pantalla
-            const BackgroundImage(),
-
-            Container(
-              decoration: backgroundChatDecoration(),
-              width: double.infinity,
-              margin: EdgeInsets.only(
-                top: screenHeight * 0.02,
-                left: screenWidth * 0.04,
-                right: screenWidth * 0.04,
-                bottom: screenHeight * 0.06,
+    return Scaffold(
+      backgroundColor: Colors.black,
+      body: WillPopScope(
+        onWillPop: () async =>showExitConfirmationDialog(context),
+      
+        child: SafeArea(
+          child: Stack(
+            children: [
+              // Fondo de pantalla
+              const BackgroundImage(),
+      
+              Container(
+                decoration: backgroundChatDecoration(),
+                width: double.infinity,
+                margin: EdgeInsets.only(
+                  top: screenHeight * 0.02,
+                  left: screenWidth * 0.04,
+                  right: screenWidth * 0.04,
+                  bottom: screenHeight * 0.06,
+                ),
               ),
-            ),
-
-            Container(
-              width: double.infinity,
-              
-              margin: EdgeInsets.only(
-                top: screenHeight * 0.02,
-                left: screenWidth * 0.06,
-                right: screenWidth * 0.06,
-                bottom: screenHeight * 0.07,
-              ),
-              
-              child: Column(
-                children: [
-                  // Contenedor de "CookBot" en la parte superior
-                  const TitleContainer(title: "CookingBot"),
-                  const SizedBox(height: 10),
-
-                  // Aquí se agrega el ListView.builder
-                  Expanded(
-                    child: ListView.builder(
-                      controller: chatProvider.chatScrollController,
-                      itemCount: chatProvider.messageList.length,
-                      itemBuilder: (context, index) {
-                        
-                        final message = chatProvider.messageList[index];
-                        return (message.fromWho == FromWho.me)
-                            ? MyMessageBubble(message: message)
-                            : InkWell(
-                              onTap: () {
-                                Navigator.push(context, MaterialPageRoute(builder: (context)=> ingredientes()));
-                              },
-                              child: GtpMessageBubble(message: message));
-                      },
+      
+              Container(
+                width: double.infinity,
+                
+                margin: EdgeInsets.only(
+                  top: screenHeight * 0.02,
+                  left: screenWidth * 0.06,
+                  right: screenWidth * 0.06,
+                  bottom: screenHeight * 0.07,
+                ),
+                
+                child: Column(
+                  children: [
+                    // Contenedor de "CookBot" en la parte superior
+                    const TitleContainer(title: "CookingBot"),
+                    const SizedBox(height: 10),
+      
+                    // Aquí se agrega el ListView.builder
+                    Expanded(
+                      child: ListView.builder(
+                        controller: chatProvider.chatScrollController,
+                        itemCount: chatProvider.messageList.length,
+                        itemBuilder: (context, index) {
+                          
+                          final message = chatProvider.messageList[index];
+                          return (message.fromWho == FromWho.me)
+                              ? MyMessageBubble(message: message)
+                              : InkWell(
+                                onTap: () {
+                                  Navigator.push(context, MaterialPageRoute(builder: (context)=> ingredientes()));
+                                },
+                                child: GtpMessageBubble(message: message));
+                        },
+                      ),
                     ),
-                  ),
-
-                  // Botones de adjuntar y cámara y espacio para que el usuario escriba
-                  MessageFieldContainer(
-                    onValue: ((value) => chatProvider.sendMessage(value)),
-                  ),
-                ],
+      
+                    // Botones de adjuntar y cámara y espacio para que el usuario escriba
+                    MessageFieldContainer(
+                      onValue: ((value) => chatProvider.sendMessage(value)),
+                    ),
+                  ],
+                ),
               ),
-            ),
-
-            HotBar(),
-
-            // Mostrar el campo de texto solo cuando showSave es true
-            if (showSave)
-              nameList(context, chatProvider,screenWidth,screenHeight),
-          ],
+      
+              HotBar(),
+      
+              // Mostrar el campo de texto solo cuando showSave es true
+              if (showSave)
+                nameList(context, chatProvider,screenWidth,screenHeight),
+            ],
+          ),
         ),
       ),
     );

@@ -1,10 +1,12 @@
+import 'package:cooking_hub/widgets/shared/background_image.dart';
+import 'package:cooking_hub/widgets/styles/containerStyle.dart';
+import 'package:cooking_hub/widgets/styles/inputStyle.dart';
+import 'package:cooking_hub/widgets/styles/textStyles.dart';
 import 'package:flutter/material.dart';
 import 'package:cooking_hub/widgets/shared/hot_bar.dart';
-// import 'package:cooking_hub/services/openai_services.dart';
 import 'package:cooking_hub/presentation/providers/chat_provider.dart';
 import 'package:provider/provider.dart';
-// import 'package:cooking_hub/presentation/screens/listaCompras.dart';
-// import 'package:cooking_hub/presentation/screens/recetas.dart';
+
 
 class ingredientes extends StatefulWidget {
   const ingredientes({super.key});
@@ -29,15 +31,6 @@ class _ingredientes extends State<ingredientes> {
     });
   }
 
-  // Almacena el chambio que envia, mas no bien actualiza el mapa solo guarda el texto
-  void saveChange(String texto, int index) {
-    setState(() {
-      // ingredients[index] = texto.;
-      nameControl.clear();
-      amountControl.clear();
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     final chatProvider = context.watch<ChatProvider>();
@@ -56,17 +49,15 @@ class _ingredientes extends State<ingredientes> {
     double screenHeight = MediaQuery.of(context).size.height;
 
     return SafeArea(
-        child: Scaffold(
+      child: Scaffold(
       body: Stack(
         children: [
-          // --- Fondo - imagen
-          BackGroundImage(),
+          BackgroundImage(),
 
           // --- Fondo con la lista
           DraggableScrollableSheet(
             initialChildSize: 0.5, // Tamaño inicial del contenedor
-            minChildSize:
-                0.5, // Tamaño mínimo cuando está deslizado hacia abajo
+            minChildSize: 0.5, // Tamaño mínimo cuando está deslizado hacia abajo
             maxChildSize: 1, // Tamaño máximo cuando está deslizado hacia arriba
 
             builder: (BuildContext context, ScrollController scrollController) {
@@ -75,13 +66,12 @@ class _ingredientes extends State<ingredientes> {
                 children: [
                   // Contenedor principal
                   Container(
-                    decoration: backgroundDecoration(),
+                    decoration: ContainerStyle.bottomContainerDec(),
                     margin: EdgeInsets.only(
                       top: screenHeight * 0.1,
                     ),
                     child: Column(
                       children: [
-                        // Espacio entre para el titul de arepas
                         SizedBox(height: screenHeight * 0.03),
 
                         // Título ingredientes
@@ -93,7 +83,7 @@ class _ingredientes extends State<ingredientes> {
                         // Botones
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [addToListButton(), allSetButton()],
+                          children: [bottomButtons("Agregar a la lista"), bottomButtons("Todo listo")],
                         ),
                       ],
                     ),
@@ -121,59 +111,45 @@ class _ingredientes extends State<ingredientes> {
       left: screenWidth * 0.1,
       right: screenWidth * 0.1,
       child: Expanded(
-          child: Container(
-            height: screenHeight * 0.08, // Provide a bounded height
-            decoration: titleDecoration(),
-            child: Center(
-              child: chatProvider.recipeNamesList.isEmpty
-                  ? Text(
-                      "", // Mostrar nada si la lista esta vacía
-                      style: titleStyle(),
-                      textAlign: TextAlign.center,
-                    )
-                  : ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: 1, 
-                      itemBuilder: (context, index) {
-                        return Center(
-                          child: Text(
-                            chatProvider
-                                .recipeNamesList.last, // Mostrar el ultimo elemento
-                            style: titleStyle(),
-                            textAlign: TextAlign.center,
-                          ),
-                        );
-                      },
-                    ),
-            ),
+        child: Container(
+          height: screenHeight * 0.08,
+          decoration: ContainerStyle.buttonContainerDec(),
+          child: Center(
+            child: chatProvider.recipeNamesList.isEmpty
+                ? Text(
+                    "", // Mostrar nada si la lista esta vacía
+                    style: Textstyles.titleStyle(),
+                    textAlign: TextAlign.center,
+                  )
+                : ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: 1,
+                    itemBuilder: (context, index) {
+                      return Center(
+                        child: Text(
+                          chatProvider.recipeNamesList
+                              .last, // Mostrar el ultimo elemento
+                          style: Textstyles.titleStyle(),
+                          textAlign: TextAlign.center,
+                        ),
+                      );
+                    },
+                  ),
           ),
-        ),
-      );
-  }
-
-  InkWell allSetButton() {
-    return InkWell(
-      onTap: () {},
-      child: Container(
-        decoration: titleDecoration(),
-        padding: EdgeInsets.all(10),
-        child: Text(
-          "Todo listo",
-          style: normalStyle(),
         ),
       ),
     );
   }
 
-  InkWell addToListButton() {
+  InkWell bottomButtons (String message){
     return InkWell(
       onTap: () {},
       child: Container(
-        decoration: titleDecoration(),
-        padding: EdgeInsets.all(10),
+        decoration: ContainerStyle.buttonContainerDec(),
+        padding:const EdgeInsets.all(10),
         child: Text(
-          "Agregar a la lista",
-          style: normalStyle(),
+          message,
+          style: Textstyles.normalStyle(),
         ),
       ),
     );
@@ -198,7 +174,7 @@ class _ingredientes extends State<ingredientes> {
                   Expanded(
                     child: Text(
                       "• ${ing[index]}",
-                      style: normalStyle(),
+                      style: Textstyles.normalStyle(),
                       softWrap: true,
                     ),
                   ),
@@ -208,7 +184,7 @@ class _ingredientes extends State<ingredientes> {
                       editSection(context, screenHeight, screenWidth, index);
                     },
                     icon: Image.asset(
-                      "assets/icons/edit.png",
+                      "assets/icons/edit2.png",
                       width: screenHeight * 0.03,
                     ),
                   ),
@@ -222,7 +198,7 @@ class _ingredientes extends State<ingredientes> {
   }
 
   Future<dynamic> editSection(BuildContext context, double screenHeight,
-      double screenWidth, int index) {
+    double screenWidth, int index) {
     nameControl.text = ing[index].substring(2);
     amountControl.text = ing[index][0];
 
@@ -234,17 +210,14 @@ class _ingredientes extends State<ingredientes> {
           alignment: Alignment.bottomCenter,
           child: Padding(
             padding: EdgeInsets.only(
-              bottom: MediaQuery.of(context)
-                  .viewInsets
-                  .bottom, // Ajuste del espacio con el teclado
+              bottom: MediaQuery.of(context).viewInsets.bottom, // Ajuste del espacio con el teclado
             ),
             child: Container(
               alignment: Alignment.bottomLeft,
               height: screenHeight * 0.35,
-              decoration: backgroundDecoration(),
+              decoration: ContainerStyle.bottomContainerDec(),
               child: Column(
-                mainAxisSize: MainAxisSize
-                    .min, // Permite que el contenido se ajuste al teclado
+                mainAxisSize: MainAxisSize.min, // Permite que el contenido se ajuste al teclado
                 children: [
                   editarIngredienteTitle(screenHeight, screenWidth),
                   Row(
@@ -258,14 +231,14 @@ class _ingredientes extends State<ingredientes> {
                         ),
                         child: TextField(
                           controller: amountControl,
-                          decoration: inputBoxAmount(),
+                          decoration: InputStyle.inputDecoration("Cantidad"),
                         ),
                       ),
                       SizedBox(
                         width: screenWidth * 0.6,
                         child: TextField(
                           controller: nameControl,
-                          decoration: inputBoxName(),
+                          decoration: InputStyle.inputDecoration("Nombre"),
                         ),
                       ),
                     ],
@@ -284,8 +257,8 @@ class _ingredientes extends State<ingredientes> {
                           },
                           child: Container(
                             padding: const EdgeInsets.all(10),
-                            decoration: titleDecorationWithShadow(),
-                            child: Text("Cancelar", style: buttonStyle()),
+                            decoration: ContainerStyle.buttonContainerDec(),
+                            child: Text("Cancelar", style: Textstyles.buttonStyle()),
                           ),
                         ),
                         InkWell(
@@ -301,8 +274,8 @@ class _ingredientes extends State<ingredientes> {
                           },
                           child: Container(
                             padding: const EdgeInsets.all(10),
-                            decoration: titleDecorationWithShadow(),
-                            child: Text("Continuar", style: buttonStyle()),
+                            decoration: ContainerStyle.buttonContainerDec(),
+                            child: Text("Continuar", style: Textstyles.buttonStyle()),
                           ),
                         ),
                       ],
@@ -317,8 +290,8 @@ class _ingredientes extends State<ingredientes> {
                     child: Container(
                       padding: const EdgeInsets.all(10),
                       margin: EdgeInsets.only(bottom: screenHeight * 0.02),
-                      decoration: titleDecorationWithShadow(),
-                      child: Text("Borrar", style: buttonStyle()),
+                      decoration: ContainerStyle.buttonContainerDec(),
+                      child: Text("Borrar", style: Textstyles.buttonStyle()),
                     ),
                   ),
                 ],
@@ -354,140 +327,18 @@ class _ingredientes extends State<ingredientes> {
     return Padding(
       padding: EdgeInsets.only(
         left: screenWidth * 0.03,
-        top: screenHeight * 0.01,
+        top: screenHeight * 0.03,
       ),
       child: Row(
         children: [
           Text(
             "Ingredientes:",
-            style: titleStyle(),
+            style: Textstyles.titleStyle(),
           ),
         ],
       ),
     );
   }
 
-  BoxDecoration backgroundDecoration() {
-    return const BoxDecoration(
-      color: Color.fromRGBO(255, 168, 50, 1),
-      borderRadius: BorderRadius.only(
-        topLeft: Radius.circular(16),
-        topRight: Radius.circular(16),
-      ),
-    );
-  }
 
-  TextStyle normalStyle() =>
-      const TextStyle(color: Colors.white, fontFamily: "Poppins", fontSize: 20);
-
-  TextStyle buttonStyle() => const TextStyle(
-      color: Colors.white,
-      fontFamily: "Poppins",
-      fontSize: 20,
-      fontWeight: FontWeight.bold);
-
-  TextStyle titleStyle() => const TextStyle(
-      color: Colors.white,
-      fontFamily: "Poppins",
-      fontSize: 36,
-      fontWeight: FontWeight.bold);
-
-  InputDecoration inputBoxAmount() {
-    return const InputDecoration(
-        filled: true,
-        fillColor: Colors.white,
-        hintText: "Cantidad",
-        hintStyle: TextStyle(color: Colors.grey),
-        border: OutlineInputBorder(
-            borderRadius: BorderRadius.all(Radius.circular(16)),
-            borderSide: BorderSide.none));
-  }
-
-  InputDecoration inputBoxName() {
-    return const InputDecoration(
-        filled: true,
-        fillColor: Colors.white,
-        hintText: "Ingrediente",
-        hintStyle: TextStyle(color: Colors.grey),
-        border: OutlineInputBorder(
-            borderRadius: BorderRadius.all(Radius.circular(16)),
-            borderSide: BorderSide.none));
-  }
-
-  BoxDecoration titleDecoration() {
-    return const BoxDecoration(
-        color: Color.fromRGBO(255, 131, 48, 1),
-        borderRadius: BorderRadius.all(Radius.circular(16)));
-  }
-
-  BoxDecoration titleDecorationWithShadow() {
-    return const BoxDecoration(
-        color: Color.fromRGBO(255, 131, 48, 1),
-        borderRadius: BorderRadius.all(Radius.circular(16)),
-        boxShadow: [
-          BoxShadow(
-              color: Color.fromARGB(120, 0, 0, 0),
-              spreadRadius: 0,
-              blurRadius: 5,
-              offset: Offset(0, 2))
-        ]);
-  }
-}
-
-// class HotBar extends StatelessWidget {
-//   const HotBar({
-//     super.key,
-//   });
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Align(
-//       alignment: Alignment.bottomCenter,
-//       child: Container(
-
-//         decoration: const BoxDecoration(
-//         color: Color.fromRGBO(255, 170, 50, 1),
-//         borderRadius: BorderRadius.only(
-//           topLeft: Radius.circular(16),
-//           topRight: Radius.circular(16)
-//           )
-//         ),
-
-//         child: Row(
-//           mainAxisAlignment: MainAxisAlignment.spaceAround,
-//           children: [
-//             IconButton(onPressed: (){}, icon: Image.asset("assets/HotBar/Home.png",width: 30,)),
-//             IconButton(onPressed: (){}, icon: Image.asset("assets/HotBar/Games.png",width: 30,)),
-//             Positioned(
-//               child: IconButton(onPressed: (){
-//                 Navigator.push(context, MaterialPageRoute(builder: (context)=> const Recetas()));
-//               },
-//               padding: const EdgeInsets.only(
-//                 bottom: 2
-//               ),
-//               icon: Image.asset("assets/HotBar/Gorrito.png",width: 50,)) ,
-//               ),
-//             IconButton(onPressed: (){Navigator.push(context, MaterialPageRoute(builder: (context) => const ListaScreen()));},
-//             icon: Image.asset("assets/HotBar/Lista.png",width: 30,),),
-//             IconButton(onPressed: (){}, icon: Image.asset("assets/HotBar/Perfil.png",width: 30,)),
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-// }
-
-class BackGroundImage extends StatelessWidget {
-  const BackGroundImage({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: const BoxDecoration(
-          image: DecorationImage(
-              image: AssetImage("assets/Background.png"), fit: BoxFit.cover)),
-    );
-  }
 }

@@ -172,10 +172,12 @@ class _IniciarSesion extends State<IniciarSesion> {
 
                               if (resultado == true) {
                                 await Mongodb.closeConnection();
+                                Navigator.of(context).pop(true);
                                 Navigator.push(context, MaterialPageRoute(builder: (context) => Recetas()));
                               }
                               if(resultado == false){
                                 await Mongodb.closeConnection();
+                                Navigator.of(context).pop(true);
                                 showMessange(context, screenWidth, screenHeight, "Usuario no encontrado");
                               }
                             }

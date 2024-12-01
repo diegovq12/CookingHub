@@ -32,7 +32,7 @@ class _StartState extends State<Start> {
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
-    double screenHeight = MediaQuery.of(context).size.height;
+    // double screenHeight = MediaQuery.of(context).size.height;
 
     return SafeArea(
       child: Scaffold(

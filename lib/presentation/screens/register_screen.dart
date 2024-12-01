@@ -1,6 +1,7 @@
 import 'package:cooking_hub/presentation/screens/iniciarSesion.dart';
-import 'package:cooking_hub/services/MongoDB.dart';
+
 import 'package:cooking_hub/services/user_service.dart';
+import 'package:cooking_hub/widgets/styles/inputStyle.dart';
 import 'package:flutter/material.dart';
 import 'package:cooking_hub/widgets/shared/background_image.dart';
 import 'package:cooking_hub/widgets/styles/containerStyle.dart';
@@ -108,12 +109,12 @@ class _RegisterScreen extends State<RegisterScreen> {
                         TextField(
                           controller: nameController,
                           decoration:
-                              ContainerStyle.inputDecoration("Nombre de usuario"),
+                              InputStyle.inputDecoration("Nombre de usuario"),
                         ),
                         TextField(
                           controller: emailController,
                           autocorrect: false,
-                          decoration: ContainerStyle.inputDecoration(
+                          decoration: InputStyle.inputDecoration(
                               "Correo electrónico"),
                         ),
                         TextField(
