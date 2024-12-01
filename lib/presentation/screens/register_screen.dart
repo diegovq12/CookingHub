@@ -70,7 +70,7 @@ class _RegisterScreen extends State<RegisterScreen> {
                   children: [
                     Text("Registrate", style: Textstyles.titleStyle()),
                     Text("Y empieza a cocinar de manera creativa",
-                        style: Textstyles.normalStyle2()),
+                        style: Textstyles.smallNormalStyle()),
                   ],
                 ),
               ),
@@ -142,7 +142,7 @@ class _RegisterScreen extends State<RegisterScreen> {
                               },
                             ),
                             Text("He leído y acepto los términos y condiciones",
-                                style: Textstyles.listsStyle2())
+                                style: Textstyles.smallListsStyle())
                           ],
                         ),
                         Text("O usa una de estas opciones",

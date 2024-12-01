@@ -188,7 +188,7 @@ class _ChatViewState extends State<_ChatView> {
                 ),
               ),
       
-              HotBar(),
+              const HotBar(),
       
               // Mostrar el campo de texto solo cuando showSave es true
               if (showSave)

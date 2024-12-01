@@ -92,7 +92,7 @@ class _StartState extends State<Start> {
                     
                     Padding(
                       padding: const EdgeInsets.only(top:16.0),
-                      child: Text("Terminos y condiciones", style: Textstyles.listsStyle2(),),
+                      child: Text("Terminos y condiciones", style: Textstyles.smallListsStyle(),),
                     )
                   ],
                 ),

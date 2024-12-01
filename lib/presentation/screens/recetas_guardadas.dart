@@ -123,7 +123,7 @@ class _RecetasGuardadas extends State<RecetasGuardadas> {
                 child: Center(
                     child: Text(
               "Recetas Guardadas",
-              style: Textstyles.recipesGtitleStyle(),
+              style: Textstyles.smallTitle(),
             ))),
           ),
 
@@ -667,7 +667,7 @@ class _RecetaGS extends State<RecetaGS> {
             alignment: Alignment.center,
             child: Text(
               title,
-              style: Textstyles.recipesGtitleStyle(),
+              style: Textstyles.smallTitle(),
             ),
           ),
           if (!loadedBand) ...[
@@ -698,7 +698,7 @@ class _RecetaGS extends State<RecetaGS> {
                           ),
                           child: Text(
                             "Ingredientes",
-                            style: Textstyles.recipesGtitleStyle(),
+                            style: Textstyles.smallTitle(),
                           ),
                         ),
                       ],
@@ -712,7 +712,7 @@ class _RecetaGS extends State<RecetaGS> {
                               bottom: screenWidth * 0.03),
                           child: Text(
                             "Procedimiento",
-                            style: Textstyles.recipesGtitleStyle(),
+                            style: Textstyles.smallTitle(),
                           ),
                         ),
                       ],

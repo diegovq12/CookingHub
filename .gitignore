@@ -47,4 +47,4 @@ app.*.map.json
 credencialescloud.json
 
 #otros
-pubspec.lock
+.lock

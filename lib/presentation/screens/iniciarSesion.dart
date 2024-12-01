@@ -126,7 +126,7 @@ class _IniciarSesion extends State<IniciarSesion> {
                               },
                               child: Text(
                                 "Olvide mi contraseña",
-                                style: Textstyles.listsStyle2(),
+                                style: Textstyles.smallListsStyle(),
                               )),
                           ],
                         ),
