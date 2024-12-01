@@ -41,6 +41,17 @@ class _IniciarSesion extends State<IniciarSesion> {
       }
     );
   }
+  
+  void loading(BuildContext context, double screenWidth,double screenHeight,) {
+    showDialog(
+      context: context,
+      barrierDismissible: true,
+      barrierColor: Colors.black.withOpacity(0.5),
+      builder: (BuildContext context) {
+        return Center(child: CircularProgressIndicator(color: Colors.white,));
+      },
+    );
+  }
 
   bool seePasswoard = true;
 
@@ -156,6 +167,7 @@ class _IniciarSesion extends State<IniciarSesion> {
                             if (usernameController.text == "" || passwordController.text == "") {
                               showMessange(context, screenWidth, screenHeight, "Por favor llenar los campos correo y contraseña");
                             } else {
+                              loading(context, screenWidth, screenHeight);  
                               bool resultado = await UserService().loginUser(usernameController.text, passwordController.text);
 
                               if (resultado == true) {

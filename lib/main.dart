@@ -1,7 +1,5 @@
 import 'package:cooking_hub/config/theme/app_theme.dart';
 import 'package:cooking_hub/presentation/providers/chat_provider.dart';
-import 'package:cooking_hub/presentation/screens/iniciarSesion.dart';
-import 'package:cooking_hub/presentation/screens/register_screen.dart';
 import 'package:cooking_hub/presentation/screens/start.dart';
 import 'package:cooking_hub/services/MongoDB.dart';
 import 'package:flutter/material.dart';

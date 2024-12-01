@@ -216,7 +216,7 @@ class _Recetas extends State<Recetas>{
         child: InkWell(
           onTap: (){
             // Navigator.push(context, MaterialPageRoute(builder: (context)=> CamaraTiempoReal()));
-            Navigator.push(context, MaterialPageRoute(builder: (context)=> ChatScreen()));
+            Navigator.push(context, MaterialPageRoute(builder: (context)=> const outOfService()));
             
           },
           child: Container(

@@ -32,7 +32,7 @@ class _RecetasGuardadas extends State<RecetasGuardadas> {
     // String userId = UserService().extractId(userIdText); // Extraer solo el ID
 
     // Obtener el usuario usando el userId
-    var user =await UserService().getUsers(UserService().getId());
+    var user = await UserService().getUsers(UserService().getId());
 
     if (user == null) {
       print("NO HAY NADAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
@@ -55,7 +55,7 @@ class _RecetasGuardadas extends State<RecetasGuardadas> {
     String userId = UserService().extractId(userIdText); // Extraer solo el ID
 
     // Obtener el usuario usando el userId
-    var user =await UserService().getUsers(UserService().getId());
+    var user = await UserService().getUsers(UserService().getId());
 
     if (user == null) {
       return;
@@ -94,6 +94,18 @@ class _RecetasGuardadas extends State<RecetasGuardadas> {
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
+
+    if (!loadedBand) {
+      return SafeArea(
+          child: Scaffold(
+        backgroundColor: Color(0xFFFFA832),
+        body: Center(
+          child: CircularProgressIndicator(
+            color: Colors.white,
+          ),
+        ),
+      ));
+    }
 
     return SafeArea(
         child: Scaffold(
@@ -158,7 +170,11 @@ class _RecetasGuardadas extends State<RecetasGuardadas> {
             height: screenHeight * 0.02,
           ),
           if (recipes.length <= 0) ...[
-            Text("No hay recetas guardadas",style: Textstyles.normalStyle(), textAlign: TextAlign.center,),
+            Text(
+              "No hay recetas guardadas",
+              style: Textstyles.normalStyle(),
+              textAlign: TextAlign.center,
+            ),
           ],
           if (recipes.length > 0) ...[
             Expanded(
@@ -513,7 +529,7 @@ class _RecetaGS extends State<RecetaGS> {
       String userIdText = UserService().getId();
       String userId = UserService().extractId(userIdText); // Extraer solo el ID
 
-      var usuario =await UserService().getUsers(UserService().getId());
+      var usuario = await UserService().getUsers(UserService().getId());
 
       if (usuario == null) {
         return;
@@ -534,7 +550,7 @@ class _RecetaGS extends State<RecetaGS> {
       String userIdText = UserService().getId();
       String userId = UserService().extractId(userIdText); // Extraer solo el ID
 
-      var usuario =await UserService().getUsers(UserService().getId());
+      var usuario = await UserService().getUsers(UserService().getId());
       if (usuario == null) {
         return;
       }
@@ -554,7 +570,7 @@ class _RecetaGS extends State<RecetaGS> {
       String userIdText = UserService().getId();
       String userId = UserService().extractId(userIdText); // Extraer solo el ID
 
-      var usuario =await UserService().getUsers(UserService().getId());
+      var usuario = await UserService().getUsers(UserService().getId());
       if (usuario == null) {
         return;
       }
@@ -574,7 +590,7 @@ class _RecetaGS extends State<RecetaGS> {
       String userIdText = UserService().getId();
       String userId = UserService().extractId(userIdText); // Extraer solo el ID
 
-      var usuario =await UserService().getUsers(UserService().getId());
+      var usuario = await UserService().getUsers(UserService().getId());
       if (usuario == null) {
         return;
       }
@@ -594,7 +610,7 @@ class _RecetaGS extends State<RecetaGS> {
       String userIdText = UserService().getId();
       String userId = UserService().extractId(userIdText); // Extraer solo el ID
 
-      var usuario =await UserService().getUsers(UserService().getId());
+      var usuario = await UserService().getUsers(UserService().getId());
       if (usuario == null) {
         return;
       }
@@ -614,7 +630,7 @@ class _RecetaGS extends State<RecetaGS> {
       String userIdText = UserService().getId();
       String userId = UserService().extractId(userIdText); // Extraer solo el ID
 
-      var usuario =await UserService().getUsers(UserService().getId());
+      var usuario = await UserService().getUsers(UserService().getId());
       if (usuario == null) {
         return;
       }
@@ -654,52 +670,60 @@ class _RecetaGS extends State<RecetaGS> {
               style: Textstyles.recipesGtitleStyle(),
             ),
           ),
-          Container(
-            decoration: ContainerStyle.genContainerDec(),
-            height: screenHeight * 0.9,
-            width: screenWidth,
-            margin: EdgeInsets.only(top: screenHeight * 0.15),
-            child: Container(
-              margin: EdgeInsets.only(bottom: screenHeight * 0.15),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  SizedBox(
-                    height: screenHeight * 0.03,
-                  ),
-                  Row(
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.only(
-                          left: screenWidth * 0.04,
-                        ),
-                        child: Text(
-                          "Ingredientes",
-                          style: Textstyles.recipesGtitleStyle(),
-                        ),
-                      ),
-                    ],
-                  ),
-                  ingredientsList(screenHeight, screenWidth),
-                  Row(
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.only(
+          if (!loadedBand) ...[
+            Center(
+                child: CircularProgressIndicator(
+              color: Colors.white,
+            )),
+          ],
+          if (loadedBand) ...[
+            Container(
+              decoration: ContainerStyle.genContainerDec(),
+              height: screenHeight * 0.9,
+              width: screenWidth,
+              margin: EdgeInsets.only(top: screenHeight * 0.15),
+              child: Container(
+                margin: EdgeInsets.only(bottom: screenHeight * 0.15),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    SizedBox(
+                      height: screenHeight * 0.03,
+                    ),
+                    Row(
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.only(
                             left: screenWidth * 0.04,
-                            bottom: screenWidth * 0.03),
-                        child: Text(
-                          "Procedimiento",
-                          style: Textstyles.recipesGtitleStyle(),
+                          ),
+                          child: Text(
+                            "Ingredientes",
+                            style: Textstyles.recipesGtitleStyle(),
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
-                  tutorialList(screenHeight, screenWidth),
-                ],
+                      ],
+                    ),
+                    ingredientsList(screenHeight, screenWidth),
+                    Row(
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.only(
+                              left: screenWidth * 0.04,
+                              bottom: screenWidth * 0.03),
+                          child: Text(
+                            "Procedimiento",
+                            style: Textstyles.recipesGtitleStyle(),
+                          ),
+                        ),
+                      ],
+                    ),
+                    tutorialList(screenHeight, screenWidth),
+                  ],
+                ),
               ),
             ),
-          ),
-          cotizarButton(screenWidth, screenHeight),
+            cotizarButton(screenWidth, screenHeight),
+          ],
           HotBar()
         ],
       ),
@@ -897,8 +921,9 @@ class _RecetaGS extends State<RecetaGS> {
                     ),
                     InkWell(
                       onTap: () async {
-                        // deleteIng(index,screenWidth,screenHeight);
+                        loading(context, screenWidth, screenHeight);
                         await deleteIngredient(index);
+                        Navigator.of(context).pop(true);
                         Navigator.of(context).pop(true);
                         deleteOk(context, screenWidth, screenHeight);
                       },
@@ -962,8 +987,9 @@ class _RecetaGS extends State<RecetaGS> {
                     ),
                     InkWell(
                       onTap: () async {
-                        // deleteInst(index,screenWidth,screenHeight);
+                        loading(context, screenWidth, screenHeight);
                         await deleteStep(index);
+                        Navigator.of(context).pop(true);
                         Navigator.of(context).pop(true);
                         deleteOk(context, screenWidth, screenHeight);
                       },
@@ -1073,6 +1099,17 @@ class _RecetaGS extends State<RecetaGS> {
     );
   }
 
+  void loading(BuildContext context, double screenWidth,double screenHeight,) {
+    showDialog(
+      context: context,
+      barrierDismissible: true,
+      barrierColor: Colors.black.withOpacity(0.5),
+      builder: (BuildContext context) {
+        return Center(child: CircularProgressIndicator(color: Colors.white,));
+      },
+    );
+  }
+
 // ----------------------------------------- //
 
   Future<dynamic> ingEditSection(BuildContext context, double screenHeight,
@@ -1151,9 +1188,10 @@ class _RecetaGS extends State<RecetaGS> {
                               String newKey = ingNameControl.text.toString();
                               String newAmo = ingAmountControl.text.toString();
                               String newIng = "$newAmo $newKey";
-                              // ingredients[index] = newIng;
+                              loading(context, screenWidth, screenHeight);
                               await modifyIngredient(index, newIng);
                               limpiarIng();
+                              Navigator.pop(context);
                               Navigator.pop(context);
                             });
                           },
@@ -1263,9 +1301,10 @@ class _RecetaGS extends State<RecetaGS> {
                               if (newIng == '') {
                                 campoVacio(context, screenWidth, screenHeight);
                               } else {
-                                // tutorial[index] = newIng;
+                                loading(context, screenWidth, screenHeight);
                                 await modifyStep(index, newIng);
                                 limpiarTut();
+                                Navigator.pop(context);
                                 Navigator.pop(context);
                               }
                             });
@@ -1377,9 +1416,10 @@ class _RecetaGS extends State<RecetaGS> {
                                   campoVacio(
                                       context, screenWidth, screenHeight);
                                 } else {
-                                  // tutorial.add(newIng);
+                                  loading(context, screenWidth, screenHeight);
                                   await addStep(newIng);
                                   limpiarTut();
+                                  Navigator.pop(context);
                                   Navigator.pop(context);
                                 }
                               });
@@ -1475,7 +1515,7 @@ class _RecetaGS extends State<RecetaGS> {
                             ),
                           ),
                           InkWell(
-                            onTap: () async {
+                            onTap: () {
                               setState(() async {
                                 String newIng =
                                     ingAmountControl.text.toString() +
@@ -1486,9 +1526,10 @@ class _RecetaGS extends State<RecetaGS> {
                                   campoVacio(
                                       context, screenWidth, screenHeight);
                                 } else {
-                                  // ingredients.add(newIng);
+                                  loading(context, screenWidth, screenHeight);
                                   await addIngredient(newIng);
                                   limpiarIng();
+                                  Navigator.pop(context);
                                   Navigator.pop(context);
                                 }
                               });

@@ -165,6 +165,7 @@ class _ChatViewState extends State<_ChatView> {
                       controller: chatProvider.chatScrollController,
                       itemCount: chatProvider.messageList.length,
                       itemBuilder: (context, index) {
+                        
                         final message = chatProvider.messageList[index];
                         return (message.fromWho == FromWho.me)
                             ? MyMessageBubble(message: message)
