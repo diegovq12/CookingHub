@@ -15,12 +15,15 @@ class Textstyles {
 
   static TextStyle titleStyle() => const TextStyle(color: Colors.white, fontFamily: "Poppins",fontSize: 36, fontWeight: FontWeight.bold);
   
-  static TextStyle titleStyle2() => const TextStyle(color: Colors.white, fontFamily: "Poppins",fontSize: 64, fontWeight: FontWeight.bold);
+  static TextStyle bigTitle() => const TextStyle(color: Colors.white, fontFamily: "Poppins",fontSize: 64, fontWeight: FontWeight.bold);
   
   static TextStyle recipesGtitleStyle() => const TextStyle(color: Colors.white, fontFamily: "Poppins",fontSize: 28, fontWeight: FontWeight.bold);
 
   static TextStyle semiBoldStyle() => const TextStyle(color: Colors.white, fontFamily: "Poppins",fontSize: 26, fontWeight: FontWeight.bold);
   
   static TextStyle semiBoldStyle2() => const TextStyle(color: Colors.white, fontFamily: "Poppins",fontSize: 18, fontWeight: FontWeight.bold);
+
+  // INICIO DE LA APLICACION
+  static TextStyle centerTitle() => const TextStyle(color: Colors.white, fontFamily: "Poppins",fontSize: 58, fontWeight: FontWeight.bold);
 
 }

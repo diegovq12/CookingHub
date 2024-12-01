@@ -389,7 +389,7 @@ class UserService {
     print("Repetido user: $usernameExists");
     print("Repetido email: $emailExists");
 
-    if (usernameExists || emailExists) {
+    if (usernameExists) {
       return "El nombre de usuario ya está en uso.";
     } else if (emailExists) {
       return "El correo electrónico ya está registrado.";

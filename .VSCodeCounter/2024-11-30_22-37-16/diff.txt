@@ -1,0 +1,74 @@
+Date : 2024-11-30 22:37:16
+Directory : c:\Users\PC\Documents\CHAMBA\FlutterTest\cooking_hub\lib
+Total : 37 files,  5386 codes, 300 comments, 810 blanks, all 6496 lines
+
+Languages
++----------+------------+------------+------------+------------+------------+
+| language | files      | code       | comment    | blank      | total      |
++----------+------------+------------+------------+------------+------------+
+| Dart     |         37 |      5,386 |        300 |        810 |      6,496 |
++----------+------------+------------+------------+------------+------------+
+
+Directories
++-------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                                                                  | files      | code       | comment    | blank      | total      |
++-------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                                                                     |         37 |      5,386 |        300 |        810 |      6,496 |
+| . (Files)                                                                                             |          1 |         79 |          0 |          6 |         85 |
+| config                                                                                                |          1 |         25 |          4 |          8 |         37 |
+| config\theme                                                                                          |          1 |         25 |          4 |          8 |         37 |
+| domain                                                                                                |          3 |         71 |          0 |         12 |         83 |
+| domain\entities                                                                                       |          3 |         71 |          0 |         12 |         83 |
+| presentation                                                                                          |         13 |      4,027 |        165 |        495 |      4,687 |
+| presentation\providers                                                                                |          1 |        143 |          9 |         21 |        173 |
+| presentation\screens                                                                                  |         12 |      3,884 |        156 |        474 |      4,514 |
+| services                                                                                              |          9 |        848 |        105 |        215 |      1,168 |
+| widgets                                                                                               |         10 |        336 |         26 |         74 |        436 |
+| widgets\chat                                                                                          |          3 |         62 |          2 |         17 |         81 |
+| widgets\shared                                                                                        |          5 |        206 |         23 |         34 |        263 |
+| widgets\styles                                                                                        |          2 |         68 |          1 |         23 |         92 |
++-------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Files
++-------------------------------------------------------------------------------------------------------+----------+------------+------------+------------+------------+
+| filename                                                                                              | language | code       | comment    | blank      | total      |
++-------------------------------------------------------------------------------------------------------+----------+------------+------------+------------+------------+
+| c:\Users\PC\Documents\CHAMBA\FlutterTest\cooking_hub\lib\config\theme\app_theme.dart                  | Dart     |         25 |          4 |          8 |         37 |
+| c:\Users\PC\Documents\CHAMBA\FlutterTest\cooking_hub\lib\domain\entities\message.dart                 | Dart     |          9 |          0 |          2 |         11 |
+| c:\Users\PC\Documents\CHAMBA\FlutterTest\cooking_hub\lib\domain\entities\recipe_model.dart            | Dart     |         28 |          0 |          3 |         31 |
+| c:\Users\PC\Documents\CHAMBA\FlutterTest\cooking_hub\lib\domain\entities\user_model.dart              | Dart     |         34 |          0 |          7 |         41 |
+| c:\Users\PC\Documents\CHAMBA\FlutterTest\cooking_hub\lib\main.dart                                    | Dart     |         79 |          0 |          6 |         85 |
+| c:\Users\PC\Documents\CHAMBA\FlutterTest\cooking_hub\lib\presentation\providers\chat_provider.dart    | Dart     |        143 |          9 |         21 |        173 |
+| c:\Users\PC\Documents\CHAMBA\FlutterTest\cooking_hub\lib\presentation\screens\FueraDeServicio.dart    | Dart     |         37 |          0 |          5 |         42 |
+| c:\Users\PC\Documents\CHAMBA\FlutterTest\cooking_hub\lib\presentation\screens\chat_screen.dart        | Dart     |        277 |         11 |         54 |        342 |
+| c:\Users\PC\Documents\CHAMBA\FlutterTest\cooking_hub\lib\presentation\screens\favoritos.dart          | Dart     |        451 |         13 |         75 |        539 |
+| c:\Users\PC\Documents\CHAMBA\FlutterTest\cooking_hub\lib\presentation\screens\ingredientes.dart       | Dart     |        391 |         61 |         42 |        494 |
+| c:\Users\PC\Documents\CHAMBA\FlutterTest\cooking_hub\lib\presentation\screens\iniciarSesion.dart      | Dart     |        205 |          0 |         12 |        217 |
+| c:\Users\PC\Documents\CHAMBA\FlutterTest\cooking_hub\lib\presentation\screens\lista_compras.dart      | Dart     |         61 |          2 |          8 |         71 |
+| c:\Users\PC\Documents\CHAMBA\FlutterTest\cooking_hub\lib\presentation\screens\mercados.dart           | Dart     |        213 |          4 |         17 |        234 |
+| c:\Users\PC\Documents\CHAMBA\FlutterTest\cooking_hub\lib\presentation\screens\realTimeCamera.dart     | Dart     |        348 |         18 |         55 |        421 |
+| c:\Users\PC\Documents\CHAMBA\FlutterTest\cooking_hub\lib\presentation\screens\recetas.dart            | Dart     |        200 |          8 |         37 |        245 |
+| c:\Users\PC\Documents\CHAMBA\FlutterTest\cooking_hub\lib\presentation\screens\recetas_guardadas.dart  | Dart     |      1,339 |         34 |        140 |      1,513 |
+| c:\Users\PC\Documents\CHAMBA\FlutterTest\cooking_hub\lib\presentation\screens\register_screen.dart    | Dart     |        269 |          5 |         16 |        290 |
+| c:\Users\PC\Documents\CHAMBA\FlutterTest\cooking_hub\lib\presentation\screens\start.dart              | Dart     |         93 |          0 |         13 |        106 |
+| c:\Users\PC\Documents\CHAMBA\FlutterTest\cooking_hub\lib\services\CONST-DB.dart                       | Dart     |          3 |          3 |          2 |          8 |
+| c:\Users\PC\Documents\CHAMBA\FlutterTest\cooking_hub\lib\services\MongoDB.dart                        | Dart     |         62 |         10 |         11 |         83 |
+| c:\Users\PC\Documents\CHAMBA\FlutterTest\cooking_hub\lib\services\bing_services.dart                  | Dart     |         82 |          3 |         22 |        107 |
+| c:\Users\PC\Documents\CHAMBA\FlutterTest\cooking_hub\lib\services\google_maps_services.dart           | Dart     |         57 |          6 |         16 |         79 |
+| c:\Users\PC\Documents\CHAMBA\FlutterTest\cooking_hub\lib\services\google_vision_services.dart         | Dart     |        133 |         13 |         29 |        175 |
+| c:\Users\PC\Documents\CHAMBA\FlutterTest\cooking_hub\lib\services\openai_services.dart                | Dart     |        155 |          4 |         30 |        189 |
+| c:\Users\PC\Documents\CHAMBA\FlutterTest\cooking_hub\lib\services\recipe_service.dart                 | Dart     |          9 |          1 |          7 |         17 |
+| c:\Users\PC\Documents\CHAMBA\FlutterTest\cooking_hub\lib\services\recipes_service.dart                | Dart     |         24 |          4 |         10 |         38 |
+| c:\Users\PC\Documents\CHAMBA\FlutterTest\cooking_hub\lib\services\user_service.dart                   | Dart     |        323 |         61 |         88 |        472 |
+| c:\Users\PC\Documents\CHAMBA\FlutterTest\cooking_hub\lib\widgets\chat\background_chat_decoration.dart | Dart     |          0 |          0 |          1 |          1 |
+| c:\Users\PC\Documents\CHAMBA\FlutterTest\cooking_hub\lib\widgets\chat\gtp_message_bubble.dart         | Dart     |         32 |          1 |          7 |         40 |
+| c:\Users\PC\Documents\CHAMBA\FlutterTest\cooking_hub\lib\widgets\chat\my_message_bubble.dart          | Dart     |         30 |          1 |          9 |         40 |
+| c:\Users\PC\Documents\CHAMBA\FlutterTest\cooking_hub\lib\widgets\shared\background_image.dart         | Dart     |         23 |          0 |          5 |         28 |
+| c:\Users\PC\Documents\CHAMBA\FlutterTest\cooking_hub\lib\widgets\shared\hot_bar.dart                  | Dart     |         49 |          6 |          7 |         62 |
+| c:\Users\PC\Documents\CHAMBA\FlutterTest\cooking_hub\lib\widgets\shared\message_field_box.dart        | Dart     |         41 |          0 |          7 |         48 |
+| c:\Users\PC\Documents\CHAMBA\FlutterTest\cooking_hub\lib\widgets\shared\message_field_button.dart     | Dart     |         61 |          5 |          9 |         75 |
+| c:\Users\PC\Documents\CHAMBA\FlutterTest\cooking_hub\lib\widgets\shared\title_container.dart          | Dart     |         32 |         12 |          6 |         50 |
+| c:\Users\PC\Documents\CHAMBA\FlutterTest\cooking_hub\lib\widgets\styles\containerStyle.dart           | Dart     |         53 |          0 |         10 |         63 |
+| c:\Users\PC\Documents\CHAMBA\FlutterTest\cooking_hub\lib\widgets\styles\textStyles.dart               | Dart     |         15 |          1 |         13 |         29 |
+| Total                                                                                                 |          |      5,386 |        300 |        810 |      6,496 |
++-------------------------------------------------------------------------------------------------------+----------+------------+------------+------------+------------+

@@ -1,3 +1,4 @@
+import 'package:cooking_hub/widgets/styles/textStyles.dart';
 import 'package:flutter/material.dart';
 import 'package:cooking_hub/services/user_service.dart';
 
@@ -16,12 +17,7 @@ class _Favoritos extends State<Favoritos>{
 
   // -------- Lista -------- //
 
-  List<Map<String, int>> favIng = [
-    {"Apple":1 },
-    {"Prueba":100 },
-    {"Ola":5 },
-    
-  ];
+  List<Map<String, int>> favIng = [];
 
   void addToList (String name, int amount){
     setState(() {
@@ -471,28 +467,33 @@ class _Favoritos extends State<Favoritos>{
                 SizedBox(
                   height: screenHeight*0.03,
                 ),
-                Expanded(
-                  child: ListView.builder(
-                    controller: ScrollController(),
-                    itemCount: favIng.length,
-                    itemBuilder: (context ,index){
-                      String name = favIng[index].keys.first;
-                      int amount = favIng[index][name]!;
-                      
-                      return ListTile(
-                        title: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              "• $amount $name",
-                              style: normalStyle(),
-                            ),
-                          ],
-                        ),
-                      );
-                    }
+                if(favIng.length <=0)...[
+                  Center(child: Text("Lista actual vacia", style:  Textstyles.titleStyle(),),)
+                ],
+                if(favIng.length > 0)...[
+                  Expanded(
+                    child: ListView.builder(
+                      controller: ScrollController(),
+                      itemCount: favIng.length,
+                      itemBuilder: (context ,index){
+                        String name = favIng[index].keys.first;
+                        int amount = favIng[index][name]!;
+                        
+                        return ListTile(
+                          title: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                "• $amount $name",
+                                style: normalStyle(),
+                              ),
+                            ],
+                          ),
+                        );
+                      }
+                    )
                   )
-                )
+                ]
               ],
             ),
           );

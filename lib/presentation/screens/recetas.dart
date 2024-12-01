@@ -1,3 +1,4 @@
+import 'package:cooking_hub/presentation/screens/FueraDeServicio.dart';
 import 'package:cooking_hub/widgets/shared/hot_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:cooking_hub/presentation/screens/favoritos.dart';
@@ -52,34 +53,6 @@ class _Recetas extends State<Recetas>{
                         ],
                       ),
                     ),
-                    // SizedBox(
-                    //   height: screenHeight*0.19,
-                    //   child: Align(
-                    //     alignment: Alignment.bottomCenter,
-                        
-                    //     child: Row(
-                    //       mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    //       children: [
-                    //         Container(
-                    //           decoration: const BoxDecoration(
-                    //             color: Colors.orange,
-                    //             borderRadius: BorderRadius.all(Radius.circular(16))
-                    //           ),
-                    //           padding: const EdgeInsets.all(10),
-                    //           child: Text("Camara",style: normalStyle(),)
-                    //         ),
-                    //         Container(
-                    //           decoration: const BoxDecoration(
-                    //             color: Colors.orange,
-                    //             borderRadius: BorderRadius.all(Radius.circular(16))
-                    //           ),
-                    //           padding: const EdgeInsets.all(10),
-                    //           child: Text("Chat",style: normalStyle(),)
-                    //         ),
-                    //       ],
-                    //     ),
-                    //   ),
-                    // ),
                   ]
                 ),
                 // --------- Favoritos
@@ -179,7 +152,9 @@ class _Recetas extends State<Recetas>{
         margin: const EdgeInsets.all(16),
 
         child: InkWell(
-          onTap: (){},
+          onTap: (){
+            Navigator.push(context, MaterialPageRoute(builder: (context)=> const outOfService()));
+          },
           child: Container(
                 height: screenHeight*0.25,
                 width: screenWidth*0.85,

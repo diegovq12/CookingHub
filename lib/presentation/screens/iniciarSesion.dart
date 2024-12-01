@@ -21,40 +21,43 @@ class _IniciarSesion extends State<IniciarSesion> {
   void showMessange(BuildContext context, double screenWidth,
       double screenHeight, String messange) {
     showDialog(
-        context: context,
-        barrierDismissible: true,
-        barrierColor: Colors.black.withOpacity(0.5),
-        builder: (BuildContext context) {
-          return Dialog(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20),
+      context: context,
+      barrierDismissible: true,
+      barrierColor: Colors.black.withOpacity(0.5),
+      builder: (BuildContext context) {
+        return Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
+          backgroundColor: Color(0xFFFF8330),
+          child: Padding(
+            padding: const EdgeInsets.all(32.0),
+            child: Text(
+              messange,
+              style: Textstyles.normalStyle(),
             ),
-            backgroundColor: Color(0xFFFF8330),
-            child: Padding(
-              padding: const EdgeInsets.all(32.0),
-              child: Text(
-                messange,
-                style: Textstyles.normalStyle(),
-              ),
-            ),
-          );
-        });
+          ),
+        );
+      }
+    );
   }
 
-  @override
-  Widget build(BuildContext context) {
-    double screenWidth = MediaQuery.of(context).size.width;
-    double screenHeight = MediaQuery.of(context).size.height;
+  bool seePasswoard = true;
 
-    return SafeArea(
-        child: Scaffold(
+ @override
+  Widget build(BuildContext context) {
+  double screenWidth = MediaQuery.of(context).size.width;
+  double screenHeight = MediaQuery.of(context).size.height;
+
+  return SafeArea(
+    child: Scaffold(
       body: Stack(
         children: [
           BackgroundImage(),
           Align(
-            alignment: Alignment.topLeft,
+            alignment: Alignment.topCenter,
             child: Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: EdgeInsets.only(top: screenHeight * 0.05),
               child: Text(
                 "Bienvenido a \nCooking Hub",
                 style: Textstyles.titleStyle(),
@@ -69,114 +72,99 @@ class _IniciarSesion extends State<IniciarSesion> {
               width: screenWidth,
               child: Padding(
                 padding: const EdgeInsets.all(22.0),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          "Aun no tienes cuenta? ",
-                          style: Textstyles.normalStyle(),
+                child: SingleChildScrollView( 
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        "Aun no tienes cuenta? ",
+                        style: Textstyles.normalStyle(),
+                      ),
+                      InkWell(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => RegisterScreen()));
+                        },
+                        child: Text(
+                          "Registrate",
+                          style: Textstyles.listsStyle(),
+                        )),
+                      Padding(
+                        padding: EdgeInsets.symmetric(vertical: screenHeight * 0.02),
+                        child: TextField(
+                          controller: usernameController,
+                          decoration: inputDecoration("Nombre de usuario"),
                         ),
-                        InkWell(
-                            onTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => RegisterScreen()));
-                            },
-                            child: Text(
-                              "Registrate",
-                              style: Textstyles.listsStyle(),
-                            )),
-                      ],
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 28),
-                      child: TextField(
-                        controller: usernameController,
-                        decoration: inputDecoration("Correo electronico"),
                       ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 28),
-                      child: TextField(
-                        
-                        controller: passwordController,
-                        decoration: inputDecoration("Contraseña"),
-                        obscureText: true,
+                      Padding(
+                        padding: EdgeInsets.symmetric(vertical: screenHeight * 0.02),
+                        child: TextField(
+                          controller: passwordController,
+                          decoration: passwoardInputDecoration("Contraseña"),
+                          obscureText: seePasswoard,
+                        ),
                       ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 8, bottom: 32),
-                      child: Row(
-                        children: [
-                          InkWell(
+                      Padding(
+                        padding: const EdgeInsets.only(left: 8, bottom: 32),
+                        child: Row(
+                          children: [
+                            InkWell(
                               onTap: () {
-                                showMessange(context, screenWidth, screenHeight,
-                                    "No disponible por ahora");
+                                showMessange(context, screenWidth, screenHeight, "No disponible por ahora");
                               },
                               child: Text(
                                 "Olvide mi contraseña",
                                 style: Textstyles.listsStyle2(),
                               )),
-                        ],
+                          ],
+                        ),
                       ),
-                    ),
-                    Text(
-                      "O usa una de estas opciones",
-                      style: Textstyles.normalStyle(),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.symmetric(
-                          vertical: 32, horizontal: screenWidth * 0.3),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          InkWell(
+                      Text(
+                        "O usa una de estas opciones",
+                        style: Textstyles.normalStyle(),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.symmetric(vertical: 32, horizontal: screenWidth * 0.3),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            InkWell(
                               onTap: () {
-                                showMessange(context, screenWidth, screenHeight,
-                                    "No disponible por ahora");
+                                showMessange(context, screenWidth, screenHeight, "No disponible por ahora");
                               },
                               child: Image.asset(
                                 "assets/icons/facebook.png",
                                 width: screenWidth * 0.1,
                               )),
-                          InkWell(
+                            InkWell(
                               onTap: () {
-                                showMessange(context, screenWidth, screenHeight,
-                                    "No disponible por ahora");
+                                showMessange(context, screenWidth, screenHeight, "No disponible por ahora");
                               },
                               child: Image.asset(
                                 "assets/icons/google.png",
                                 width: screenWidth * 0.1,
                               )),
-                        ],
+                          ],
+                        ),
                       ),
-                    ),
-                    Container(
-                      decoration: ContainerStyle.button2ContainerDec(),
-                      padding: EdgeInsets.symmetric(
-                          horizontal: screenWidth * 0.04,
-                          vertical: screenHeight * 0.01),
-                      child: InkWell(
+                      Container(
+                        decoration: ContainerStyle.button2ContainerDec(),
+                        padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.04, vertical: screenHeight * 0.01),
+                        child: InkWell(
                           onTap: () async {
-                            if (usernameController.text == "" ||
-                                passwordController.text == "") {
-                              showMessange(context, screenWidth, screenHeight,
-                                  "Por favor llenar los campos correo y contraseña");
+                            if (usernameController.text == "" || passwordController.text == "") {
+                              showMessange(context, screenWidth, screenHeight, "Por favor llenar los campos correo y contraseña");
                             } else {
-                              bool resultado = await UserService().loginUser(
-                                  usernameController.text,
-                                  passwordController.text);
+                              bool resultado = await UserService().loginUser(usernameController.text, passwordController.text);
 
                               if (resultado == true) {
                                 await Mongodb.closeConnection();
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => Recetas()));
+                                Navigator.push(context, MaterialPageRoute(builder: (context) => Recetas()));
+                              }
+                              if(resultado == false){
+                                await Mongodb.closeConnection();
+                                showMessange(context, screenWidth, screenHeight, "Usuario no encontrado");
                               }
                             }
                           },
@@ -184,8 +172,9 @@ class _IniciarSesion extends State<IniciarSesion> {
                             "Iniciar Sesion",
                             style: Textstyles.buttonStyle(),
                           )),
-                    )
-                  ],
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -193,7 +182,8 @@ class _IniciarSesion extends State<IniciarSesion> {
         ],
       ),
     ));
-  }
+}
+
 
   InputDecoration inputDecoration(String placeHolder) {
     return InputDecoration(
@@ -201,6 +191,24 @@ class _IniciarSesion extends State<IniciarSesion> {
         fillColor: Colors.white,
         hintText: placeHolder,
         hintStyle: TextStyle(color: Colors.grey),
+        border: OutlineInputBorder(
+            borderRadius: BorderRadius.all(Radius.circular(16)),
+            borderSide: BorderSide.none));
+  }
+  
+  InputDecoration passwoardInputDecoration(String placeHolder) {
+    return InputDecoration(
+        filled: true,
+        fillColor: Colors.white,
+        hintText: placeHolder,
+        hintStyle: TextStyle(color: Colors.grey),
+        suffixIcon: IconButton(
+          onPressed: (){
+            setState(() {
+              seePasswoard = !seePasswoard;
+            });
+          }, 
+          icon: Icon(seePasswoard? Icons.visibility_off : Icons.visibility, color: Colors.grey,)),
         border: OutlineInputBorder(
             borderRadius: BorderRadius.all(Radius.circular(16)),
             borderSide: BorderSide.none));
