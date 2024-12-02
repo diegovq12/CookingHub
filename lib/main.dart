@@ -1,5 +1,6 @@
 import 'package:cooking_hub/config/theme/app_theme.dart';
 import 'package:cooking_hub/presentation/providers/chat_provider.dart';
+import 'package:cooking_hub/presentation/screens/recetas.dart';
 import 'package:cooking_hub/presentation/screens/start.dart';
 import 'package:cooking_hub/services/MongoDB.dart';
 import 'package:flutter/material.dart';
@@ -74,7 +75,7 @@ class ConnectionHandler extends StatelessWidget {
             ),
           );
         } else {
-          return Start(); // Conexion exitosa.
+          return Recetas(); // Conexion exitosa.
         }
       },
     );

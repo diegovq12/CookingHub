@@ -66,6 +66,12 @@ flutter:
     - assets/icons/delete.png
     - assets/icons/facebook.png
     - assets/icons/google.png
+    
+    - assets/gif/cut.gif
+    - assets/gif/empty.gif
+    - assets/gif/mix.gif
+    - assets/gif/cook.gif
+    
   fonts:
     - family: Poppins
       fonts:

@@ -1,3 +1,4 @@
+import 'package:cooking_hub/presentation/screens/tutorial.dart';
 import 'package:cooking_hub/widgets/shared/background_image.dart';
 import 'package:cooking_hub/widgets/styles/containerStyle.dart';
 import 'package:cooking_hub/widgets/styles/inputStyle.dart';
@@ -18,6 +19,8 @@ class ingredientes extends StatefulWidget {
 class _ingredientes extends State<ingredientes> {
   // -------- Lista -------- //
   List<String> ing = [];
+  List<String> steps = [];
+  String name = "";
 
   // -------- Texto de edicion -------- //
   // Control de entrada de texto
@@ -37,6 +40,8 @@ class _ingredientes extends State<ingredientes> {
 
     // Almaecnar la receta
     ing = chatProvider.recipeList;
+    steps = chatProvider.stepsList;
+    name = chatProvider.recipeNamesList.last;
 
     // Agregar 1 a los ingredientes que no tengan cantidad
     for (int i = 1; i < ing.length; i++) {
@@ -83,7 +88,22 @@ class _ingredientes extends State<ingredientes> {
                         // Botones
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [bottomButtons("Agregar a la lista"), bottomButtons("Todo listo")],
+                          children: [
+                            bottomButtons("Agregar a la lista"), 
+                            InkWell(
+                              onTap: () {
+                                Navigator.push(context, MaterialPageRoute(builder: (context)=> Tutorial(ingredients: ing,steps: steps,name: name,)));
+                              },
+                              child: Container(
+                                decoration: ContainerStyle.buttonContainerDec(),
+                                padding:const EdgeInsets.all(10),
+                                child: Text(
+                                  "Todo listo",
+                                  style: Textstyles.normalStyle(),
+                                ),
+                              ),
+                            )
+                          ],
                         ),
                       ],
                     ),
@@ -107,37 +127,17 @@ class _ingredientes extends State<ingredientes> {
     final chatProvider = context.watch<ChatProvider>();
 
     return Positioned(
-      top: screenHeight * 0.07, // Ajusta para sobresalir en la parte superior
+      top: screenHeight * 0.07,
       left: screenWidth * 0.1,
       right: screenWidth * 0.1,
-      child: Expanded(
-        child: Container(
+      child: Container(
           height: screenHeight * 0.08,
+          padding: EdgeInsets.symmetric(vertical:screenHeight*0.01),
           decoration: ContainerStyle.buttonContainerDec(),
-          child: Center(
-            child: chatProvider.recipeNamesList.isEmpty
-                ? Text(
-                    "", // Mostrar nada si la lista esta vacía
-                    style: Textstyles.titleStyle(),
-                    textAlign: TextAlign.center,
-                  )
-                : ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: 1,
-                    itemBuilder: (context, index) {
-                      return Center(
-                        child: Text(
-                          chatProvider.recipeNamesList
-                              .last, // Mostrar el ultimo elemento
-                          style: Textstyles.titleStyle(),
-                          textAlign: TextAlign.center,
-                        ),
-                      );
-                    },
-                  ),
+          child: SingleChildScrollView(
+            child: Text(chatProvider.recipeNamesList.last,style: Textstyles.titleStyle(),textAlign: TextAlign.center,),
           ),
         ),
-      ),
     );
   }
 

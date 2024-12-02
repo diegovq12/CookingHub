@@ -20,8 +20,11 @@ class ChatProvider extends ChangeNotifier {
   List<String> recipeList = [
   // Lista inicial vacía
   ];
+  
+  List<String> stepsList = [
+  // Lista inicial vacía
+  ];
   List<String> recipeNamesList=[
-
   ];
 
 Future<void> sendMessage(String text) async {
@@ -51,9 +54,10 @@ Future<void> sendMessage(String text) async {
         responseText = OpenAIService().naturalLanguageResponse(responseText);
         messageList.add(Message(text: responseText, fromWho: FromWho.gpt));
 
-        // Extraer los ingredientes del JSON y agregarlos a recipeList
+        // Extraer los ingredientes del JSON y agregarlos a recipeList y stepsList
         if (recipeData['ingredientes'] is List) {
           recipeList = List<String>.from(recipeData['ingredientes']);
+          stepsList = List<String>.from(recipeData['pasos']);
             if (recipeData['nombre'] is String) {
             recipeNamesList.add(recipeData['nombre']);
             } else {
