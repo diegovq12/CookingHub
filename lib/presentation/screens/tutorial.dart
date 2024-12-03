@@ -90,6 +90,7 @@ class _TutorialState extends State<Tutorial> {
                                 Expanded(child: Text("${index}.-${widget.steps[index]}",style: Textstyles.normalStyle(),)),
                                 Checkbox(
                                   value: done[index],
+                                  hoverColor: Colors.white,
                                   checkColor: Colors.white,
                                   onChanged: (bool? value) {
                                     setState(() {
@@ -130,7 +131,6 @@ class _TutorialState extends State<Tutorial> {
                                   ),
                               )
                             ]
-                            // Text("----------------------", style: Textstyles.normalStyle(), textAlign: TextAlign.center,)
                           ]
                         ],
                       )

@@ -26,6 +26,9 @@ class ChatProvider extends ChangeNotifier {
   ];
   List<String> recipeNamesList=[
   ];
+  
+  List<String> recipeRegionList=[
+  ];
 
 Future<void> sendMessage(String text) async {
   if (text.isEmpty) {
@@ -58,6 +61,7 @@ Future<void> sendMessage(String text) async {
         if (recipeData['ingredientes'] is List) {
           recipeList = List<String>.from(recipeData['ingredientes']);
           stepsList = List<String>.from(recipeData['pasos']);
+          recipeRegionList.add(recipeData['region']);
             if (recipeData['nombre'] is String) {
             recipeNamesList.add(recipeData['nombre']);
             } else {

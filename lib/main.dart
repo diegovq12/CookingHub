@@ -75,7 +75,7 @@ class ConnectionHandler extends StatelessWidget {
             ),
           );
         } else {
-          return Recetas(); // Conexion exitosa.
+          return Start(); // Conexion exitosa.
         }
       },
     );

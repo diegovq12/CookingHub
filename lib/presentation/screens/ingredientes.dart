@@ -1,3 +1,5 @@
+import 'package:cooking_hub/domain/entities/recipe_model.dart';
+import 'package:cooking_hub/services/user_service.dart';
 import 'package:cooking_hub/presentation/screens/tutorial.dart';
 import 'package:cooking_hub/widgets/shared/background_image.dart';
 import 'package:cooking_hub/widgets/styles/containerStyle.dart';
@@ -34,11 +36,45 @@ class _ingredientes extends State<ingredientes> {
     });
   }
 
+  void showMessage(BuildContext context, double screenWidth,
+      double screenHeight, String message) {
+    showDialog(
+      context: context,
+      barrierDismissible: true,
+      barrierColor: Colors.black.withOpacity(0.5),
+      builder: (BuildContext context) {
+        return Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
+          backgroundColor: Color(0xFFFF8330),
+          child: Padding(
+            padding: const EdgeInsets.all(32.0),
+            child: Text(message, style: Textstyles.normalStyle()),
+          ),
+        );
+      },
+    );
+  }
+  
+  void loading(BuildContext context, double screenWidth,
+      double screenHeight) {
+    showDialog(
+      context: context,
+      barrierDismissible: true,
+      barrierColor: Colors.black.withOpacity(0.5),
+      builder: (BuildContext context) {
+        return Center(child: CircularProgressIndicator(color: Colors.white,));
+        }
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final chatProvider = context.watch<ChatProvider>();
 
     // Almaecnar la receta
+    String region = chatProvider.recipeRegionList.last;
     ing = chatProvider.recipeList;
     steps = chatProvider.stepsList;
     name = chatProvider.recipeNamesList.last;
@@ -89,7 +125,26 @@ class _ingredientes extends State<ingredientes> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
-                            bottomButtons("Agregar a la lista"), 
+                            InkWell(
+                              onTap: () async{
+                                String userIdText = UserService().getId();
+                                String userId = UserService().extractId(userIdText);
+                                Recipe recipe = Recipe(name: name, region: region, ingredients: ing, steps: steps);
+                                loading(context, screenWidth, screenHeight);
+                                await UserService().addFavoriteRecipe(userId, recipe);
+                                Navigator.of(context).pop(true);
+                                showMessage(context, screenWidth, screenHeight, "Receta agregada");
+                                // print("AdanBug Nombre : ${recipe.name}  Region : ${recipe.region} \n Ingredientes ${recipe.ingredients}\n Pasos: ${recipe.steps}");
+                              },
+                              child: Container(
+                                decoration: ContainerStyle.buttonContainerDec(),
+                                padding:const EdgeInsets.all(10),
+                                child: Text(
+                                  "Agregar a la lista",
+                                  style: Textstyles.normalStyle(),
+                                ),
+                              ),
+                            ),
                             InkWell(
                               onTap: () {
                                 Navigator.push(context, MaterialPageRoute(builder: (context)=> Tutorial(ingredients: ing,steps: steps,name: name,)));
